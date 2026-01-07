@@ -41,12 +41,12 @@ $ pnpm run test:cov
 // Product -> Register -> Becomes available for sale -> Product is avalable for use when is purchased
 ====================================
 
-# TODO
+## TODO
 
-- # [x]Factories
-- # []Refactor to just Accounts
+- [x]Factories
+- []Refactor to just Accounts
 
-# Use Cases
+## Use Cases
 
 ---
 
@@ -59,6 +59,6 @@ $ pnpm run test:cov
 
 ====================================
 
-# Controllers
+## Controllers
 
 ---
