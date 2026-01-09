@@ -1,17 +1,12 @@
 // @ts-check
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import globals from 'globals';
+import globals, { vitest } from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: [
-      'eslint.config.mjs',
-      'babel.config.cjs',
-      'jest.config.ts',
-      'vitest.config.ts',
-    ],
+    ignores: ['eslint.config.mjs', 'vitest.config.ts'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -20,7 +15,7 @@ export default tseslint.config(
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.jest,
+        ...vitest,
       },
       sourceType: 'commonjs',
       parserOptions: {

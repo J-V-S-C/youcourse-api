@@ -44,7 +44,7 @@ $ pnpm run test:cov
 ## TODO
 
 - [x]Factories
-- []Refactor to just Accounts
+- [x]Refactor to just Accounts
 
 ## Use Cases
 
@@ -52,10 +52,12 @@ $ pnpm run test:cov
 
 - [x]Authenticate
 - [x]Create-Product
-- [x]Register-Seller
+- [x]Register-Account
 - [x]Update-Product
 - []Sell-Product
-- []Register-Buyer
+- [x]Rate-product
+- [x]Edit-rating
+- []Edit-account
 
 ====================================
 

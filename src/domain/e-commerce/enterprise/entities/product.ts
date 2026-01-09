@@ -2,6 +2,7 @@ import { Entity } from 'src/core/entities/entity';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { Money } from './value-objects/money';
 import { Optional } from 'src/core/types/optional';
+import { Rating } from './rating';
 
 export interface ProductProps {
   creatorId: UniqueEntityID;
