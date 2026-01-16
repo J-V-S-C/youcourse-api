@@ -4,4 +4,5 @@ export abstract class ProductsRepository {
   abstract create(product: Product): Promise<void>;
   abstract save(product: Product): Promise<void>;
   abstract findById(id: string): Promise<Product | null>;
+  abstract delete(product: Product): Promise<void>;
 }

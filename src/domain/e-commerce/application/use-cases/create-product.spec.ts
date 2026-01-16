@@ -1,6 +1,6 @@
 import { InMemoryProductsRepository } from 'test/repositories/in-memory-products-repository';
 import { CreateProductUseCase } from './create-product';
-import { Money } from '../../enterprise/entities/value-objects/money';
+import { Price } from '../../enterprise/entities/value-objects/price';
 
 let inMemoryProductsRepository: InMemoryProductsRepository;
 let sut: CreateProductUseCase;
@@ -16,11 +16,10 @@ describe('Create Product', () => {
       creatorId: '1',
       name: 'jerjelim',
       description: '',
-      price: Money.create({
+      price: Price.create({
         amount: 3,
         currency: 'USD',
       }),
-      available: false,
     });
 
     expect(result.isRight()).toBeTruthy();

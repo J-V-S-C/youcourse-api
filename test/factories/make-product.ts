@@ -4,7 +4,7 @@ import {
   ProductProps,
 } from 'src/domain/e-commerce/enterprise/entities/product';
 import { faker } from '@faker-js/faker';
-import { Money } from 'src/domain/e-commerce/enterprise/entities/value-objects/money';
+import { Price } from 'src/domain/e-commerce/enterprise/entities/value-objects/price';
 
 export function makeProduct(
   override: Partial<ProductProps> = {},
@@ -14,7 +14,7 @@ export function makeProduct(
     {
       name: faker.person.firstName(),
       description: faker.commerce.productDescription(),
-      price: Money.create({
+      price: Price.create({
         amount: faker.number.float({ min: 0.01, fractionDigits: 2 }),
         currency: faker.finance.currencyCode(),
       }),

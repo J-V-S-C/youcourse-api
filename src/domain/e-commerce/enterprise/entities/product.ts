@@ -1,6 +1,6 @@
 import { Entity } from 'src/core/entities/entity';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
-import { Money } from './value-objects/money';
+import { Price } from './value-objects/price';
 import { Optional } from 'src/core/types/optional';
 import { Rating } from './rating';
 
@@ -8,8 +8,9 @@ export interface ProductProps {
   creatorId: UniqueEntityID;
   name: string;
   description: string;
-  price: Money;
-  available: boolean;
+  price?: Price;
+  visible: boolean;
+  sellable: boolean;
   createdAt: Date;
   updatedAt?: Date | null;
 }
@@ -31,8 +32,12 @@ export class Product extends Entity<ProductProps> {
     return this.props.price;
   }
 
-  get available() {
-    return this.props.available;
+  get visible() {
+    return this.props.visible;
+  }
+
+  get sellable() {
+    return this.props.sellable;
   }
 
   get createdAt() {
@@ -47,34 +52,55 @@ export class Product extends Entity<ProductProps> {
     this.props.updatedAt = new Date();
   }
 
-  set name(name: string) {
-    this.props.name = name;
+  publish() {
+    if (!this.props.price) {
+      throw new Error('You can not publish a product without specify a price');
+    }
+
+    this.props.visible = true;
+    this.props.sellable = true;
     this.touch();
   }
 
-  set description(description: string) {
+  unpublish() {
+    this.props.sellable = false;
+    this.touch();
+  }
+
+  hide() {
+    this.props.visible = false;
+    this.props.sellable = false;
+    this.touch();
+  }
+
+  updateDetails(name: string, description: string) {
+    this.props.name = name;
     this.props.description = description;
     this.touch();
   }
 
-  set price(price: Money) {
+  updatePrice(price: Price) {
+    if (this.sellable) {
+      throw new Error('Cannot edit details of a sellable product');
+    }
+
     this.props.price = price;
     this.touch();
   }
 
-  set available(available: boolean) {
-    this.props.available = available;
-    this.touch();
-  }
-
   static create(
-    props: Optional<ProductProps, 'createdAt' | 'available'>,
+    props: Optional<ProductProps, 'createdAt' | 'visible' | 'sellable'>,
     id?: UniqueEntityID,
   ) {
+    if (props.sellable && !props.price) {
+      throw new Error('Sellable product must have price');
+    }
+
     const product = new Product(
       {
         ...props,
-        available: props.available ?? true,
+        visible: props.visible ?? false,
+        sellable: props.sellable ?? false,
         createdAt: props.createdAt ?? new Date(),
         updatedAt: props.updatedAt ?? null,
       },

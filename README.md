@@ -43,21 +43,91 @@ $ pnpm run test:cov
 
 ## TODO
 
-- [x]Factories
-- [x]Refactor to just Accounts
-
 ## Use Cases
 
 ---
 
-- [x]Authenticate
-- [x]Create-Product
-- [x]Register-Account
-- [x]Update-Product
-- []Sell-Product
-- [x]Rate-product
-- [x]Edit-rating
-- []Edit-account
+!USERS
+
+- [x] Register-Account
+- [x] Authenticate
+- [ ] Edit-Account
+- [ ] Recover-Password
+- [ ] Update-Profile
+
+!!!PRODUCTS
+
+- [x] Create-Product
+- [x] Edit-Product-Details
+- [x] Update-Product-Price
+- [x] Publish-Product
+- [x] Unpublish-Product
+- [x] Hide-Product
+- [ ] Delete-Product
+
+!!CATALOG
+
+- [ ] List-Products
+- [ ] Search-Products
+- [ ] View-Product
+
+!CART
+
+- [ ] Add-To-Cart
+- [ ] Remove-From-Cart
+- [ ] Apply-Coupon
+
+!!CHECKOUT / SALES
+
+- [ ] Sell-Product
+- [ ] Checkout
+- [ ] Process-Payment
+
+!ORDERS
+
+- [ ] Create-Order
+- [ ] View-Order
+- [ ] List-Orders
+
+?ACCESS / DELIVERY
+
+- [ ] Grant-Access
+- [ ] Revoke-Access
+- [ ] Access-Content
+
+RATINGS / REVIEWS
+
+- [x] Rate-Product
+- [x] Edit-Rating
+- [ ] Delete-Rating
+
+SUBSCRIPTIONS
+
+- [ ] Create-Subscription
+- [ ] Cancel-Subscription
+
+!REFUNDS
+
+- [ ] Request-Refund
+- [ ] Process-Refund
+
+!NOTIFICATIONS
+
+- [ ] Send-Notification
+- [ ] Manage-Notifications
+
+!ADMIN
+
+- [ ] Manage-Users
+- [ ] Manage-Products
+- [ ] View-Reports
+
+!!AUTH
+
+- [ ] Verify-Email
+- [ ] Change-Password
+- [ ] Refresh-Token
+- [ ] Revoke-Session
 
 ====================================
 

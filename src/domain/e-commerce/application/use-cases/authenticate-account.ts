@@ -1,8 +1,8 @@
 import { Either, left, right } from 'src/core/either';
-import { SellersRepository } from '../repositories/accounts-repository';
 import { WrongCredentialsError } from './errors/wrong-credentials-error';
 import { HashComparer } from '../cryptography/hash-comparer';
 import { Encrypter } from '../cryptography/encrypter';
+import { AccountsRepository } from '../repositories/accounts-repository';
 
 interface AuthenticateAccountUseCaseRequest {
   email: string;
@@ -16,7 +16,7 @@ type AuthenticateAccountUseCaseResponse = Either<
 
 export class AuthenticateAccountUseCase {
   constructor(
-    private sellersRepository: SellersRepository,
+    private accountsRepository: AccountsRepository,
     private hashComparer: HashComparer,
     private encrypter: Encrypter,
   ) {}
@@ -25,7 +25,7 @@ export class AuthenticateAccountUseCase {
     email,
     password,
   }: AuthenticateAccountUseCaseRequest): Promise<AuthenticateAccountUseCaseResponse> {
-    const seller = await this.sellersRepository.findByEmail(email);
+    const seller = await this.accountsRepository.findByEmail(email);
     if (!seller) {
       return left(new WrongCredentialsError());
     }

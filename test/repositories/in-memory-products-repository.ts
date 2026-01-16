@@ -19,4 +19,9 @@ export class InMemoryProductsRepository implements ProductsRepository {
       }
     });
   }
+
+  async delete(product: Product): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === product.id);
+    this.items.splice(itemIndex, 1);
+  }
 }

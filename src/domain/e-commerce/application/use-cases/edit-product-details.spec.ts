@@ -1,19 +1,19 @@
 import { InMemoryProductsRepository } from 'test/repositories/in-memory-products-repository';
-import { EditProductUseCase } from './edit-product';
+import { EditProductDetailsUseCase } from './edit-product-details';
 import { makeProduct } from 'test/factories/make-product';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
 import { NotAllowedError } from './errors/not-allowed-error';
 
 let inMemoryProductsRepository: InMemoryProductsRepository;
-let sut: EditProductUseCase;
+let sut: EditProductDetailsUseCase;
 
-describe('Edit Product', () => {
+describe('Edit Product Details', () => {
   beforeEach(() => {
     inMemoryProductsRepository = new InMemoryProductsRepository();
-    sut = new EditProductUseCase(inMemoryProductsRepository);
+    sut = new EditProductDetailsUseCase(inMemoryProductsRepository);
   });
 
-  it('should be able to edit a product', async () => {
+  it('should be able to edit the product details', async () => {
     const product = makeProduct();
     inMemoryProductsRepository.items.push(product);
 

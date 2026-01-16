@@ -1,11 +1,11 @@
 import { ValueObject } from 'src/core/entities/value-objects';
 
-export interface MoneyProps {
+export interface PriceProps {
   amount: number; // centavos
   currency: string; // BRL
 }
 
-export class Money extends ValueObject<MoneyProps> {
+export class Price extends ValueObject<PriceProps> {
   get amount() {
     return this.props.amount;
   }
@@ -14,7 +14,7 @@ export class Money extends ValueObject<MoneyProps> {
     return this.props.currency;
   }
 
-  static create(props: MoneyProps) {
-    return new Money(props);
+  static create(props: PriceProps) {
+    return new Price(props);
   }
 }
