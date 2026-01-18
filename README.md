@@ -63,13 +63,14 @@ $ pnpm run test:cov
 - [x] Publish-Product
 - [x] Unpublish-Product
 - [x] Hide-Product
-- [ ] Delete-Product
+- [x] Delete-Product
 
 !!CATALOG
 
-- [ ] List-Products
+- [x] Fetch-Products
 - [ ] Search-Products
 - [ ] View-Product
+- [ ] Click-Product
 
 !CART
 
