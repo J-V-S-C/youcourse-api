@@ -4,6 +4,7 @@ import { Price } from '../../enterprise/entities/value-objects/price';
 import { ProductsRepository } from '../repositories/products-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
 import { NotAllowedError } from './errors/not-allowed-error';
+import { Injectable } from '@nestjs/common';
 
 interface DeleteProductUseCaseRequest {
   productId: string;
@@ -15,6 +16,7 @@ type DeleteProductUseCaseResponse = Either<
   object
 >;
 
+@Injectable()
 export class DeleteProductUseCase {
   constructor(private readonly productsRepository: ProductsRepository) {}
 

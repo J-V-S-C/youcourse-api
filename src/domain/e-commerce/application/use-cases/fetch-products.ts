@@ -3,7 +3,8 @@ import { Product } from '../../enterprise/entities/product';
 import { ProductsRepository } from '../repositories/products-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
 import { NotAllowedError } from './errors/not-allowed-error';
-import { ProductMetrics } from '../../enterprise/entities/value-objects/product-metricts';
+import { ProductMetrics } from '../../enterprise/entities/value-objects/product-metrics';
+import { Injectable } from '@nestjs/common';
 
 interface FetchProductsUseCaseRequest {
   page: number;
@@ -16,6 +17,7 @@ type FetchProductsUseCaseResponse = Either<
   { visibleProducts: Product[] }
 >;
 
+@Injectable()
 export class FetchProductsUseCase {
   constructor(private readonly productsRepository: ProductsRepository) {}
 

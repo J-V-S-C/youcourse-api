@@ -4,6 +4,7 @@ import { Price } from '../../enterprise/entities/value-objects/price';
 import { ProductsRepository } from '../repositories/products-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
 import { NotAllowedError } from './errors/not-allowed-error';
+import { Injectable } from '@nestjs/common';
 
 interface UpdateProductPriceUseCaseRequest {
   productId: string;
@@ -16,6 +17,7 @@ type UpdateProductPriceUseCaseResponse = Either<
   { product: Product }
 >;
 
+@Injectable()
 export class UpdateProductPriceUseCase {
   constructor(private readonly productsRepository: ProductsRepository) {}
 

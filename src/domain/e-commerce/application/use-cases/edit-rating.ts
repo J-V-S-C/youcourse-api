@@ -4,6 +4,7 @@ import { RatingsRepository } from '../repositories/ratings-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
 import { NotAllowedError } from './errors/not-allowed-error';
 import { Stars } from '../../enterprise/entities/value-objects/stars';
+import { Injectable } from '@nestjs/common';
 
 interface EditRatingUseCaseRequest {
   ratingId: string;
@@ -17,6 +18,7 @@ type EditRatingUseCaseResponse = Either<
   { rating: Rating }
 >;
 
+@Injectable()
 export class EditRatingUseCase {
   constructor(private readonly ratingsRepository: RatingsRepository) {}
 

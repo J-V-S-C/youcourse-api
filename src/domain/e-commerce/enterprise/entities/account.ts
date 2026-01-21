@@ -2,10 +2,10 @@ import { Entity } from 'src/core/entities/entity';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { Optional } from 'src/core/types/optional';
 
-enum AccountStatus {
-  Active,
-  Suspended,
-  Disabled,
+export enum AccountStatus {
+  ACTIVE = 'ACTIVE',
+  SUSPENDED = 'SUSPENDED',
+  DISABLED = 'DISABLED',
 }
 
 export interface AccountProps {
@@ -49,7 +49,7 @@ export class Account extends Entity<AccountProps> {
     const account = new Account(
       {
         ...props,
-        status: props.status ?? AccountStatus.Active,
+        status: props.status ?? AccountStatus.ACTIVE,
         createdAt: props.createdAt ?? new Date(),
         lastLogin: props.lastLogin ?? null,
       },

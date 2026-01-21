@@ -3,6 +3,7 @@ import { Account } from '../../enterprise/entities/account';
 import { AccountAlreadyExistsError } from './errors/account-already-exists-error';
 import { HashGenerator } from '../cryptography/hash-generator';
 import { AccountsRepository } from '../repositories/accounts-repository';
+import { Injectable } from '@nestjs/common';
 
 interface RegisterAccountUseCaseRequest {
   name: string;
@@ -15,6 +16,7 @@ type RegisterAccountUseCaseResponse = Either<
   { account: Account }
 >;
 
+@Injectable()
 export class RegisterAccountUseCase {
   constructor(
     private readonly accountsRepository: AccountsRepository,

@@ -3,6 +3,7 @@ import { Product } from '../../enterprise/entities/product';
 import { Price } from '../../enterprise/entities/value-objects/price';
 import { ProductsRepository } from '../repositories/products-repository';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
+import { Injectable } from '@nestjs/common';
 
 interface CreateProductsUseCaseRequest {
   creatorId: string;
@@ -15,6 +16,7 @@ interface CreateProductsUseCaseRequest {
 
 type CreateProductUseCaseResponse = Either<null, { product: Product }>;
 
+@Injectable()
 export class CreateProductUseCase {
   constructor(private readonly productsRepository: ProductsRepository) {}
 

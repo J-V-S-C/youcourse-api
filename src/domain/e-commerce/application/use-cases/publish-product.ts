@@ -4,6 +4,7 @@ import { ProductsRepository } from '../repositories/products-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
 import { NotAllowedError } from './errors/not-allowed-error';
 import { Price } from '../../enterprise/entities/value-objects/price';
+import { Injectable } from '@nestjs/common';
 
 interface PublishProductUseCaseRequest {
   productId: string;
@@ -15,7 +16,7 @@ type PublishProductUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
   { product: Product }
 >;
-
+@Injectable()
 export class PublishProductUseCase {
   constructor(private readonly productsRepository: ProductsRepository) {}
 

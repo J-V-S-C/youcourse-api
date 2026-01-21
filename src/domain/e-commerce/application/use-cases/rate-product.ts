@@ -3,6 +3,7 @@ import { Rating } from '../../enterprise/entities/rating';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { RatingsRepository } from '../repositories/ratings-repository';
 import { Stars } from '../../enterprise/entities/value-objects/stars';
+import { Injectable } from '@nestjs/common';
 
 interface RateProductUseCaseRequest {
   productId: string;
@@ -13,6 +14,7 @@ interface RateProductUseCaseRequest {
 
 type RateProductUseCaseResponse = Either<null, { rating: Rating }>;
 
+@Injectable()
 export class RateProductUseCase {
   constructor(private readonly ratingsRepository: RatingsRepository) {}
 

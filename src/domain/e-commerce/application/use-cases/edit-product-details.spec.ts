@@ -23,7 +23,6 @@ describe('Edit Product Details', () => {
       name: 'new name',
       description: 'new description',
     });
-    console.log(inMemoryProductsRepository.items[0]);
 
     expect(result.isRight()).toBeTruthy();
     expect(inMemoryProductsRepository.items[0]).toMatchObject({
