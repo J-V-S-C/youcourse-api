@@ -1,4 +1,5 @@
 import { Prisma, Account as PrismaAccount } from '@prisma/client';
+import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import {
   Account,
   AccountStatus,
@@ -13,7 +14,7 @@ export class PrismaAccountMapper {
       status: raw.status as AccountStatus,
       lastLogin: raw.lastLogin,
       createdAt: raw.createdAt,
-    });
+    }, new UniqueEntityID(raw.id));
   }
 
   static toPrisma(account: Account): Prisma.AccountUncheckedCreateInput {

@@ -27,14 +27,14 @@ export class AuthenticateAccountUseCase {
     email,
     password,
   }: AuthenticateAccountUseCaseRequest): Promise<AuthenticateAccountUseCaseResponse> {
-    const seller = await this.accountsRepository.findByEmail(email);
-    if (!seller) {
+    const account = await this.accountsRepository.findByEmail(email);
+    if (!account) {
       return left(new WrongCredentialsError());
     }
 
     const isValidPassword = await this.hashComparer.compare(
       password,
-      seller.password,
+      account.password,
     );
 
     if (!isValidPassword) {
@@ -42,7 +42,7 @@ export class AuthenticateAccountUseCase {
     }
 
     const accessToken = await this.encrypter.encrypt({
-      sub: seller.id.toString(),
+      sub: account.id.toString(),
     });
 
     return right({

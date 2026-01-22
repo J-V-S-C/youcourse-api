@@ -4,16 +4,14 @@ import { HashComparer } from "src/domain/e-commerce/application/cryptography/has
 import { BcryptHasher } from "./bcrypt-hasher";
 import { HashGenerator } from "src/domain/e-commerce/application/cryptography/hash-generator";
 //import { JwtEncrypter } from "./jwt-encrypter";
-import { JwtService } from "@nestjs/jwt";
+import { JwtEncrypter } from "./jwt-encrypter";
 
 @Module({
   providers: [
-  /*
     {
       provide: Encrypter,
       useClass: JwtEncrypter,
     },
-    */
     {
       provide: HashComparer,
       useClass: BcryptHasher,
@@ -24,7 +22,7 @@ import { JwtService } from "@nestjs/jwt";
     },
   ],
   exports: [
-    /*Encrypter,*/ HashComparer, HashGenerator
+    Encrypter, HashComparer, HashGenerator
   ]
 })
 export class CryptographyModule { }
