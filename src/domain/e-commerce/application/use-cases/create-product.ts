@@ -25,7 +25,6 @@ export class CreateProductUseCase {
     name,
     description,
     price,
-
     visible,
     sellable,
   }: CreateProductsUseCaseRequest): Promise<CreateProductUseCaseResponse> {

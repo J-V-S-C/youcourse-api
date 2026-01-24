@@ -1,5 +1,5 @@
+import { Entity } from 'src/core/entities/entity';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
-import { ValueObject } from 'src/core/entities/value-objects';
 
 export interface ProductMetricsProps {
   productId: UniqueEntityID;
@@ -9,7 +9,7 @@ export interface ProductMetricsProps {
   updatedAt: Date;
 }
 
-export class ProductMetrics extends ValueObject<ProductMetricsProps> {
+export class ProductMetrics extends Entity<ProductMetricsProps> {
   get productId() {
     return this.props.productId;
   }

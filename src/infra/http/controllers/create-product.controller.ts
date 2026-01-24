@@ -1,0 +1,64 @@
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
+import { CreateProductUseCase } from 'src/domain/e-commerce/application/use-cases/create-product';
+import z from 'zod';
+import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
+import { Price } from 'src/domain/e-commerce/enterprise/entities/value-objects/price';
+import type { UserPayload } from 'src/infra/auth/jwt.strategy';
+import { CurrentUser } from 'src/infra/auth/current-user.decorator';
+
+const priceSchema = z.object({
+  amount: z.number(),
+  currency: z.string(),
+});
+
+const createProductBodySchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  price: priceSchema.optional(),
+  sellable: z.boolean().optional(),
+  visible: z.boolean().optional(),
+});
+
+type CreateProductBodySchema = z.infer<typeof createProductBodySchema>;
+
+const bodyValidationPipe = new ZodValidationPipe(createProductBodySchema);
+
+@Controller('/products')
+export class CreateProductController {
+  constructor(private createProduct: CreateProductUseCase) {}
+
+  @Post()
+  @HttpCode(201)
+  async handle(
+    @Body(bodyValidationPipe) body: CreateProductBodySchema,
+    @CurrentUser() user: UserPayload,
+  ) {
+    const { name, description, price, sellable, visible } = body;
+    const priceVO = price ? Price.create(price) : undefined;
+    const creatorId = user.sub;
+
+    const result = await this.createProduct.execute({
+      name,
+      description,
+      creatorId,
+      price: priceVO,
+      sellable,
+      visible,
+    });
+
+    if (result.isLeft()) {
+      throw new BadRequestException();
+    }
+
+    const Product = result.value.product;
+
+    return { Product };
+  }
+}

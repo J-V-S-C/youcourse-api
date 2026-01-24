@@ -26,4 +26,44 @@ model Account {
   status    AccountStatus @default(ACTIVE)
   createdAt DateTime      @default(now()) @map("created_at")
   lastLogin DateTime?     @map("last_login")
+  products  Product[]
+  rating    Rating[]
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  creatorId   String    @map("account_id")
+  name        String
+  description String
+  price       Json?
+  visible     Boolean
+  sellable    Boolean
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime?
+
+  creator Account         @relation(fields: [creatorId], references: [id])
+  ratings Rating[]
+  metrics ProductMetrics?
+}
+
+model Rating {
+  id         String   @id @default(uuid())
+  creatorId  String   @map("account_id")
+  productId  String   @map("product_id")
+  commentary String
+  stars      Float
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  creator Account @relation(fields: [creatorId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model ProductMetrics {
+  productId String @id
+  views     Int
+  clicks    Int
+  sales     Int
+  score     Float
+
+  product Product @relation(fields: [productId], references: [id])
 }

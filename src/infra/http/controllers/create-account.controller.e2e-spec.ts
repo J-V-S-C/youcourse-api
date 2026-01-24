@@ -1,5 +1,4 @@
 import { INestApplication } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
@@ -11,7 +10,7 @@ describe('Create Account (E2E)', () => {
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule]
+      imports: [AppModule],
     }).compile();
 
     app = moduleRef.createNestApplication();
@@ -33,7 +32,6 @@ describe('Create Account (E2E)', () => {
     });
 
     expect(response.statusCode).toBe(201);
-
 
     const userExists = await prisma.account.findUnique({
       where: {

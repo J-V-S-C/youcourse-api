@@ -1,5 +1,5 @@
 import { Product } from '../../enterprise/entities/product';
-import { ProductMetrics } from '../../enterprise/entities/value-objects/product-metrics';
+import { ProductMetrics } from '../../enterprise/entities/product-metrics';
 
 export interface ProductWithMetrics {
   product: Product;

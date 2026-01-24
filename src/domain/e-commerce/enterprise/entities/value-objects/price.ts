@@ -17,4 +17,11 @@ export class Price extends ValueObject<PriceProps> {
   static create(props: PriceProps) {
     return new Price(props);
   }
+
+  toJSON() {
+    return {
+      amount: this.amount,
+      currency: this.currency,
+    };
+  }
 }

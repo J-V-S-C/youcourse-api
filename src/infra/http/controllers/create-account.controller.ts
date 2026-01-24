@@ -11,6 +11,7 @@ import { AccountAlreadyExistsError } from 'src/domain/e-commerce/application/use
 import { RegisterAccountUseCase } from 'src/domain/e-commerce/application/use-cases/register-account';
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
+import { Public } from 'src/infra/auth/public';
 
 const createAccountBodySchema = z.object({
   name: z.string(),
@@ -21,6 +22,7 @@ const createAccountBodySchema = z.object({
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>;
 
 @Controller('/accounts')
+@Public()
 export class CreateAccountController {
   constructor(private registerAccount: RegisterAccountUseCase) {}
 

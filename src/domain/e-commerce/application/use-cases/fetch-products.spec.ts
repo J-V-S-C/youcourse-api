@@ -2,7 +2,7 @@ import { InMemoryProductsRepository } from 'test/repositories/in-memory-products
 import { FetchProductsUseCase } from './fetch-products';
 import { makeProduct } from 'test/factories/make-product';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
-import { ProductMetrics } from '../../enterprise/entities/value-objects/product-metrics';
+import { ProductMetrics } from '../../enterprise/entities/product-metrics';
 
 let inMemoryProductsRepository: InMemoryProductsRepository;
 let sut: FetchProductsUseCase;

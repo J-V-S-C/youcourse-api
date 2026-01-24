@@ -11,15 +11,19 @@ import { AccountAlreadyExistsError } from 'src/domain/e-commerce/application/use
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { AuthenticateAccountUseCase } from 'src/domain/e-commerce/application/use-cases/authenticate-account';
+import { Public } from 'src/infra/auth/public';
 
 const authenticateAccountBodySchema = z.object({
   email: z.email(),
   password: z.string(),
 });
 
-type AuthenticateAccountBodySchema = z.infer<typeof authenticateAccountBodySchema>;
+type AuthenticateAccountBodySchema = z.infer<
+  typeof authenticateAccountBodySchema
+>;
 
 @Controller('/sessions')
+@Public()
 export class AuthenticateAccountController {
   constructor(private authenticate: AuthenticateAccountUseCase) {}
 
@@ -45,10 +49,10 @@ export class AuthenticateAccountController {
       }
     }
 
-    const { accessToken} = result.value;
+    const { accessToken } = result.value;
 
-    return { 
-      access_token: accessToken
-     };
+    return {
+      access_token: accessToken,
+    };
   }
 }
