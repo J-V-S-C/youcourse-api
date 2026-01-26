@@ -1,0 +1,61 @@
+import { INestApplication } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { Test } from '@nestjs/testing';
+import { AppModule } from 'src/app.module';
+import { DatabaseModule } from 'src/infra/database/database.module';
+import { PrismaService } from 'src/infra/database/prisma/prisma.service';
+import request from 'supertest';
+import { AccountFactory } from 'test/factories/make-account';
+import { ProductFactory } from 'test/factories/make-product';
+
+describe('Fetch Products (E2E)', () => {
+  let app: INestApplication;
+  let prisma: PrismaService;
+  let accountFactory: AccountFactory;
+  let productFactory: ProductFactory;
+  let jwt: JwtService;
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule, DatabaseModule],
+      providers: [AccountFactory, ProductFactory],
+    }).compile();
+
+    accountFactory = moduleRef.get(AccountFactory);
+    productFactory = moduleRef.get(ProductFactory);
+
+    jwt = moduleRef.get(JwtService);
+    prisma = moduleRef.get(PrismaService);
+    app = moduleRef.createNestApplication();
+
+    await app.init();
+  });
+
+  test('[GET] /products', async () => {
+    const user = await accountFactory.makePrismaAccount();
+    const accessToken = jwt.sign({ sub: user.id.toString() });
+
+    await Promise.all([
+      productFactory.makePrismaProduct({
+        creatorId: user.id,
+        name: 'Product 01',
+        visible: true,
+        createdAt: new Date(2026, 6, 30),
+      }),
+      productFactory.makePrismaProduct({
+        creatorId: user.id,
+        name: 'Product 02',
+        visible: true,
+        createdAt: new Date(2023, 0, 15),
+      }),
+    ]);
+
+    const response = await request(app.getHttpServer())
+      .get('/products?orderBy=recent')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.products).toHaveLength(2);
+    expect(response.body.products[0].name).toBe('Product 01');
+    expect(response.body.products[1].name).toBe('Product 02');
+  });
+});

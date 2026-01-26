@@ -12,6 +12,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { Price } from 'src/domain/e-commerce/enterprise/entities/value-objects/price';
 import type { UserPayload } from 'src/infra/auth/jwt.strategy';
 import { CurrentUser } from 'src/infra/auth/current-user.decorator';
+import { ProductPresenter } from '../presenters/product-presenter';
 
 const priceSchema = z.object({
   amount: z.number(),
@@ -57,8 +58,8 @@ export class CreateProductController {
       throw new BadRequestException();
     }
 
-    const Product = result.value.product;
+    const product = result.value.product;
 
-    return { Product };
+    return { product: ProductPresenter.toHTTP(product) };
   }
 }

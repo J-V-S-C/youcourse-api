@@ -12,6 +12,7 @@ import { RegisterAccountUseCase } from 'src/domain/e-commerce/application/use-ca
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { Public } from 'src/infra/auth/public';
+import { AccountPresenter } from '../presenters/account-presenter';
 
 const createAccountBodySchema = z.object({
   name: z.string(),
@@ -51,6 +52,6 @@ export class CreateAccountController {
 
     const account = result.value.account;
 
-    return { account };
+    return { account: AccountPresenter.toHTTP(account) };
   }
 }
