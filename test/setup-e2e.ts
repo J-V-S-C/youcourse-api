@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
-import { AppModule } from 'src/app.module';
+import { AppModule } from 'src/infra/app.module';
 
 config({ path: '.env', override: true });
 config({ path: '.env.test', override: true });
@@ -27,13 +27,12 @@ beforeEach(async () => {
     { tablename: string }[]
   >`SELECT tablename FROM pg_tables WHERE schemaname = 'public';`;
 
-  const tableNames = tables.map(t => `"${t.tablename}"`).join(', ');
+  const tableNames = tables.map((t) => `"${t.tablename}"`).join(', ');
 
   if (tableNames.length > 0) {
     await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tableNames} CASCADE;`);
   }
 });
-
 
 afterAll(async () => {
   await app.close();

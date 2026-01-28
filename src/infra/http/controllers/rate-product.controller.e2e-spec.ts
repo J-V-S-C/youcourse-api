@@ -8,11 +8,11 @@ import request from 'supertest';
 import { AccountFactory } from 'test/factories/make-account';
 import { ProductFactory } from 'test/factories/make-product';
 
-describe('Fetch Products (E2E)', () => {
+describe('Rate Product (E2E)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let accountFactory: AccountFactory;
-  let productFactory: ProductFactory;
+  let productFacotory: ProductFactory;
   let jwt: JwtService;
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -21,7 +21,7 @@ describe('Fetch Products (E2E)', () => {
     }).compile();
 
     accountFactory = moduleRef.get(AccountFactory);
-    productFactory = moduleRef.get(ProductFactory);
+    productFacotory = moduleRef.get(ProductFactory);
 
     jwt = moduleRef.get(JwtService);
     prisma = moduleRef.get(PrismaService);
@@ -30,32 +30,31 @@ describe('Fetch Products (E2E)', () => {
     await app.init();
   });
 
-  test('[GET] /products', async () => {
+  test('[POST] /products/:productId/rating', async () => {
     const user = await accountFactory.makePrismaAccount();
-    const accessToken = jwt.sign({ sub: user.id.toString() });
+    const product = await productFacotory.makePrismaProduct({
+      creatorId: user.id,
+    });
 
-    await Promise.all([
-      productFactory.makePrismaProduct({
-        creatorId: user.id,
-        name: 'Product 01',
-        visible: true,
-        createdAt: new Date(2026, 6, 30),
-      }),
-      productFactory.makePrismaProduct({
-        creatorId: user.id,
-        name: 'Product 02',
-        visible: true,
-        createdAt: new Date(2023, 0, 15),
-      }),
-    ]);
+    const accessToken = jwt.sign({ sub: user.id.toString() });
+    const productId = product.id.toString();
 
     const response = await request(app.getHttpServer())
-      .get('/products?orderBy=recent')
-      .set('Authorization', `Bearer ${accessToken}`);
+      .post(`/products/${productId}/rating`)
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send({
+        stars: '1.5',
+        commentary: 'Good product!',
+      });
 
-    expect(response.statusCode).toBe(200);
-    expect(response.body.products).toHaveLength(2);
-    expect(response.body.products[0].name).toBe('Product 01');
-    expect(response.body.products[1].name).toBe('Product 02');
+    expect(response.statusCode).toBe(201);
+
+    const ratingOnDatabase = await prisma.rating.findFirst({
+      where: {
+        commentary: 'Good product!',
+      },
+    });
+
+    expect(ratingOnDatabase).toBeTruthy();
   });
 });

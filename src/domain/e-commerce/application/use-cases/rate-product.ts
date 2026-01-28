@@ -8,7 +8,7 @@ import { Injectable } from '@nestjs/common';
 interface RateProductUseCaseRequest {
   productId: string;
   creatorId: string;
-  commentary: string;
+  commentary?: string;
   stars: number;
 }
 

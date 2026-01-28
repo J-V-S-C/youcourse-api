@@ -24,6 +24,7 @@ export class PrismaProductMapper {
 
   static toPrisma(product: Product): Prisma.ProductUncheckedCreateInput {
     return {
+      id: product.id.toString(),
       name: product.name,
       description: product.description,
       creatorId: product.creatorId.toString(),

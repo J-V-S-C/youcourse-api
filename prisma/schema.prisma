@@ -39,7 +39,7 @@ model Product {
   visible     Boolean
   sellable    Boolean
   createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime?
+  updatedAt   DateTime? @map("updated_at")
 
   creator Account         @relation(fields: [creatorId], references: [id])
   ratings Rating[]
@@ -47,12 +47,13 @@ model Product {
 }
 
 model Rating {
-  id         String   @id @default(uuid())
-  creatorId  String   @map("account_id")
-  productId  String   @map("product_id")
+  id         String    @id @default(uuid())
+  creatorId  String    @map("account_id")
+  productId  String    @map("product_id")
   commentary String
   stars      Float
-  createdAt  DateTime @default(now()) @map("created_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime? @map("updated_at")
 
   creator Account @relation(fields: [creatorId], references: [id])
   product Product @relation(fields: [productId], references: [id])

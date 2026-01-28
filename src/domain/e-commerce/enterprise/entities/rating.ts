@@ -51,7 +51,7 @@ export class Rating extends Entity<RatingProps> {
   }
 
   static create(
-    props: Optional<RatingProps, 'createdAt'>,
+    props: Optional<RatingProps, 'createdAt' | 'commentary'>,
     id?: UniqueEntityID,
   ) {
     const rating = new Rating(
@@ -59,6 +59,7 @@ export class Rating extends Entity<RatingProps> {
         ...props,
         createdAt: props.createdAt ?? new Date(),
         updatedAt: props.updatedAt ?? null,
+        commentary: props.commentary ?? '',
       },
       id,
     );

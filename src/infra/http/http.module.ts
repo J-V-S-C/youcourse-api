@@ -9,6 +9,8 @@ import { CreateProductController } from './controllers/create-product.controller
 import { CreateProductUseCase } from 'src/domain/e-commerce/application/use-cases/create-product';
 import { FetchProductsController } from './controllers/fetch-products.controller';
 import { FetchProductsUseCase } from 'src/domain/e-commerce/application/use-cases/fetch-products';
+import { RateProductController } from './controllers/rate-product.controller';
+import { RateProductUseCase } from 'src/domain/e-commerce/application/use-cases/rate-product';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -17,12 +19,14 @@ import { FetchProductsUseCase } from 'src/domain/e-commerce/application/use-case
     AuthenticateAccountController,
     CreateProductController,
     FetchProductsController,
+    RateProductController,
   ],
   providers: [
     RegisterAccountUseCase,
     AuthenticateAccountUseCase,
     CreateProductUseCase,
     FetchProductsUseCase,
+    RateProductUseCase,
   ],
 })
 export class HttpModule {}
