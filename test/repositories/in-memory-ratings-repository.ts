@@ -1,5 +1,5 @@
-import { RatingsRepository } from 'src/domain/e-commerce/application/repositories/ratings-repository';
-import { Rating } from 'src/domain/e-commerce/enterprise/entities/rating';
+import { RatingsRepository } from 'src/domain/ecommerce/application/repositories/ratings-repository';
+import { Rating } from 'src/domain/ecommerce/enterprise/entities/rating';
 
 export class InMemoryRatingsRepository implements RatingsRepository {
   public items: Rating[] = [];

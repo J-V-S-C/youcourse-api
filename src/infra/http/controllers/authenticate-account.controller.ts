@@ -7,11 +7,20 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common';
-import { AccountAlreadyExistsError } from 'src/domain/e-commerce/application/use-cases/errors/account-already-exists-error';
+import { AccountAlreadyExistsError } from 'src/domain/ecommerce/application/use-cases/errors/account-already-exists-error';
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { AuthenticateAccountUseCase } from 'src/domain/e-commerce/application/use-cases/authenticate-account';
+import { AuthenticateAccountUseCase } from 'src/domain/ecommerce/application/use-cases/authenticate-account';
 import { Public } from 'src/infra/auth/public';
+import { ApiBody, ApiProperty } from '@nestjs/swagger';
+
+export class AuthenticateAccountDto {
+  @ApiProperty({ default: 'user@example.com' })
+  email: string;
+
+  @ApiProperty({ default: '123456' })
+  password: string;
+}
 
 const authenticateAccountBodySchema = z.object({
   email: z.email(),
@@ -29,6 +38,7 @@ export class AuthenticateAccountController {
 
   @Post()
   @HttpCode(201)
+  @ApiBody({ type: AuthenticateAccountDto })
   @UsePipes(new ZodValidationPipe(authenticateAccountBodySchema))
   async handle(@Body() body: AuthenticateAccountBodySchema) {
     const { email, password } = body;

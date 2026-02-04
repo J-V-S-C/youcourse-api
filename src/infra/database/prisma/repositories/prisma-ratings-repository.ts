@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { RatingsRepository } from 'src/domain/e-commerce/application/repositories/ratings-repository';
-import { Rating } from 'src/domain/e-commerce/enterprise/entities/rating';
+import { RatingsRepository } from 'src/domain/ecommerce/application/repositories/ratings-repository';
+import { Rating } from 'src/domain/ecommerce/enterprise/entities/rating';
 import { PrismaRatingMapper } from '../mappers/prisma-rating-mapper';
 import { PrismaService } from '../prisma.service';
 

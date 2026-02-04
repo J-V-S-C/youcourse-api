@@ -2,7 +2,7 @@ import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import {
   Account,
   AccountProps,
-} from 'src/domain/e-commerce/enterprise/entities/account';
+} from 'src/domain/ecommerce/enterprise/entities/account';
 import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';

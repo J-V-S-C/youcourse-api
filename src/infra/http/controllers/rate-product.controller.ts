@@ -7,14 +7,23 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common';
-import { RateProductUseCase } from 'src/domain/e-commerce/application/use-cases/rate-product';
+import { RateProductUseCase } from 'src/domain/ecommerce/application/use-cases/rate-product';
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { Price } from 'src/domain/e-commerce/enterprise/entities/value-objects/price';
+import { Price } from 'src/domain/ecommerce/enterprise/entities/value-objects/price';
 import type { UserPayload } from 'src/infra/auth/jwt.strategy';
 import { CurrentUser } from 'src/infra/auth/current-user.decorator';
 import { ProductPresenter } from '../presenters/product-presenter';
 import { RatingPresenter } from '../presenters/rating-presenter';
+import { ApiBody, ApiProperty } from '@nestjs/swagger';
+
+export class RateProductDto {
+  @ApiProperty({ minimum: 0.5, maximum: 5, multipleOf: 0.5, default: 5 })
+  stars: number;
+
+  @ApiProperty({ required: false, default: 'Ótimo produto!' })
+  commentary?: string;
+}
 
 const rateProductBodySchema = z.object({
   commentary: z.string().optional().default(''),
@@ -33,6 +42,7 @@ export class RateProductController {
   constructor(private rateProduct: RateProductUseCase) {}
 
   @Post()
+  @ApiBody({ type: RateProductDto })
   @HttpCode(201)
   async handle(
     @Body(bodyValidationPipe) body: RateProductBodySchema,

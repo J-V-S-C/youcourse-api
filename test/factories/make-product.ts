@@ -2,9 +2,9 @@ import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import {
   Product,
   ProductProps,
-} from 'src/domain/e-commerce/enterprise/entities/product';
+} from 'src/domain/ecommerce/enterprise/entities/product';
 import { faker } from '@faker-js/faker';
-import { Price } from 'src/domain/e-commerce/enterprise/entities/value-objects/price';
+import { Price } from 'src/domain/ecommerce/enterprise/entities/value-objects/price';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { PrismaProductMapper } from 'src/infra/database/prisma/mappers/prisma-product-mapper';

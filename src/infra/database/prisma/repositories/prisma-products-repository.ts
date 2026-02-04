@@ -1,5 +1,5 @@
-import { ProductsRepository } from 'src/domain/e-commerce/application/repositories/products-repository';
-import { Product } from 'src/domain/e-commerce/enterprise/entities/product';
+import { ProductsRepository } from 'src/domain/ecommerce/application/repositories/products-repository';
+import { Product } from 'src/domain/ecommerce/enterprise/entities/product';
 import { PrismaService } from '../prisma.service';
 import { PrismaProductMapper } from '../mappers/prisma-product-mapper';
 import { Injectable } from '@nestjs/common';

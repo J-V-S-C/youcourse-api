@@ -6,13 +6,34 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common';
-import { CreateProductUseCase } from 'src/domain/e-commerce/application/use-cases/create-product';
+import { CreateProductUseCase } from 'src/domain/ecommerce/application/use-cases/create-product';
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { Price } from 'src/domain/e-commerce/enterprise/entities/value-objects/price';
+import { Price } from 'src/domain/ecommerce/enterprise/entities/value-objects/price';
 import type { UserPayload } from 'src/infra/auth/jwt.strategy';
 import { CurrentUser } from 'src/infra/auth/current-user.decorator';
 import { ProductPresenter } from '../presenters/product-presenter';
+import { ApiBearerAuth, ApiBody, ApiProperty } from '@nestjs/swagger';
+
+export class CreateProductDto {
+  @ApiProperty({ default: 'Produto Exemplo' })
+  name: string;
+
+  @ApiProperty({ default: 'Descrição do produto' })
+  description: string;
+
+  @ApiProperty({ required: false, default: { amount: 100, currency: 'BRL' } })
+  price?: {
+    amount: number;
+    currency: string;
+  };
+
+  @ApiProperty({ required: false, default: true })
+  sellable?: boolean;
+
+  @ApiProperty({ required: false, default: true })
+  visible?: boolean;
+}
 
 const priceSchema = z.object({
   amount: z.number(),
@@ -36,6 +57,7 @@ export class CreateProductController {
   constructor(private createProduct: CreateProductUseCase) {}
 
   @Post()
+  @ApiBody({ type: CreateProductDto })
   @HttpCode(201)
   async handle(
     @Body(bodyValidationPipe) body: CreateProductBodySchema,

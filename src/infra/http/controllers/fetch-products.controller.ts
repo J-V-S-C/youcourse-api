@@ -1,8 +1,22 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
-import { FetchProductsUseCase } from 'src/domain/e-commerce/application/use-cases/fetch-products';
+import { FetchProductsUseCase } from 'src/domain/ecommerce/application/use-cases/fetch-products';
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { ProductPresenter } from '../presenters/product-presenter';
+import { Public } from 'src/infra/auth/public';
+import { ApiProperty, ApiQuery } from '@nestjs/swagger';
+
+export class FetchProductsQueryDto {
+  @ApiProperty({ required: false, default: 1 })
+  page?: number;
+
+  @ApiProperty({
+    required: false,
+    default: 'recent',
+    enum: ['recent', 'popular', 'bestSelling'],
+  })
+  orderBy?: 'recent' | 'popular' | 'bestSelling';
+}
 
 const fetchProductsBodySchema = z.object({
   page: z
@@ -26,6 +40,8 @@ export class FetchProductsController {
   constructor(private fetchProducts: FetchProductsUseCase) {}
 
   @Get()
+  @ApiQuery({ type: FetchProductsQueryDto })
+  @Public()
   async handle(@Query(bodyValidationPipe) body: FetchProductsBodySchema) {
     const { page, orderBy } = body;
     const perPage = 20;

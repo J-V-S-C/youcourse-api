@@ -1,4 +1,4 @@
-import { Product } from 'src/domain/e-commerce/enterprise/entities/product';
+import { Product } from 'src/domain/ecommerce/enterprise/entities/product';
 
 export class ProductPresenter {
   static toHTTP(product: Product) {

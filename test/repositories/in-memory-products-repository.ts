@@ -1,7 +1,7 @@
 import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { ProductsRepository } from 'src/domain/e-commerce/application/repositories/products-repository';
-import { Product } from 'src/domain/e-commerce/enterprise/entities/product';
-import { ProductMetrics } from 'src/domain/e-commerce/enterprise/entities/product-metrics';
+import { ProductsRepository } from 'src/domain/ecommerce/application/repositories/products-repository';
+import { Product } from 'src/domain/ecommerce/enterprise/entities/product';
+import { ProductMetrics } from 'src/domain/ecommerce/enterprise/entities/product-metrics';
 
 export class InMemoryProductsRepository implements ProductsRepository {
   public items: Product[] = [];

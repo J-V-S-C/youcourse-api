@@ -34,11 +34,18 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
+## Access http://localhost:3333/api#/ to see the api working
+
 ====================================
-// Ecommerce de InfoProdutos:
-// Seller -> Register -> Verify if its a valid account -> Register a product -> Sells product receiving money and notification
-// Buyer -> Register -> Buy product -> Pay for the product -> Gets product
-// Product -> Register -> Becomes available for sale -> Product is avalable for use when is purchased
+
+# Ecommerce de InfoProdutos:
+
+# Seller -> Register -> Verify if its a valid account -> Register a product -> Sells product receiving money and notification
+
+# Buyer -> Register -> Buy product -> Pay for the product -> Gets product
+
+# Product -> Register -> Becomes available for sale -> Product is avalable for use when is purchased
+
 ====================================
 
 ## TODO

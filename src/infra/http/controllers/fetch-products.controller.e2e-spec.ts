@@ -1,5 +1,4 @@
 import { INestApplication } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/infra/app.module';
 import { DatabaseModule } from 'src/infra/database/database.module';
@@ -13,7 +12,6 @@ describe('Fetch Products (E2E)', () => {
   let prisma: PrismaService;
   let accountFactory: AccountFactory;
   let productFactory: ProductFactory;
-  let jwt: JwtService;
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
@@ -23,7 +21,6 @@ describe('Fetch Products (E2E)', () => {
     accountFactory = moduleRef.get(AccountFactory);
     productFactory = moduleRef.get(ProductFactory);
 
-    jwt = moduleRef.get(JwtService);
     prisma = moduleRef.get(PrismaService);
     app = moduleRef.createNestApplication();
 
@@ -32,7 +29,6 @@ describe('Fetch Products (E2E)', () => {
 
   test('[GET] /products', async () => {
     const user = await accountFactory.makePrismaAccount();
-    const accessToken = jwt.sign({ sub: user.id.toString() });
 
     await Promise.all([
       productFactory.makePrismaProduct({
@@ -49,9 +45,9 @@ describe('Fetch Products (E2E)', () => {
       }),
     ]);
 
-    const response = await request(app.getHttpServer())
-      .get('/products?orderBy=recent')
-      .set('Authorization', `Bearer ${accessToken}`);
+    const response = await request(app.getHttpServer()).get(
+      '/products?orderBy=recent',
+    );
 
     expect(response.statusCode).toBe(200);
     expect(response.body.products).toHaveLength(2);

@@ -1,7 +1,7 @@
 import { Prisma, Product as PrismaProduct } from '@prisma/client';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
-import { Product } from 'src/domain/e-commerce/enterprise/entities/product';
-import { Price } from 'src/domain/e-commerce/enterprise/entities/value-objects/price';
+import { Product } from 'src/domain/ecommerce/enterprise/entities/product';
+import { Price } from 'src/domain/ecommerce/enterprise/entities/value-objects/price';
 
 export class PrismaProductMapper {
   static toDomain(raw: PrismaProduct): Product {
