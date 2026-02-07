@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
+import cookieParser from 'cookie-parser';
 import { AppModule } from 'src/infra/app.module';
 import { DatabaseModule } from 'src/infra/database/database.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
@@ -23,7 +24,7 @@ describe('Create Product (E2E)', () => {
     jwt = moduleRef.get(JwtService);
     prisma = moduleRef.get(PrismaService);
     app = moduleRef.createNestApplication();
-
+    app.use(cookieParser());
     await app.init();
   });
 
@@ -33,7 +34,7 @@ describe('Create Product (E2E)', () => {
 
     const response = await request(app.getHttpServer())
       .post('/products')
-      .set('Authorization', `Bearer ${accessToken}`)
+      .set('Cookie', [`auth_token=${accessToken}`])
       .send({
         name: 'Computer',
         description: 'In good state',
