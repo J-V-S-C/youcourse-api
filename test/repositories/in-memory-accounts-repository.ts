@@ -11,4 +11,8 @@ export class InMemoryAccountsRepository implements AccountsRepository {
   async findByEmail(email: string): Promise<Account | null> {
     return this.items.find((account) => account.email === email) ?? null;
   }
+
+  async findById(id: string): Promise<Account | null> {
+    return this.items.find((account) => account.id.toString() === id) ?? null;
+  }
 }

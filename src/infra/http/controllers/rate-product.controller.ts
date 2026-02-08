@@ -19,7 +19,7 @@ import { ApiBearerAuth, ApiBody, ApiProperty } from '@nestjs/swagger';
 
 export class RateProductDto {
   @ApiProperty({ minimum: 0.5, maximum: 5, multipleOf: 0.5, default: 5 })
-  stars: number;
+  stars!: number;
 
   @ApiProperty({ required: false, default: 'Ótimo produto!' })
   commentary?: string;

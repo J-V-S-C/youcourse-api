@@ -28,4 +28,18 @@ export class PrismaAccountsRepository implements AccountsRepository {
 
     return PrismaAccountMapper.toDomain(account);
   }
+
+  async findById(id: string): Promise<Account | null> {
+    const account = await this.prisma.account.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!account) {
+      return null;
+    }
+
+    return PrismaAccountMapper.toDomain(account);
+  }
 }
