@@ -1,7 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import cookieParser from 'cookie-parser';
 import { AppModule } from 'src/infra/app.module';
 import { DatabaseModule } from 'src/infra/database/database.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
@@ -27,7 +26,6 @@ describe('Rate Product (E2E)', () => {
     jwt = moduleRef.get(JwtService);
     prisma = moduleRef.get(PrismaService);
     app = moduleRef.createNestApplication();
-    app.use(cookieParser());
 
     await app.init();
   });
@@ -43,7 +41,7 @@ describe('Rate Product (E2E)', () => {
 
     const response = await request(app.getHttpServer())
       .post(`/products/${productId}/rating`)
-      .set('Cookie', `auth_token=${accessToken}`)
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         stars: '1.5',
         commentary: 'Good product!',

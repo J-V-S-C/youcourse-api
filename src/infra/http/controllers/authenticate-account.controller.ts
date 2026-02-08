@@ -17,10 +17,10 @@ import { ApiBody, ApiProperty } from '@nestjs/swagger';
 import type { Response } from 'express';
 export class AuthenticateAccountDto {
   @ApiProperty({ default: 'user@example.com' })
-  email: string;
+  email!: string;
 
   @ApiProperty({ default: '123456' })
-  password: string;
+  password!: string;
 }
 
 const authenticateAccountBodySchema = z.object({
@@ -41,10 +41,7 @@ export class AuthenticateAccountController {
   @HttpCode(200)
   @ApiBody({ type: AuthenticateAccountDto })
   @UsePipes(new ZodValidationPipe(authenticateAccountBodySchema))
-  async handle(
-    @Body() body: AuthenticateAccountBodySchema,
-    @Res({ passthrough: true }) response: Response,
-  ) {
+  async handle(@Body() body: AuthenticateAccountBodySchema) {
     const { email, password } = body;
 
     const result = await this.authenticate.execute({
@@ -81,8 +78,6 @@ export class LogoutController {
   @Post('/logout')
   @HttpCode(200)
   async handle(@Res({ passthrough: true }) response: Response) {
-    // 🗑️ Remove o cookie
-    response.clearCookie('auth_token', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

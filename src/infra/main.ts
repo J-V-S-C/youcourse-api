@@ -17,6 +17,7 @@ async function bootstrap() {
       in: 'header',
       name: 'Authorization',
     })
+    .addSecurityRequirements('bearer')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory(), {

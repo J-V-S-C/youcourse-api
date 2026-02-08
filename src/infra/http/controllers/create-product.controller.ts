@@ -17,10 +17,10 @@ import { ApiBearerAuth, ApiBody, ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
   @ApiProperty({ default: 'Produto Exemplo' })
-  name: string;
+  name!: string;
 
   @ApiProperty({ default: 'Descrição do produto' })
-  description: string;
+  description!: string;
 
   @ApiProperty({ required: false, default: { amount: 100, currency: 'BRL' } })
   price?: {

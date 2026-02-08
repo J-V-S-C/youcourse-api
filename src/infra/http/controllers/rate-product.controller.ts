@@ -15,7 +15,7 @@ import type { UserPayload } from 'src/infra/auth/jwt.strategy';
 import { CurrentUser } from 'src/infra/auth/current-user.decorator';
 import { ProductPresenter } from '../presenters/product-presenter';
 import { RatingPresenter } from '../presenters/rating-presenter';
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiProperty } from '@nestjs/swagger';
 
 export class RateProductDto {
   @ApiProperty({ minimum: 0.5, maximum: 5, multipleOf: 0.5, default: 5 })
