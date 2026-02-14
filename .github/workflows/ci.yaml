@@ -1,0 +1,41 @@
+name: Devtools
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  publish:
+    if: github.actor != 'dependabot[bot]'
+    name: CI Node.js
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "pnpm"
+
+      - name: Setup pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Set COMMIT_SHA
+        shell: bash
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
+            echo "COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> ${GITHUB_ENV}
+          else
+            echo "COMMIT_SHA=${GITHUB_SHA}" >> ${GITHUB_ENV}
+
+      - name: Run tests
+        run: |
+          pnpm run test
+          pnpm run test:e2e

@@ -50,6 +50,11 @@ $ pnpm run test:cov
 
 ## TODO
 
+- [ ] Swagger
+- [ ] CI/CD, Github-Actions
+- [ ] HTTPS
+- [ ] Internacionalização
+
 ## Use Cases
 
 ---
@@ -132,10 +137,10 @@ SUBSCRIPTIONS
 
 !!AUTH
 
-- [ ] Verify-Email
 - [ ] Change-Password
 - [ ] Refresh-Token
 - [ ] Revoke-Session
+- [ ] Verify-Email(guarantee that its not a robot)
 
 ====================================
 

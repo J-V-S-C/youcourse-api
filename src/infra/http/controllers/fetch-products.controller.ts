@@ -37,13 +37,13 @@ const bodyValidationPipe = new ZodValidationPipe(fetchProductsBodySchema);
 
 @Controller('/products')
 export class FetchProductsController {
-  constructor(private fetchProducts: FetchProductsUseCase) {}
+  constructor(private fetchProducts: FetchProductsUseCase) { }
 
   @Get()
   @ApiQuery({ type: FetchProductsQueryDto })
   @Public()
-  async handle(@Query(bodyValidationPipe) body: FetchProductsBodySchema) {
-    const { page, orderBy } = body;
+  async handle(@Query(bodyValidationPipe) params: FetchProductsBodySchema) {
+    const { page, orderBy } = params;
     const perPage = 20;
 
     const result = await this.fetchProducts.execute({
