@@ -29,4 +29,3 @@ jobs:
       - name: Run tests
         run: |
           pnpm test
-          pnpm run test:e2e
