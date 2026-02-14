@@ -12,27 +12,19 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v4
         with:
-          version: 8 # Node 16 supports up to pnpm v8
+          version: latest
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: current
           cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Set COMMIT_SHA
-        shell: bash
-        run: |
-          if [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
-            echo "COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> ${GITHUB_ENV}
-          else
-            echo "COMMIT_SHA=${GITHUB_SHA}" >> ${GITHUB_ENV}
 
       - name: Run tests
         run: |
