@@ -1,13 +1,13 @@
 import { INestApplication } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/infra/app.module';
+import { DatabaseModule } from 'src/infra/database/database.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import request from 'supertest';
-import { DatabaseModule } from 'src/infra/database/database.module';
-import { JwtService } from '@nestjs/jwt';
 import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
 
-describe('Get Account (E2E)', () => {
+describe('Edit Account (E2E)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let accountFactory: AccountFactory;
@@ -23,23 +23,38 @@ describe('Get Account (E2E)', () => {
 
     jwt = moduleRef.get(JwtService);
     prisma = moduleRef.get(PrismaService);
+
     app = moduleRef.createNestApplication();
 
     await app.init();
   });
 
-  test('[GET] /accounts/:id', async () => {
-    const user = await accountFactory.makePrismaAccount({
-      name: 'John Doe',
+  test('[PATCH] /accounts/:id', async () => {
+    const name = 'Jhon Doe';
+    const email = 'jhon@example.com';
+
+    const account = await accountFactory.makePrismaAccount({
+      name,
+      email,
     });
-    const userId = user.id.toString();
-    const accessToken = jwt.sign({ sub: userId });
+
+    const accountId = account.id.toString();
+
+    const accessToken = jwt.sign({ sub: accountId });
 
     const response = await request(app.getHttpServer())
-      .get(`/accounts/${userId}`)
-      .set('Authorization', `Bearer ${accessToken}`);
+      .patch(`/accounts/${accountId}`)
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send({
+        name: 'New name',
+        email: 'newEmail@email.com',
+      });
 
-    expect(response.statusCode).toBe(200);
-    expect(response.body.account.name).toBe('John Doe');
+    const updated = await prisma.account.findUnique({
+      where: { id: accountId },
+    });
+
+    expect(updated?.name).toBe('New name');
+    expect(updated?.email).toBe('newEmail@email.com');
   });
 });

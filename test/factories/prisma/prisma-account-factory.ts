@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common';
 import { makeAccount } from '../make-account';
 
 @Injectable()
-export class PrismaAccountFactory {
+export class AccountFactory {
   constructor(private prisma: PrismaService) {}
 
   async makePrismaAccount(data: Partial<AccountProps> = {}): Promise<Account> {

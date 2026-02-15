@@ -42,6 +42,15 @@ export class Account extends Entity<AccountProps> {
     return this.props.lastLogin;
   }
 
+  updateLastLoginDate() {
+    this.props.lastLogin = new Date();
+  }
+
+  updateDetails(name: string, email: string) {
+    this.props.name = name;
+    this.props.email = email;
+  }
+
   static create(
     props: Optional<AccountProps, 'createdAt' | 'status'>,
     id?: UniqueEntityID,

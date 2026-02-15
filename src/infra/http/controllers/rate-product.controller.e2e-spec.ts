@@ -5,8 +5,8 @@ import { AppModule } from 'src/infra/app.module';
 import { DatabaseModule } from 'src/infra/database/database.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import request from 'supertest';
-import { AccountFactory } from 'test/factories/make-account';
-import { ProductFactory } from 'test/factories/make-product';
+import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
+import { ProductFactory } from 'test/factories/prisma/prisma-product-factory';
 
 describe('Rate Product (E2E)', () => {
   let app: INestApplication;

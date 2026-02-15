@@ -8,6 +8,11 @@ export class InMemoryAccountsRepository implements AccountsRepository {
     this.items.push(account);
   }
 
+  async save(account: Account): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === account.id);
+    this.items[itemIndex] = account;
+  }
+
   async findByEmail(email: string): Promise<Account | null> {
     return this.items.find((account) => account.email === email) ?? null;
   }

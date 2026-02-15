@@ -13,6 +13,8 @@ import { RateProductController } from './controllers/rate-product.controller';
 import { RateProductUseCase } from 'src/domain/ecommerce/application/use-cases/rate-product';
 import { GetAccountByIdController } from './controllers/get-account-by-id.controller';
 import { GetAccountByIdUseCase } from 'src/domain/ecommerce/application/use-cases/get-account-by-id';
+import { EditAccountDetailsController } from './controllers/edit-account-details.controller';
+import { EditAccountDetailsUseCase } from 'src/domain/ecommerce/application/use-cases/edit-account-details';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -23,6 +25,7 @@ import { GetAccountByIdUseCase } from 'src/domain/ecommerce/application/use-case
     FetchProductsController,
     RateProductController,
     GetAccountByIdController,
+    EditAccountDetailsController,
   ],
   providers: [
     RegisterAccountUseCase,
@@ -31,6 +34,7 @@ import { GetAccountByIdUseCase } from 'src/domain/ecommerce/application/use-case
     FetchProductsUseCase,
     RateProductUseCase,
     GetAccountByIdUseCase,
+    EditAccountDetailsUseCase,
   ],
 })
 export class HttpModule {}

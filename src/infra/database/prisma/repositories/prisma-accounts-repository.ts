@@ -15,6 +15,16 @@ export class PrismaAccountsRepository implements AccountsRepository {
     });
   }
 
+  async save(account: Account): Promise<void> {
+    const data = PrismaAccountMapper.toPrisma(account);
+    await this.prisma.account.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    });
+  }
+
   async findByEmail(email: string): Promise<Account | null> {
     const account = await this.prisma.account.findUnique({
       where: {

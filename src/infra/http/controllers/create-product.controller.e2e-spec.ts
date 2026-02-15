@@ -5,7 +5,7 @@ import { AppModule } from 'src/infra/app.module';
 import { DatabaseModule } from 'src/infra/database/database.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import request from 'supertest';
-import { AccountFactory } from 'test/factories/make-account';
+import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
 
 describe('Create Product (E2E)', () => {
   let app: INestApplication;
