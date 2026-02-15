@@ -41,6 +41,8 @@ export class AuthenticateAccountUseCase {
       return left(new WrongCredentialsError());
     }
 
+    account.updateLastLoginDate();
+
     const accessToken = await this.encrypter.encrypt({
       sub: account.id.toString(),
     });

@@ -1,7 +1,5 @@
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
 ## Project setup
 
 ```bash
@@ -29,31 +27,23 @@ $ pnpm run test
 
 # e2e tests
 $ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
 ```
 
 ## Access http://localhost:3333/api#/ to see the api working
 
 ====================================
 
-# Ecommerce de InfoProdutos:
-
-# Seller -> Register -> Verify if its a valid account -> Register a product -> Sells product receiving money and notification
-
-# Buyer -> Register -> Buy product -> Pay for the product -> Gets product
-
-# Product -> Register -> Becomes available for sale -> Product is avalable for use when is purchased
+# Portal de cursos online:
 
 ====================================
 
 ## TODO
 
 - [ ] Swagger
-- [ ] CI/CD, Github-Actions
 - [ ] HTTPS
 - [ ] Internacionalização
+- [ ] Deploy
+- [ ] CD
 
 ## Use Cases
 
@@ -63,9 +53,8 @@ $ pnpm run test:cov
 
 - [x] Register-Account
 - [x] Authenticate
-- [ ] Edit-Account
+- [x] Edit-Account
 - [ ] Recover-Password
-- [ ] Update-Profile
 
 !!!PRODUCTS
 

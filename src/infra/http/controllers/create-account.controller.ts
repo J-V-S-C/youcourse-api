@@ -17,13 +17,13 @@ import { ApiBody, ApiProperty } from '@nestjs/swagger';
 
 export class CreateAccountDto {
   @ApiProperty({ default: 'user@example.com' })
-  name: string;
+  name!: string;
 
   @ApiProperty({ default: 'user@example.com' })
-  email: string;
+  email!: string;
 
   @ApiProperty({ default: '123456' })
-  password: string;
+  password!: string;
 }
 
 const createAccountBodySchema = z.object({
