@@ -36,13 +36,16 @@ export class CreateProductDto {
 }
 
 const priceSchema = z.object({
-  amount: z.number(),
+  // Math.floor remove casas decimais restantes
+  amount: z.number().refine((n) => Math.floor(n * 100) / 100 === n, {
+    message: 'O valor deve ter no máximo 2 casas decimais',
+  }),
   currency: z.string(),
 });
 
 const createProductBodySchema = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string().max(50),
+  description: z.string().max(200),
   price: priceSchema.optional(),
   sellable: z.boolean().optional(),
   visible: z.boolean().optional(),

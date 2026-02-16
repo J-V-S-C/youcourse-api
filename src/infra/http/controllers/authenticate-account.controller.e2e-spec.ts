@@ -28,7 +28,7 @@ describe('Authenticate Account (E2E)', () => {
   test('[POST] /sessions', async () => {
     const email = 'jhon@example.com';
     const password = '123456';
-    const account = await accountFactory.makePrismaAccount({
+    await accountFactory.makePrismaAccount({
       email,
       password: await hash(password, 8),
     });
