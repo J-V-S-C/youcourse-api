@@ -54,6 +54,7 @@ describe('Edit Account (E2E)', () => {
       where: { id: accountId },
     });
 
+    expect(response.status).toEqual(200);
     expect(updated?.name).toBe('New name');
     expect(updated?.email).toBe('newEmail@email.com');
   });

@@ -25,8 +25,8 @@ export class EditAccountDto {
 }
 
 const editAccountBodySchema = z.object({
-  name: z.string().optional(),
-  email: z.email().optional(),
+  name: z.string().max(50).optional(),
+  email: z.email().max(255).optional(),
 });
 
 type EditAccountBodySchema = z.infer<typeof editAccountBodySchema>;
@@ -39,7 +39,7 @@ export class EditAccountDetailsController {
 
   @Patch()
   @ApiBody({ type: EditAccountDto })
-  @HttpCode(204)
+  @HttpCode(200)
   async handle(
     @Param('id') accountId: string,
     @Body(bodyValidationPipe) body: EditAccountBodySchema,

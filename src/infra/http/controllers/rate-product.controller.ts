@@ -26,7 +26,7 @@ export class RateProductDto {
 }
 
 const rateProductBodySchema = z.object({
-  commentary: z.string().optional().default(''),
+  commentary: z.string().max(255).optional().default(''),
   stars: z
     .string()
     .transform(Number)
