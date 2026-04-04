@@ -13,7 +13,7 @@ export function makeRating(
   const rating = Rating.create(
     {
       creatorId: new UniqueEntityID(),
-      productId: new UniqueEntityID(),
+      courseId: new UniqueEntityID(),
       commentary: faker.lorem.text(),
       stars: Stars.create(faker.number.int({ min: 1, max: 10 }) / 2),
       ...override,

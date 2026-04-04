@@ -14,7 +14,7 @@ interface RequestPasswordResetUseCaseRequest {
 
 type RequestPasswordResetUseCaseResponse = Either<
   ResourceNotFoundError,
-  { passwordResetToken: PasswordResetToken }
+  object
 >;
 
 @Injectable()
@@ -53,6 +53,6 @@ export class RequestPasswordResetUseCase {
       body: `You requested a password reset. Use this token to confirm: ${rawToken}. It expires in 1 hour. If you did not request this, please ignore this email.`,
     });
 
-    return right({ passwordResetToken });
+    return right({});
   }
 }

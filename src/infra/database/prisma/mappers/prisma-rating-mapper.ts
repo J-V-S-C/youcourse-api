@@ -11,7 +11,7 @@ export class PrismaRatingMapper {
         stars: Stars.create(raw.stars),
         commentary: raw.commentary,
         creatorId: new UniqueEntityID(raw.creatorId),
-        productId: new UniqueEntityID(raw.productId),
+        courseId: new UniqueEntityID(raw.courseId),
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
@@ -25,7 +25,7 @@ export class PrismaRatingMapper {
       stars: rating.stars.value,
       commentary: rating.commentary,
       creatorId: rating.creatorId.toString(),
-      productId: rating.productId.toString(),
+      courseId: rating.courseId.toString(),
       createdAt: rating.createdAt,
       updatedAt: rating.updatedAt,
     };

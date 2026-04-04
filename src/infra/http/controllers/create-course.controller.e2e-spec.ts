@@ -1,0 +1,54 @@
+import { INestApplication } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { Test } from '@nestjs/testing';
+import { AppModule } from 'src/infra/app.module';
+import { DatabaseModule } from 'src/infra/database/database.module';
+import { PrismaService } from 'src/infra/database/prisma/prisma.service';
+import request from 'supertest';
+import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
+
+describe('Create Course (E2E)', () => {
+  let app: INestApplication;
+  let prisma: PrismaService;
+  let accountFactory: AccountFactory;
+  let jwt: JwtService;
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule, DatabaseModule],
+      providers: [AccountFactory],
+    }).compile();
+
+    accountFactory = moduleRef.get(AccountFactory);
+
+    jwt = moduleRef.get(JwtService);
+    prisma = moduleRef.get(PrismaService);
+    app = moduleRef.createNestApplication();
+    await app.init();
+  });
+
+  test('[POST] /courses', async () => {
+    const user = await accountFactory.makePrismaAccount();
+    const accessToken = jwt.sign({ sub: user.id.toString() });
+
+    const response = await request(app.getHttpServer())
+      .post('/courses')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send({
+        name: 'Computer',
+        description: 'In good state',
+        price: {
+          amount: 10.99,
+          currency: 'USD',
+        },
+      });
+
+    expect(response.statusCode).toBe(201);
+
+    const courseOnDatabase = await prisma.course.findFirst({
+      where: {
+        name: 'Computer',
+      },
+    });
+    expect(courseOnDatabase).toBeTruthy();
+  });
+});
