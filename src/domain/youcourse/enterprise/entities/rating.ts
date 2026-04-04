@@ -5,7 +5,7 @@ import { Stars } from './value-objects/stars';
 
 export interface RatingProps {
   creatorId: UniqueEntityID;
-  productId: UniqueEntityID;
+  courseId: UniqueEntityID;
   commentary: string;
   stars: Stars;
   createdAt: Date;
@@ -17,8 +17,8 @@ export class Rating extends Entity<RatingProps> {
     return this.props.creatorId;
   }
 
-  get productId() {
-    return this.props.productId;
+  get courseId() {
+    return this.props.courseId;
   }
 
   get commentary() {

@@ -8,7 +8,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Ecommerce')
-    .setDescription('Info-Products Ecommerce')
+    .setDescription('Info-Courses Ecommerce')
     .setVersion('1.0')
     .addBearerAuth({
       type: 'http',

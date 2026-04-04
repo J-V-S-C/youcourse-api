@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import { AccountsRepository } from 'src/domain/ecommerce/application/repositories/accounts-repository';
 import { PrismaAccountsRepository } from './prisma/repositories/prisma-accounts-repository';
-import { ProductsRepository } from 'src/domain/ecommerce/application/repositories/products-repository';
-import { PrismaProductsRepository } from './prisma/repositories/prisma-products-repository';
+import { CoursesRepository } from 'src/domain/ecommerce/application/repositories/courses-repository';
+import { PrismaCoursesRepository } from './prisma/repositories/prisma-courses-repository';
 import { EnvService } from '../env/env.service';
 import { RatingsRepository } from 'src/domain/ecommerce/application/repositories/ratings-repository';
 import { PrismaRatingsRepository } from './prisma/repositories/prisma-ratings-repository';
@@ -17,8 +17,8 @@ import { PrismaRatingsRepository } from './prisma/repositories/prisma-ratings-re
       useClass: PrismaAccountsRepository,
     },
     {
-      provide: ProductsRepository,
-      useClass: PrismaProductsRepository,
+      provide: CoursesRepository,
+      useClass: PrismaCoursesRepository,
     },
     {
       provide: RatingsRepository,
@@ -28,7 +28,7 @@ import { PrismaRatingsRepository } from './prisma/repositories/prisma-ratings-re
   exports: [
     PrismaService,
     AccountsRepository,
-    ProductsRepository,
+    CoursesRepository,
     RatingsRepository,
   ],
 })

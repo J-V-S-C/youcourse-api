@@ -26,11 +26,11 @@ model Account {
   status    AccountStatus @default(ACTIVE)
   createdAt DateTime      @default(now()) @map("created_at")
   lastLogin DateTime?     @map("last_login")
-  products  Product[]
+  courses  Course[]
   rating    Rating[]
 }
 
-model Product {
+model Course {
   id          String    @id @default(uuid())
   creatorId   String    @map("account_id")
   name        String
@@ -43,28 +43,28 @@ model Product {
 
   creator Account         @relation(fields: [creatorId], references: [id])
   ratings Rating[]
-  metrics ProductMetrics?
+  metrics CourseMetrics?
 }
 
 model Rating {
   id         String    @id @default(uuid())
   creatorId  String    @map("account_id")
-  productId  String    @map("product_id")
+  courseId  String    @map("course_id")
   commentary String
   stars      Float
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime? @map("updated_at")
 
   creator Account @relation(fields: [creatorId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
 }
 
-model ProductMetrics {
-  productId String @id
+model CourseMetrics {
+  courseId String @id
   views     Int
   clicks    Int
   sales     Int
   score     Float
 
-  product Product @relation(fields: [productId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
 }
