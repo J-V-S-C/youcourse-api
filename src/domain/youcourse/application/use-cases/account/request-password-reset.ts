@@ -1,0 +1,58 @@
+import { Either, left, right } from 'src/core/either';
+import { Injectable } from '@nestjs/common';
+import { ResourceNotFoundError } from '../errors/resource-not-found-error';
+import { AccountsRepository } from '../../repositories/accounts-repository';
+import { PasswordResetTokensRepository } from '../../repositories/password-reset-tokens-repository';
+import { TokenGenerator } from '../../cryptography/token-generator';
+import { EmailService } from '../../services/emailService';
+import { PasswordResetToken } from 'src/domain/youcourse/enterprise/entities/password-reset-token';
+import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
+
+interface RequestPasswordResetUseCaseRequest {
+  email: string;
+}
+
+type RequestPasswordResetUseCaseResponse = Either<
+  ResourceNotFoundError,
+  { passwordResetToken: PasswordResetToken }
+>;
+
+@Injectable()
+export class RequestPasswordResetUseCase {
+  constructor(
+    private readonly accountsRepository: AccountsRepository,
+    private readonly passwordResetTokensRepository: PasswordResetTokensRepository,
+    private readonly tokenGenerator: TokenGenerator,
+    private readonly emailService: EmailService,
+  ) {}
+
+  async execute({
+    email,
+  }: RequestPasswordResetUseCaseRequest): Promise<RequestPasswordResetUseCaseResponse> {
+    const account = await this.accountsRepository.findByEmail(email);
+    if (!account) {
+      return left(new ResourceNotFoundError());
+    }
+
+    const rawToken = await this.tokenGenerator.generate();
+
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 1);
+
+    const passwordResetToken = PasswordResetToken.create({
+      token: rawToken,
+      accountId: new UniqueEntityID(account.id.toString()),
+      expiresAt,
+    });
+
+    await this.passwordResetTokensRepository.create(passwordResetToken);
+
+    await this.emailService.sendMail({
+      to: account.email,
+      subject: 'Password Reset Request',
+      body: `You requested a password reset. Use this token to confirm: ${rawToken}. It expires in 1 hour. If you did not request this, please ignore this email.`,
+    });
+
+    return right({ passwordResetToken });
+  }
+}

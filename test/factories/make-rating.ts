@@ -2,9 +2,9 @@ import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import {
   Rating,
   RatingProps,
-} from 'src/domain/ecommerce/enterprise/entities/rating';
+} from 'src/domain/youcourse/enterprise/entities/rating';
 import { faker } from '@faker-js/faker';
-import { Stars } from 'src/domain/ecommerce/enterprise/entities/value-objects/stars';
+import { Stars } from 'src/domain/youcourse/enterprise/entities/value-objects/stars';
 
 export function makeRating(
   override: Partial<RatingProps> = {},

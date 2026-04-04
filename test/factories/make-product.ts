@@ -2,9 +2,9 @@ import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import {
   Product,
   ProductProps,
-} from 'src/domain/ecommerce/enterprise/entities/product';
+} from 'src/domain/youcourse/enterprise/entities/product';
 import { faker } from '@faker-js/faker';
-import { Price } from 'src/domain/ecommerce/enterprise/entities/value-objects/price';
+import { Price } from 'src/domain/youcourse/enterprise/entities/value-objects/price';
 
 export function makeProduct(
   override: Partial<ProductProps> = {},
