@@ -15,7 +15,7 @@ $ pnpm run start
 # watch mode
 $ pnpm run start:dev
 
-# courseion mode
+# production mode
 $ pnpm run start:prod
 ```
 
