@@ -11,4 +11,8 @@ export class JwtEncrypter implements Encrypter {
       expiresIn: '20m',
     });
   }
+
+  decrypt(token: string): Promise<Record<string, unknown>> {
+    return this.jwtService.verifyAsync(token);
+  }
 }

@@ -39,7 +39,7 @@ $ pnpm run test:e2e
 
 ## TODO
 
-- [ ] Swagger
+- [x] Swagger
 - [ ] HTTPS
 - [ ] Internacionalização
 - [ ] Deploy
@@ -108,7 +108,7 @@ SUBSCRIPTIONS
 - [ ] Create-Subscription
 - [ ] Cancel-Subscription
 
-!REFUNDS 
+!REFUNDS
 
 - [ ] Request-Refund
 - [ ] Process-Refund

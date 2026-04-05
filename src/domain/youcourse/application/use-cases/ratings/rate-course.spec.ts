@@ -1,8 +1,3 @@
-import { InMemoryAccountsRepository } from 'test/repositories/in-memory-accounts-repository';
-import { RegisterAccountUseCase } from './register-account';
-import { FakeHasher } from 'test/cryptography/fake-hasher';
-import { AccountAlreadyExistsError } from './errors/account-already-exists-error';
-import { InMemoryCoursesRepository } from 'test/repositories/in-memory-courses-repository';
 import { InMemoryRatingsRepository } from 'test/repositories/in-memory-ratings-repository';
 import { RateCourseUseCase } from './rate-course';
 
