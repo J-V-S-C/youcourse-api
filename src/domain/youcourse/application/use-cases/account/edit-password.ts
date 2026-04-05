@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { InvalidTokenError } from '../errors/invalid-token-error';
 import type { Account } from 'src/domain/youcourse/enterprise/entities/account';
-import type { AccountsRepository } from '../../repositories/accounts-repository';
+import { AccountsRepository } from '../../repositories/accounts-repository';
 import { PasswordResetTokensRepository } from '../../repositories/password-reset-tokens-repository';
 import { EmailService } from '../../services/emailService';
 

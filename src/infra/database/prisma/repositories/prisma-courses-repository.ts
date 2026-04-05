@@ -1,5 +1,5 @@
-import { CoursesRepository } from 'src/domain/ecommerce/application/repositories/courses-repository';
-import { Course } from 'src/domain/ecommerce/enterprise/entities/course';
+import { CoursesRepository } from 'src/domain/youcourse/application/repositories/courses-repository';
+import { Course } from 'src/domain/youcourse/enterprise/entities/course';
 import { PrismaService } from '../prisma.service';
 import { PrismaCourseMapper } from '../mappers/prisma-course-mapper';
 import { Injectable } from '@nestjs/common';
@@ -54,7 +54,17 @@ export class PrismaCoursesRepository implements CoursesRepository {
     return courses.map(PrismaCourseMapper.toDomain);
   }
 
-  async save(course: Course): Promise<void> {}
+  async save(course: Course): Promise<void> {
+    const data = PrismaCourseMapper.toPrisma(course);
+    await this.prisma.course.update({
+      where: { id: course.id.toString() },
+      data,
+    });
+  }
 
-  async delete(course: Course): Promise<void> {}
+  async delete(course: Course): Promise<void> {
+    await this.prisma.course.delete({
+      where: { id: course.id.toString() },
+    });
+  }
 }

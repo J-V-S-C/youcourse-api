@@ -9,4 +9,3 @@ export class FakeEncrypter implements Encrypter {
     return JSON.parse(token);
   }
 }
-

@@ -1,10 +1,16 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
-import { FetchCoursesUseCase } from 'src/domain/ecommerce/application/use-cases/fetch-courses';
+import { FetchCoursesUseCase } from 'src/domain/youcourse/application/use-cases/course/fetch-courses';
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { CoursePresenter } from '../presenters/course-presenter';
 import { Public } from 'src/infra/auth/public';
-import { ApiProperty, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiProperty,
+  ApiQuery,
+} from '@nestjs/swagger';
 
 export class FetchCoursesQueryDto {
   @ApiProperty({ required: false, default: 1 })
@@ -35,11 +41,15 @@ type FetchCoursesBodySchema = z.infer<typeof fetchCoursesBodySchema>;
 
 const bodyValidationPipe = new ZodValidationPipe(fetchCoursesBodySchema);
 
+@ApiTags('Courses')
 @Controller('/courses')
 export class FetchCoursesController {
-  constructor(private fetchCourses: FetchCoursesUseCase) { }
+  constructor(private fetchCourses: FetchCoursesUseCase) {}
 
   @Get()
+  @ApiOperation({ summary: 'Endpoint operation' })
+  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiQuery({ type: FetchCoursesQueryDto })
   @Public()
   async handle(@Query(bodyValidationPipe) params: FetchCoursesBodySchema) {

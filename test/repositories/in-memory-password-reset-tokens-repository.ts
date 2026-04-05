@@ -1,9 +1,7 @@
 import { PasswordResetToken } from 'src/domain/youcourse/enterprise/entities/password-reset-token';
 import { PasswordResetTokensRepository } from 'src/domain/youcourse/application/repositories/password-reset-tokens-repository';
 
-export class InMemoryPasswordResetTokensRepository
-  implements PasswordResetTokensRepository
-{
+export class InMemoryPasswordResetTokensRepository implements PasswordResetTokensRepository {
   public items: PasswordResetToken[] = [];
 
   async create(token: PasswordResetToken): Promise<void> {

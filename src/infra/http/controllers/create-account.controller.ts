@@ -7,13 +7,19 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common';
-import { AccountAlreadyExistsError } from 'src/domain/ecommerce/application/use-cases/errors/account-already-exists-error';
-import { RegisterAccountUseCase } from 'src/domain/ecommerce/application/use-cases/register-account';
+import { AccountAlreadyExistsError } from 'src/domain/youcourse/application/use-cases/errors/account-already-exists-error';
+import { RegisterAccountUseCase } from 'src/domain/youcourse/application/use-cases/auth/register-account';
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { Public } from 'src/infra/auth/public';
 import { AccountPresenter } from '../presenters/account-presenter';
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiProperty,
+} from '@nestjs/swagger';
 
 export class CreateAccountDto {
   @ApiProperty({ default: 'user@example.com' })
@@ -34,12 +40,16 @@ const createAccountBodySchema = z.object({
 
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>;
 
+@ApiTags('Accounts')
 @Controller('/accounts')
 @Public()
 export class CreateAccountController {
   constructor(private registerAccount: RegisterAccountUseCase) {}
 
   @Post()
+  @ApiOperation({ summary: 'Endpoint operation' })
+  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiBody({ type: CreateAccountDto })
   @HttpCode(201)
   @UsePipes(new ZodValidationPipe(createAccountBodySchema))

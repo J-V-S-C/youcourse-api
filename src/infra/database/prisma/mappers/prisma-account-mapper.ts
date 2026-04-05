@@ -1,9 +1,6 @@
 import { Prisma, Account as PrismaAccount } from '@prisma/client';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
-import {
-  Account,
-  AccountStatus,
-} from 'src/domain/ecommerce/enterprise/entities/account';
+import { Account } from 'src/domain/youcourse/enterprise/entities/account';
 
 export class PrismaAccountMapper {
   static toDomain(raw: PrismaAccount): Account {

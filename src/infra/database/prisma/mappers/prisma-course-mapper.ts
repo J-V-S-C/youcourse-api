@@ -1,7 +1,7 @@
 import { Prisma, Course as PrismaCourse } from '@prisma/client';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
-import { Course } from 'src/domain/ecommerce/enterprise/entities/course';
-import { Price } from 'src/domain/ecommerce/enterprise/entities/value-objects/price';
+import { Course } from 'src/domain/youcourse/enterprise/entities/course';
+import { Price } from 'src/domain/youcourse/enterprise/entities/value-objects/price';
 
 export class PrismaCourseMapper {
   static toDomain(raw: PrismaCourse): Course {

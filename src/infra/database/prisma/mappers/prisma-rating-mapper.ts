@@ -1,8 +1,8 @@
 import { Prisma, Rating as PrismaRating } from '@prisma/client';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
-import { Rating } from 'src/domain/ecommerce/enterprise/entities/rating';
-import { Price } from 'src/domain/ecommerce/enterprise/entities/value-objects/price';
-import { Stars } from 'src/domain/ecommerce/enterprise/entities/value-objects/stars';
+import { Rating } from 'src/domain/youcourse/enterprise/entities/rating';
+import { Price } from 'src/domain/youcourse/enterprise/entities/value-objects/price';
+import { Stars } from 'src/domain/youcourse/enterprise/entities/value-objects/stars';
 
 export class PrismaRatingMapper {
   static toDomain(raw: PrismaRating): Rating {

@@ -51,8 +51,8 @@ export class Account extends Entity<AccountProps> {
     this.props.email = email;
   }
 
-  updatePassword(password: string){
-    this.props.password = password
+  updatePassword(password: string) {
+    this.props.password = password;
   }
 
   static create(

@@ -12,10 +12,7 @@ interface FetchCoursesUseCaseRequest {
   orderBy: 'recent' | 'popular' | 'bestSelling';
 }
 
-type FetchCoursesUseCaseResponse = Either<
-  null,
-  { visibleCourses: Course[] }
->;
+type FetchCoursesUseCaseResponse = Either<null, { visibleCourses: Course[] }>;
 
 @Injectable()
 export class FetchCoursesUseCase {

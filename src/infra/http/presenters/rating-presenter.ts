@@ -1,4 +1,4 @@
-import { Rating } from 'src/domain/ecommerce/enterprise/entities/rating';
+import { Rating } from 'src/domain/youcourse/enterprise/entities/rating';
 
 export class RatingPresenter {
   static toHTTP(rating: Rating) {

@@ -128,7 +128,6 @@ SUBSCRIPTIONS
 
 - [x] Change-Password
 - [x] Refresh-Token
-- [ ] Revoke-Session
 - [x] send token to email
 
 ====================================

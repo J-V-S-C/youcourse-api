@@ -12,9 +12,15 @@ import {
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { AccountPresenter } from '../presenters/account-presenter';
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
-import { EditAccountDetailsUseCase } from 'src/domain/ecommerce/application/use-cases/edit-account-details';
-import { ResourceNotFoundError } from 'src/domain/ecommerce/application/use-cases/errors/resource-not-found-error';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiProperty,
+} from '@nestjs/swagger';
+import { EditAccountDetailsUseCase } from 'src/domain/youcourse/application/use-cases/account/edit-account-details';
+import { ResourceNotFoundError } from 'src/domain/youcourse/application/use-cases/errors/resource-not-found-error';
 
 export class EditAccountDto {
   @ApiProperty({ default: 'user@example.com' })
@@ -33,11 +39,15 @@ type EditAccountBodySchema = z.infer<typeof editAccountBodySchema>;
 
 const bodyValidationPipe = new ZodValidationPipe(editAccountBodySchema);
 
+@ApiTags('Accounts')
 @Controller('/accounts/:id')
 export class EditAccountDetailsController {
   constructor(private editAccountDetails: EditAccountDetailsUseCase) {}
 
   @Patch()
+  @ApiOperation({ summary: 'Endpoint operation' })
+  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiBody({ type: EditAccountDto })
   @HttpCode(200)
   async handle(

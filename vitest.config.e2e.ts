@@ -8,6 +8,9 @@ dotenv.config({ path: '.env.test' });
 
 export default defineConfig({
   test: {
+    fileParallelism: false,
+    hookTimeout: 30000,
+    testTimeout: 30000,
     include: ['**/*.e2e-spec.ts'],
     globals: true,
     root: './',
