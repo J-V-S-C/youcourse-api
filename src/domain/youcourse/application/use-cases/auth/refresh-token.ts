@@ -42,9 +42,7 @@ export class RefreshTokenUseCase {
       return left(new InvalidTokenError());
     }
 
-    await this.refreshTokensRepository.deleteByAccountId(
-      account.id.toString(),
-    );
+    await this.refreshTokensRepository.deleteByAccountId(account.id.toString());
 
     const newAccessToken = await this.encrypter.encrypt({
       sub: account.id.toString(),

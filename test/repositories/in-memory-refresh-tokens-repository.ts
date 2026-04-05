@@ -1,9 +1,7 @@
 import { RefreshToken } from 'src/domain/youcourse/enterprise/entities/refresh-token';
 import { RefreshTokensRepository } from 'src/domain/youcourse/application/repositories/refresh-tokens-repository';
 
-export class InMemoryRefreshTokensRepository
-  implements RefreshTokensRepository
-{
+export class InMemoryRefreshTokensRepository implements RefreshTokensRepository {
   public items: RefreshToken[] = [];
 
   async create(token: RefreshToken): Promise<void> {

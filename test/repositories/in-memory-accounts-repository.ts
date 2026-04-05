@@ -1,5 +1,5 @@
-import { AccountsRepository } from 'src/domain/ecommerce/application/repositories/accounts-repository';
-import { Account } from 'src/domain/ecommerce/enterprise/entities/account';
+import { AccountsRepository } from 'src/domain/youcourse/application/repositories/accounts-repository';
+import { Account } from 'src/domain/youcourse/enterprise/entities/account';
 
 export class InMemoryAccountsRepository implements AccountsRepository {
   public items: Account[] = [];

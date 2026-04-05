@@ -3,7 +3,7 @@ import { NotAllowedError } from '../errors/not-allowed-error';
 import { InMemoryCoursesRepository } from 'test/repositories/in-memory-courses-repository';
 import { UnpublishCourseUseCase } from './unpublish-course';
 import { makeCourse } from 'test/factories/make-course';
-import { Price } from '../../enterprise/entities/value-objects/price';
+import { Price } from '../../../enterprise/entities/value-objects/price';
 
 let inMemoryCoursesRepository: InMemoryCoursesRepository;
 let sut: UnpublishCourseUseCase;

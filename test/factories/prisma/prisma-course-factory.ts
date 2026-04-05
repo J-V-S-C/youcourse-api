@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   Course,
   CourseProps,
-} from 'src/domain/ecommerce/enterprise/entities/course';
+} from 'src/domain/youcourse/enterprise/entities/course';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { makeCourse } from '../make-course';
 import { PrismaCourseMapper } from 'src/infra/database/prisma/mappers/prisma-course-mapper';

@@ -1,7 +1,7 @@
 import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { CoursesRepository } from 'src/domain/ecommerce/application/repositories/courses-repository';
-import { Course } from 'src/domain/ecommerce/enterprise/entities/course';
-import { CourseMetrics } from 'src/domain/ecommerce/enterprise/entities/course-metrics';
+import { CoursesRepository } from 'src/domain/youcourse/application/repositories/courses-repository';
+import { Course } from 'src/domain/youcourse/enterprise/entities/course';
+import { CourseMetrics } from 'src/domain/youcourse/enterprise/entities/course-metrics';
 
 export class InMemoryCoursesRepository implements CoursesRepository {
   public items: Course[] = [];

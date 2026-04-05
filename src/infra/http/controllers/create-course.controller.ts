@@ -6,14 +6,21 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common';
-import { CreateCourseUseCase } from 'src/domain/ecommerce/application/use-cases/create-course';
+import { CreateCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/create-course';
 import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { Price } from 'src/domain/ecommerce/enterprise/entities/value-objects/price';
+import { Price } from 'src/domain/youcourse/enterprise/entities/value-objects/price';
 import type { UserPayload } from 'src/infra/auth/jwt.strategy';
 import { CurrentUser } from 'src/infra/auth/current-user.decorator';
 import { CoursePresenter } from '../presenters/course-presenter';
-import { ApiBearerAuth, ApiBody, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiProperty,
+} from '@nestjs/swagger';
 
 export class CreateCourseDto {
   @ApiProperty({ default: 'Curso Exemplo' })
@@ -55,11 +62,15 @@ type CreateCourseBodySchema = z.infer<typeof createCourseBodySchema>;
 
 const bodyValidationPipe = new ZodValidationPipe(createCourseBodySchema);
 
+@ApiTags('Courses')
 @Controller('/courses')
 export class CreateCourseController {
   constructor(private createCourse: CreateCourseUseCase) {}
 
   @Post()
+  @ApiOperation({ summary: 'Endpoint operation' })
+  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiBody({ type: CreateCourseDto })
   @HttpCode(201)
   async handle(

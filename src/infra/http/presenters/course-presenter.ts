@@ -1,4 +1,4 @@
-import { Course } from 'src/domain/ecommerce/enterprise/entities/course';
+import { Course } from 'src/domain/youcourse/enterprise/entities/course';
 
 export class CoursePresenter {
   static toHTTP(course: Course) {
