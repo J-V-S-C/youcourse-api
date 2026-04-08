@@ -1,15 +1,41 @@
-version: "3.8"
-
 services:
   postgres:
     container_name: nest-youcourse-pg
     image: postgres
     ports:
-      - 5432:5432
+      - ${DB_PORT}:${DB_PORT}
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: nest-clean
-      PGDATA: /data/postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     volumes:
-      - ./data/pg:/data/postgres
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - youcourse-net
+  api:
+    container_name: youcourse-api
+    ports:
+      - ${PORT}:${PORT}
+    build:                                 
+      context: .                           
+      dockerfile: Dockerfile          
+      target: ${TARGET}
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - youcourse-net
+
+networks:
+  youcourse-net:
+    driver: bridge
+volumes:
+    postgres_data:
