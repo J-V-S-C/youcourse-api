@@ -34,4 +34,4 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 
 COPY --from=builder /app/dist ./dist
 
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "pnpm db:deploy && node dist/main.js"]

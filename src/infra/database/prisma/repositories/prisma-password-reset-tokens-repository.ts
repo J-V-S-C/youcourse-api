@@ -36,4 +36,12 @@ export class PrismaPasswordResetTokensRepository implements PasswordResetTokensR
       },
     });
   }
+
+  async deleteByAccountID(accountId: string): Promise<void> {
+    await this.prisma.passwordResetToken.deleteMany({
+      where: {
+        accountId,
+      },
+    });
+  }
 }

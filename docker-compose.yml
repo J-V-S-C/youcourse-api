@@ -3,7 +3,7 @@ services:
     container_name: nest-youcourse-pg
     image: postgres
     ports:
-      - ${DB_PORT}:${DB_PORT}
+      - ${DB_PORT}:5432
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -25,14 +25,18 @@ services:
     build:                                 
       context: .                           
       dockerfile: Dockerfile          
-      target: ${TARGET}
+      target: dev
     env_file:
-      - .env
+      - .env.prod
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules 
     networks:
       - youcourse-net
+    
 
 networks:
   youcourse-net:

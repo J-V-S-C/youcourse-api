@@ -17,6 +17,7 @@ export class PrismaAccountsRepository implements AccountsRepository {
 
   async save(account: Account): Promise<void> {
     const data = PrismaAccountMapper.toPrisma(account);
+
     await this.prisma.account.update({
       where: {
         id: data.id,

@@ -15,4 +15,8 @@ export class InMemoryPasswordResetTokensRepository implements PasswordResetToken
   async delete(token: PasswordResetToken): Promise<void> {
     this.items = this.items.filter((item) => item.token !== token.token);
   }
+
+  async deleteByAccountID(): Promise<void> {
+    this.items = [];
+  }
 }

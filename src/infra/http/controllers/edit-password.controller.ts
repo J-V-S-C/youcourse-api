@@ -4,6 +4,7 @@ import {
   Controller,
   HttpCode,
   Post,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { z } from 'zod';
@@ -17,6 +18,7 @@ import {
   ApiBody,
   ApiProperty,
 } from '@nestjs/swagger';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 export class EditPasswordDto {
   @ApiProperty({ default: 'reset_token_here' })
@@ -34,6 +36,7 @@ const editPasswordBodySchema = z.object({
 type EditPasswordBodySchema = z.infer<typeof editPasswordBodySchema>;
 
 @ApiTags('Accounts')
+@UseGuards(ThrottlerGuard)
 @Controller('/accounts/password')
 @Public()
 export class EditPasswordController {

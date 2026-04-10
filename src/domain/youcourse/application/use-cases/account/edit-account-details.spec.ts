@@ -4,6 +4,7 @@ import { makeAccount } from 'test/factories/make-account';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { NotAllowedError } from '../errors/not-allowed-error';
 import { JwtService } from '@nestjs/jwt';
+import { AccountAlreadyExistsError } from '../errors/account-already-exists-error';
 
 let inMemoryAccountsRepository: InMemoryAccountsRepository;
 let sut: EditAccountDetailsUseCase;
@@ -39,5 +40,22 @@ describe('Edit Account Details', () => {
 
     expect(result.isLeft()).toBeTruthy();
     expect(result.value).toBeInstanceOf(ResourceNotFoundError);
+  });
+
+  it('should not be able to change your email to an existing email', async () => {
+    const existingAccount = makeAccount();
+    inMemoryAccountsRepository.items.push(existingAccount);
+
+    const newAccount = makeAccount();
+    inMemoryAccountsRepository.items.push(newAccount);
+
+    const result = await sut.execute({
+      accountId: newAccount.id.toString(),
+      name: 'new name',
+      email: existingAccount.email,
+    });
+
+    expect(result.isLeft()).toBeTruthy();
+    expect(result.value).toBeInstanceOf(AccountAlreadyExistsError);
   });
 });

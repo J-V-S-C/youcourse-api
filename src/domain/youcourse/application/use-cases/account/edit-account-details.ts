@@ -3,6 +3,7 @@ import { Account } from 'src/domain/youcourse/enterprise/entities/account';
 import { AccountsRepository } from '../../repositories/accounts-repository';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { Injectable } from '@nestjs/common';
+import { AccountAlreadyExistsError } from '../errors/account-already-exists-error';
 
 interface EditAccountDetailsUseCaseRequest {
   accountId: string;
@@ -27,6 +28,14 @@ export class EditAccountDetailsUseCase {
     const account = await this.accountsRepository.findById(accountId);
     if (!account) {
       return left(new ResourceNotFoundError());
+    }
+
+    if (email) {
+      const existingEmail = await this.accountsRepository.findByEmail(email);
+
+      if (existingEmail) {
+        return left(new AccountAlreadyExistsError(email));
+      }
     }
 
     account.updateDetails(name ?? account.name, email ?? account.email);

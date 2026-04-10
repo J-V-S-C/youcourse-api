@@ -6,6 +6,7 @@ import type { Account } from 'src/domain/youcourse/enterprise/entities/account';
 import { AccountsRepository } from '../../repositories/accounts-repository';
 import { PasswordResetTokensRepository } from '../../repositories/password-reset-tokens-repository';
 import { EmailService } from '../../services/emailService';
+import { HashGenerator } from '../../cryptography/hash-generator';
 
 interface EditPasswordUseCaseRequest {
   token: string;
@@ -23,6 +24,7 @@ export class EditPasswordUseCase {
     private readonly accountsRepository: AccountsRepository,
     private readonly passwordResetTokensRepository: PasswordResetTokensRepository,
     private readonly emailService: EmailService,
+    private readonly hashGenerator: HashGenerator,
   ) {}
 
   async execute({
@@ -44,7 +46,9 @@ export class EditPasswordUseCase {
       return left(new ResourceNotFoundError());
     }
 
-    account.updatePassword(newPassword);
+    const hashedPassword = await this.hashGenerator.hash(newPassword);
+
+    account.updatePassword(hashedPassword);
 
     await this.accountsRepository.save(account);
 

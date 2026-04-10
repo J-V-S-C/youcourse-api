@@ -9,7 +9,6 @@ import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 let inMemoryAccountsRepository: InMemoryAccountsRepository;
 let inMemoryPasswordResetTokensRepository: InMemoryPasswordResetTokensRepository;
 let fakeEmailService: FakeEmailService;
-let fakeTokenGenerator: FakeTokenGenerator;
 let sut: RequestPasswordResetUseCase;
 
 describe('Request Password Reset', () => {
@@ -18,11 +17,9 @@ describe('Request Password Reset', () => {
     inMemoryPasswordResetTokensRepository =
       new InMemoryPasswordResetTokensRepository();
     fakeEmailService = new FakeEmailService();
-    fakeTokenGenerator = new FakeTokenGenerator();
     sut = new RequestPasswordResetUseCase(
       inMemoryAccountsRepository,
       inMemoryPasswordResetTokensRepository,
-      fakeTokenGenerator,
       fakeEmailService,
     );
   });

@@ -7,10 +7,12 @@ import { PasswordResetToken } from 'src/domain/youcourse/enterprise/entities/pas
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { InvalidTokenError } from '../errors/invalid-token-error';
+import { FakeHasher } from 'test/cryptography/fake-hasher';
 
 let inMemoryAccountsRepository: InMemoryAccountsRepository;
 let inMemoryPasswordResetTokensRepository: InMemoryPasswordResetTokensRepository;
 let fakeEmailService: FakeEmailService;
+let fakeHasher: FakeHasher;
 let sut: EditPasswordUseCase;
 
 describe('Edit Password', () => {
@@ -19,10 +21,12 @@ describe('Edit Password', () => {
     inMemoryPasswordResetTokensRepository =
       new InMemoryPasswordResetTokensRepository();
     fakeEmailService = new FakeEmailService();
+    fakeHasher = new FakeHasher();
     sut = new EditPasswordUseCase(
       inMemoryAccountsRepository,
       inMemoryPasswordResetTokensRepository,
       fakeEmailService,
+      fakeHasher,
     );
   });
 
