@@ -7,6 +7,10 @@ import request from 'supertest';
 import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
 import { EmailService } from 'src/domain/youcourse/application/services/emailService';
 
+const mockEmailService = {
+  sendMail: vi.fn(),
+};
+
 describe('Request Password Reset (E2E)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
@@ -16,7 +20,11 @@ describe('Request Password Reset (E2E)', () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
       providers: [AccountFactory],
-    }).compile();
+    })
+      // 2. Sobrescreve o provedor
+      .overrideProvider(EmailService)
+      .useValue(mockEmailService)
+      .compile();
 
     accountFactory = moduleRef.get(AccountFactory);
     prisma = moduleRef.get(PrismaService);
@@ -25,48 +33,42 @@ describe('Request Password Reset (E2E)', () => {
     await app.init();
   });
 
-  beforeEach(async () => {
-    await request('http://localhost:1080').delete('/emails');
+  beforeEach(() => {
+    // 3. Limpa o histórico do mock em vez de chamar localhost:1080
+    mockEmailService.sendMail.mockClear();
   });
 
   test('[POST] /accounts/password-reset - Success', async () => {
     const email = 'jhon@example.com';
-    await accountFactory.makePrismaAccount({
-      email,
-    });
+    await accountFactory.makePrismaAccount({ email });
 
     const response = await request(app.getHttpServer())
       .post('/accounts/password-reset')
-      .send({
-        email,
-      });
+      .send({ email });
 
     expect(response.statusCode).toBe(200);
 
     const resetToken = await prisma.passwordResetToken.findFirst({
-      where: {
-        account: {
-          email,
-        },
-      },
+      where: { account: { email } },
     });
 
     expect(resetToken).toBeTruthy();
 
-    const emailResponse = await request('http://localhost:1080').get('/emails');
-    const emails = emailResponse.body;
-    expect(emails).toHaveLength(1);
-    expect(emails[0]).toContain(resetToken!.token);
-    expect(emails[0]).toContain(email);
+    // 4. Verifica se o método sendMail foi chamado com os dados certos
+    expect(mockEmailService.sendMail).toHaveBeenCalledTimes(1);
+    expect(mockEmailService.sendMail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: email,
+        body: expect.stringContaining(resetToken!.token),
+      }),
+    );
   });
 
   test('[POST] /accounts/password-reset - Account Not Found', async () => {
     const response = await request(app.getHttpServer())
       .post('/accounts/password-reset')
-      .send({
-        email: 'nobody@example.com',
-      });
+      .send({ email: 'nobody@example.com' });
 
-    expect(response.statusCode).toBe(400); // Because we map ResourceNotFound to BadRequest in controller
+    expect(response.statusCode).toBe(400);
   });
 });

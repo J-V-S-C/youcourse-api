@@ -5,7 +5,12 @@ import { DatabaseModule } from 'src/infra/database/database.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import request from 'supertest';
 import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
+import { EmailService } from 'src/domain/youcourse/application/services/emailService';
 import { hash } from 'bcryptjs';
+
+const mockEmailService = {
+  sendMail: vi.fn(),
+};
 
 describe('Edit Password (E2E)', () => {
   let app: INestApplication;
@@ -16,7 +21,10 @@ describe('Edit Password (E2E)', () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
       providers: [AccountFactory],
-    }).compile();
+    })
+      .overrideProvider(EmailService)
+      .useValue(mockEmailService)
+      .compile();
 
     accountFactory = moduleRef.get(AccountFactory);
     prisma = moduleRef.get(PrismaService);
@@ -25,8 +33,9 @@ describe('Edit Password (E2E)', () => {
     await app.init();
   });
 
-  beforeEach(async () => {
-    await request('http://localhost:1080').delete('/emails');
+  beforeEach(() => {
+    // CORREÇÃO: Limpa o mock em vez de chamar localhost:1080
+    mockEmailService.sendMail.mockClear();
   });
 
   test('[PATCH] /accounts/password-reset - Success', async () => {
@@ -63,10 +72,13 @@ describe('Edit Password (E2E)', () => {
 
     expect(updatedAccount).toBeTruthy();
 
-    const emailResponse = await request('http://localhost:1080').get('/emails');
-    const emails = emailResponse.body;
-    expect(emails).toHaveLength(1);
-    expect(emails[0]).toContain(account.email);
+    // CORREÇÃO: Verifica o mock em vez de fazer requisição HTTP
+    expect(mockEmailService.sendMail).toHaveBeenCalledTimes(1);
+    expect(mockEmailService.sendMail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: account.email,
+      }),
+    );
   });
 
   test('[PATCH] /accounts/password-reset - Invalid or Expired Token', async () => {
