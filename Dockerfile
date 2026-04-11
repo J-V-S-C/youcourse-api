@@ -9,7 +9,7 @@ RUN pnpm install
 
 COPY . .
 
-CMD ["pnpm", "dev"]
+CMD ["sh", "-c" ,"pnpm prisma generate && pnpm run dev"]
 
 # builder
 FROM node:20-alpine AS builder

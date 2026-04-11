@@ -69,10 +69,11 @@ export class AuthenticateAccountController {
       }
     }
 
-    const { accessToken } = result.value;
+    const { accessToken, refreshToken } = result.value;
 
     return {
       access_token: accessToken,
+      refresh_token: refreshToken,
     };
   }
 }

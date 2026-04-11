@@ -41,6 +41,7 @@ describe('Authenticate Account (E2E)', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
       access_token: expect.any(String),
+      refresh_token: expect.any(String),
     });
   });
 });
