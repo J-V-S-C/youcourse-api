@@ -35,7 +35,7 @@ export class CreateAccountDto {
 const createAccountBodySchema = z.object({
   name: z.string().max(50),
   email: z.email().max(255),
-  password: z.string().max(50),
+  password: z.string().max(50).min(6),
 });
 
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>;

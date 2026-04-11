@@ -4,7 +4,6 @@ import { AccountAlreadyExistsError } from '../errors/account-already-exists-erro
 import { HashGenerator } from '../../cryptography/hash-generator';
 import { AccountsRepository } from '../../repositories/accounts-repository';
 import { Injectable } from '@nestjs/common';
-import { InvalidPasswordLengthError } from '../errors/invalidPasswordLengthError';
 
 interface RegisterAccountUseCaseRequest {
   name: string;
@@ -33,10 +32,6 @@ export class RegisterAccountUseCase {
 
     if (existingAccount) {
       return left(new AccountAlreadyExistsError(email));
-    }
-
-    if (password.length <= 6) {
-      return left(new InvalidPasswordLengthError());
     }
 
     const hashedPassword = await this.hashGenerator.hash(password);

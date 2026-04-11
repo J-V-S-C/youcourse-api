@@ -2,7 +2,6 @@ import { InMemoryAccountsRepository } from 'test/repositories/in-memory-accounts
 import { RegisterAccountUseCase } from './register-account';
 import { FakeHasher } from 'test/cryptography/fake-hasher';
 import { AccountAlreadyExistsError } from '../errors/account-already-exists-error';
-import { InvalidPasswordLengthError } from '../errors/invalidPasswordLengthError';
 
 let inMemoryAccountsRepository: InMemoryAccountsRepository;
 let fakeHasher: FakeHasher;
@@ -59,17 +58,5 @@ describe('Register Account', () => {
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(AccountAlreadyExistsError);
     expect(inMemoryAccountsRepository.items).toHaveLength(1);
-  });
-
-  it('should not allow registering an account with a small password', async () => {
-    const result = await sut.execute({
-      name: 'John Doe',
-      email: 'john@example.com',
-      password: 'small',
-    });
-
-    expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(InvalidPasswordLengthError);
-    expect(inMemoryAccountsRepository.items).toHaveLength(0);
   });
 });
