@@ -47,6 +47,25 @@ describe('Authenticate Account', () => {
     expect(inMemoryRefreshTokensRepository.items).toHaveLength(1);
   });
 
+  it('should be able to update lastLogin date', async () => {
+    const account = makeAccount({
+      email: 'jhon@example.com',
+      password: await fakeHasher.hash('pass123'),
+    });
+
+    await inMemoryAccountsRepository.create(account);
+
+    await sut.execute({
+      email: 'jhon@example.com',
+      password: 'pass123',
+    });
+
+    expect(inMemoryAccountsRepository.items[0].lastLogin).toBeInstanceOf(Date);
+    expect(
+      inMemoryAccountsRepository.items[0].lastLogin?.getTime(),
+    ).toBeGreaterThan(new Date(0).getTime());
+  });
+
   it('should replace the existing refresh token on a new login', async () => {
     const account = makeAccount({
       email: 'jhon@example.com',

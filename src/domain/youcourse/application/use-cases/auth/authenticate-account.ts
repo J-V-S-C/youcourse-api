@@ -46,6 +46,7 @@ export class AuthenticateAccountUseCase {
     }
 
     account.updateLastLoginDate();
+    await this.accountsRepository.save(account);
 
     const accessToken = await this.encrypter.encrypt({
       sub: account.id.toString(),
