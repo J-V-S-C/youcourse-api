@@ -3,6 +3,7 @@ import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { Price } from './value-objects/price';
 import { Optional } from 'src/core/types/optional';
 import { Rating } from './rating';
+import type { Unit } from './unit';
 
 export interface CourseProps {
   creatorId: UniqueEntityID;
@@ -11,6 +12,7 @@ export interface CourseProps {
   price?: Price;
   visible: boolean;
   sellable: boolean;
+  units: Unit[];
   createdAt: Date;
   updatedAt?: Date | null;
 }
@@ -89,7 +91,7 @@ export class Course extends Entity<CourseProps> {
   }
 
   static create(
-    props: Optional<CourseProps, 'createdAt' | 'visible' | 'sellable'>,
+    props: Optional<CourseProps, 'createdAt' | 'visible' | 'sellable' | 'units'>,
     id?: UniqueEntityID,
   ) {
     if (props.sellable && !props.price) {
@@ -101,6 +103,7 @@ export class Course extends Entity<CourseProps> {
         ...props,
         visible: props.visible ?? false,
         sellable: props.sellable ?? false,
+        units: props.units ?? [],
         createdAt: props.createdAt ?? new Date(),
         updatedAt: props.updatedAt ?? null,
       },
