@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
       interval: 10s
       timeout: 5s
       retries: 10
@@ -22,9 +22,9 @@ services:
     container_name: youcourse-api
     ports:
       - ${PORT}:${PORT}
-    build:                                 
-      context: .                           
-      dockerfile: Dockerfile          
+    build:
+      context: .
+      dockerfile: Dockerfile
       target: dev
     env_file:
       - .env.prod
@@ -33,13 +33,11 @@ services:
         condition: service_healthy
     volumes:
       - .:/app
-      - /app/node_modules 
     networks:
       - youcourse-net
-    
 
 networks:
   youcourse-net:
     driver: bridge
 volumes:
-    postgres_data:
+  postgres_data:

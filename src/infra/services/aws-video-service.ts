@@ -1,20 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} from '@aws-sdk/client-s3';
-import { getSignedUrl as getS3SignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Video } from 'src/domain/youcourse/enterprise/entities/value-objects/video.vo';
 import {
   VideoService,
   UploadVideoResult,
 } from 'src/domain/youcourse/application/services/video-service';
 import { EnvService } from '../env/env.service';
-
+const {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} = require('@aws-sdk/client-s3');
+const {
+  getSignedUrl: getS3SignedUrl,
+} = require('@aws-sdk/s3-request-presigner');
 @Injectable()
 export class AWSVideoService implements VideoService {
-  private readonly s3Client: S3Client;
+  private readonly s3Client: InstanceType<typeof S3Client>;
   private readonly bucket: string;
   private readonly cloudfrontUrl: string;
 
