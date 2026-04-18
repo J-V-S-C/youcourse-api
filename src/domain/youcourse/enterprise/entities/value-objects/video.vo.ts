@@ -142,6 +142,10 @@ export class Video extends ValueObject<VideoValueObjectProps> {
     });
   }
 
+  static restore(props: VideoValueObjectProps) {
+    return new Video(props);
+  }
+
   toJSON() {
     return {
       externalId: this.externalId,
@@ -151,6 +155,8 @@ export class Video extends ValueObject<VideoValueObjectProps> {
       duration: this.duration,
       formattedDuration: this.formattedDuration,
       originalFilename: this.originalFilename,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
     };
   }
 }

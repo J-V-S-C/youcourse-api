@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { AppModule } from 'src/infra/app.module';
-import { EmailService } from 'src/domain/youcourse/application/services/emailService';
+import { EmailService } from 'src/domain/youcourse/application/services/email-service';
 import { vi } from 'vitest';
 
 config({ path: '.env', override: true });

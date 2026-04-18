@@ -1,13 +1,12 @@
 import { Either, left, right } from 'src/core/either';
 import { Injectable } from '@nestjs/common';
-import { Lesson } from 'src/domain/youcourse/enterprise/entities/lesson';
 import { Video } from 'src/domain/youcourse/enterprise/entities/value-objects/video.vo';
 import { LessonsRepository } from '../../repositories/lessons-repository';
 import { UnitsRepository } from '../../repositories/units-repository';
 import { CoursesRepository } from '../../repositories/courses-repository';
-import type { IVideoService } from '../../services/video-service.interface';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { NotAllowedError } from '../errors/not-allowed-error';
+import { VideoService } from '../../services/video-service';
 
 interface AttachVideoInput {
   creatorId: string;
@@ -30,7 +29,7 @@ export class AttachVideoToLessonUseCase {
     private lessonsRepository: LessonsRepository,
     private unitsRepository: UnitsRepository,
     private coursesRepository: CoursesRepository,
-    private videoService: IVideoService,
+    private videoService: VideoService,
   ) {}
 
   async execute(

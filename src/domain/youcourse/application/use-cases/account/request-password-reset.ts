@@ -4,7 +4,7 @@ import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { AccountsRepository } from '../../repositories/accounts-repository';
 import { PasswordResetTokensRepository } from '../../repositories/password-reset-tokens-repository';
 import { TokenGenerator } from '../../cryptography/token-generator';
-import { EmailService } from '../../services/emailService';
+import { EmailService } from '../../services/email-service';
 import { PasswordResetToken } from 'src/domain/youcourse/enterprise/entities/password-reset-token';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { randomInt } from 'crypto';
