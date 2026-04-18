@@ -11,6 +11,10 @@ import { PasswordResetTokensRepository } from 'src/domain/youcourse/application/
 import { PrismaPasswordResetTokensRepository } from './prisma/repositories/prisma-password-reset-tokens-repository';
 import { RefreshTokensRepository } from 'src/domain/youcourse/application/repositories/refresh-tokens-repository';
 import { PrismaRefreshTokensRepository } from './prisma/repositories/prisma-refresh-tokens-repository';
+import { UnitsRepository } from 'src/domain/youcourse/application/repositories/units-repository';
+import { PrismaUnitsRepository } from './prisma/repositories/prisma-units-repository';
+import { LessonsRepository } from 'src/domain/youcourse/application/repositories/lessons-repository';
+import { PrismaLessonsRepository } from './prisma/repositories/prisma-lessons-repository';
 
 @Module({
   imports: [EnvModule],
@@ -37,6 +41,14 @@ import { PrismaRefreshTokensRepository } from './prisma/repositories/prisma-refr
       provide: RefreshTokensRepository,
       useClass: PrismaRefreshTokensRepository,
     },
+    {
+      provide: UnitsRepository,
+      useClass: PrismaUnitsRepository,
+    },
+    {
+      provide: LessonsRepository,
+      useClass: PrismaLessonsRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -45,6 +57,8 @@ import { PrismaRefreshTokensRepository } from './prisma/repositories/prisma-refr
     RatingsRepository,
     PasswordResetTokensRepository,
     RefreshTokensRepository,
+    UnitsRepository,
+    LessonsRepository,
   ],
 })
 export class DatabaseModule {}

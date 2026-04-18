@@ -34,6 +34,7 @@ model Course {
   creator     Account        @relation(fields: [creatorId], references: [id])
   metrics     CourseMetrics?
   ratings     Rating[]
+  units       Unit[]
 }
 
 model Rating {
@@ -54,7 +55,32 @@ model CourseMetrics {
   clicks   Int
   sales    Int
   score    Float
-  course   Course @relation(fields: [courseId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model Unit {
+  id          String    @id @default(uuid())
+  courseId    String    @map("course_id")
+  name        String
+  description String?
+  position    Int
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id          String    @id @default(uuid())
+  unitId      String    @map("unit_id")
+  name        String
+  description String?
+  video       Json?
+  position    Int
+  isPreview   Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  unit        Unit      @relation(fields: [unitId], references: [id], onDelete: Cascade)
 }
 
 model PasswordResetToken {

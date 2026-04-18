@@ -1,4 +1,4 @@
-import { EmailService } from 'src/domain/youcourse/application/services/emailService';
+import { EmailService } from 'src/domain/youcourse/application/services/email-service';
 
 export class FakeEmailService implements EmailService {
   public sent: { to: string; subject: string; body: string }[] = [];

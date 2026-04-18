@@ -3,9 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { LessonsRepository } from '../../repositories/lessons-repository';
 import { UnitsRepository } from '../../repositories/units-repository';
 import { CoursesRepository } from '../../repositories/courses-repository';
-import type { IVideoService } from '../../services/video-service.interface';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { NotAllowedError } from '../errors/not-allowed-error';
+import { VideoService } from '../../services/video-service';
 
 interface DeleteLessonInput {
   creatorId: string;
@@ -20,7 +20,7 @@ export class DeleteLessonUseCase {
     private lessonsRepository: LessonsRepository,
     private unitsRepository: UnitsRepository,
     private coursesRepository: CoursesRepository,
-    private videoService: IVideoService,
+    private videoService: VideoService,
   ) {}
 
   async execute(

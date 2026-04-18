@@ -1,44 +1,75 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../database/database.module';
 import { ServicesModule } from '../services/services.module';
-import { CreateAccountController } from './controllers/create-account.controller';
-import { RegisterAccountUseCase } from 'src/domain/youcourse/application/use-cases/auth/register-account';
 import { CryptographyModule } from '../cryptography/cryptography.module';
-import { AuthenticateAccountController } from './controllers/authenticate-account.controller';
+
+// Controllers
+import { CreateAccountController } from './controllers/auth/create-account.controller';
+import { AuthenticateAccountController } from './controllers/auth/authenticate-account.controller';
+import { CreateCourseController } from './controllers/course/create-course.controller';
+import { FetchCoursesController } from './controllers/course/fetch-courses.controller';
+import { GetAccountByIdController } from './controllers/account/get-account-by-id.controller';
+import { EditAccountDetailsController } from './controllers/account/edit-account-details.controller';
+import { RefreshTokenController } from './controllers/auth/refresh-token.controller';
+import { DeleteCourseController } from './controllers/course/delete-course.controller';
+import { EditCourseDetailsController } from './controllers/course/edit-course-details.controller';
+import { HideCourseController } from './controllers/course/hide-course.controller';
+import { PublishCourseController } from './controllers/course/publish-course.controller';
+import { UnpublishCourseController } from './controllers/course/unpublish-course.controller';
+import { UpdateCoursePriceController } from './controllers/course/update-course-price.controller';
+
+// Lesson Controllers
+import { CreateLessonController } from './controllers/lesson/create-lesson.controller';
+import { EditLessonDetailsController } from './controllers/lesson/edit-lesson-details.controller';
+import { DeleteLessonController } from './controllers/lesson/delete-lesson.controller';
+import { AttachVideoToLessonController } from './controllers/lesson/attach-video-to-lesson.controller';
+import { RemoveVideoFromLessonController } from './controllers/lesson/remove-video-from-lesson.controller';
+import { ReorderLessonController } from './controllers/lesson/reorder-lesson.controller';
+
+// Unit Controllers
+import { CreateUnitController } from './controllers/unit/create-unit.controller';
+import { EditUnitDetailsController } from './controllers/unit/edit-unit-details.controller';
+import { DeleteUnitController } from './controllers/unit/delete-unit.controller';
+import { FetchUnitsController } from './controllers/unit/fetch-units.controller';
+import { ReorderUnitController } from './controllers/unit/reorder-unit.controller';
+
+// Use Cases
+import { RegisterAccountUseCase } from 'src/domain/youcourse/application/use-cases/auth/register-account';
 import { AuthenticateAccountUseCase } from 'src/domain/youcourse/application/use-cases/auth/authenticate-account';
-import { CreateCourseController } from './controllers/create-course.controller';
 import { CreateCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/create-course';
-import { FetchCoursesController } from './controllers/fetch-courses.controller';
 import { FetchCoursesUseCase } from 'src/domain/youcourse/application/use-cases/course/fetch-courses';
-import { RateCourseController } from './controllers/rate-course.controller';
-import { RateCourseUseCase } from 'src/domain/youcourse/application/use-cases/ratings/rate-course';
-import { GetAccountByIdController } from './controllers/get-account-by-id.controller';
-import { GetAccountByIdUseCase } from 'src/domain/youcourse/application/use-cases/account/get-account-by-id';
-import { EditAccountDetailsController } from './controllers/edit-account-details.controller';
-import { EditAccountDetailsUseCase } from 'src/domain/youcourse/application/use-cases/account/edit-account-details';
-
-import { EditPasswordController } from './controllers/edit-password.controller';
-import { EditPasswordUseCase } from 'src/domain/youcourse/application/use-cases/account/edit-password';
-import { RequestPasswordResetController } from './controllers/request-password-reset.controller';
-import { RequestPasswordResetUseCase } from 'src/domain/youcourse/application/use-cases/account/request-password-reset';
-
-import { RefreshTokenController } from './controllers/refresh-token.controller';
 import { RefreshTokenUseCase } from 'src/domain/youcourse/application/use-cases/auth/refresh-token';
-
-import { DeleteCourseController } from './controllers/delete-course.controller';
 import { DeleteCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/delete-course';
-import { EditCourseDetailsController } from './controllers/edit-course-details.controller';
 import { EditCourseDetailsUseCase } from 'src/domain/youcourse/application/use-cases/course/edit-course-details';
-import { HideCourseController } from './controllers/hide-course.controller';
 import { HideCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/hide-course';
-import { PublishCourseController } from './controllers/publish-course.controller';
 import { PublishCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/publish-course';
-import { UnpublishCourseController } from './controllers/unpublish-course.controller';
 import { UnpublishCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/unpublish-course';
-import { UpdateCoursePriceController } from './controllers/update-course-price.controller';
 import { UpdateCoursePriceUseCase } from 'src/domain/youcourse/application/use-cases/course/update-course-price';
 
-import { EditRatingController } from './controllers/edit-rating.controller';
+// Lesson Use Cases
+import { CreateLessonUseCase } from 'src/domain/youcourse/application/use-cases/lesson/create-lesson';
+import { EditLessonDetailsUseCase } from 'src/domain/youcourse/application/use-cases/lesson/edit-lesson-details';
+import { DeleteLessonUseCase } from 'src/domain/youcourse/application/use-cases/lesson/delete-lesson';
+import { AttachVideoToLessonUseCase } from 'src/domain/youcourse/application/use-cases/lesson/attach-video-to-lesson';
+import { RemoveVideoFromLessonUseCase } from 'src/domain/youcourse/application/use-cases/lesson/remove-video-from-lesson';
+import { ReorderLessonUseCase } from 'src/domain/youcourse/application/use-cases/lesson/reorder-lesson';
+
+// Unit Use Cases
+import { CreateUnitUseCase } from 'src/domain/youcourse/application/use-cases/unit/create-unit';
+import { EditUnitDetailsUseCase } from 'src/domain/youcourse/application/use-cases/unit/edit-unit-details';
+import { DeleteUnitUseCase } from 'src/domain/youcourse/application/use-cases/unit/delete-unit';
+import { FetchUnitsUseCase } from 'src/domain/youcourse/application/use-cases/unit/fetch-units';
+import { ReorderUnitUseCase } from 'src/domain/youcourse/application/use-cases/unit/reorder-unit';
+
+import { RateCourseController } from './controllers/ratings/rate-course.controller';
+import { EditPasswordController } from './controllers/account/edit-password.controller';
+import { RequestPasswordResetController } from './controllers/account/request-password-reset.controller';
+import { EditRatingController } from './controllers/ratings/edit-rating.controller';
+import { RateCourseUseCase } from 'src/domain/youcourse/application/use-cases/ratings/rate-course';
+import { GetAccountByIdUseCase } from 'src/domain/youcourse/application/use-cases/account/get-account-by-id';
+import { EditAccountDetailsUseCase } from 'src/domain/youcourse/application/use-cases/account/edit-account-details';
+import { EditPasswordUseCase } from 'src/domain/youcourse/application/use-cases/account/edit-password';
+import { RequestPasswordResetUseCase } from 'src/domain/youcourse/application/use-cases/account/request-password-reset';
 import { EditRatingUseCase } from 'src/domain/youcourse/application/use-cases/ratings/edit-rating';
 
 @Module({
@@ -61,6 +92,19 @@ import { EditRatingUseCase } from 'src/domain/youcourse/application/use-cases/ra
     UnpublishCourseController,
     UpdateCoursePriceController,
     EditRatingController,
+    // Lesson Controllers
+    CreateLessonController,
+    EditLessonDetailsController,
+    DeleteLessonController,
+    AttachVideoToLessonController,
+    RemoveVideoFromLessonController,
+    ReorderLessonController,
+    // Unit Controllers
+    CreateUnitController,
+    EditUnitDetailsController,
+    DeleteUnitController,
+    FetchUnitsController,
+    ReorderUnitController,
   ],
   providers: [
     RegisterAccountUseCase,
@@ -80,6 +124,19 @@ import { EditRatingUseCase } from 'src/domain/youcourse/application/use-cases/ra
     UnpublishCourseUseCase,
     UpdateCoursePriceUseCase,
     EditRatingUseCase,
+    // Lesson Use Cases
+    CreateLessonUseCase,
+    EditLessonDetailsUseCase,
+    DeleteLessonUseCase,
+    AttachVideoToLessonUseCase,
+    RemoveVideoFromLessonUseCase,
+    ReorderLessonUseCase,
+    // Unit Use Cases
+    CreateUnitUseCase,
+    EditUnitDetailsUseCase,
+    DeleteUnitUseCase,
+    FetchUnitsUseCase,
+    ReorderUnitUseCase,
   ],
 })
 export class HttpModule {}

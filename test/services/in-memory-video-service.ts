@@ -1,7 +1,7 @@
-import { IVideoService } from 'src/domain/youcourse/application/services/video-service.interface';
+import type { VideoService } from 'src/domain/youcourse/application/services/video-service';
 import { Video } from 'src/domain/youcourse/enterprise/entities/value-objects/video.vo';
 
-export class InMemoryVideoService implements IVideoService {
+export class InMemoryVideoService implements VideoService {
   private videos: Map<string, Video> = new Map();
 
   async initiateUpload(

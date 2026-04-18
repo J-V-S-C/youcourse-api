@@ -5,7 +5,7 @@ import { InvalidTokenError } from '../errors/invalid-token-error';
 import type { Account } from 'src/domain/youcourse/enterprise/entities/account';
 import { AccountsRepository } from '../../repositories/accounts-repository';
 import { PasswordResetTokensRepository } from '../../repositories/password-reset-tokens-repository';
-import { EmailService } from '../../services/emailService';
+import { EmailService } from '../../services/email-service';
 import { HashGenerator } from '../../cryptography/hash-generator';
 
 interface EditPasswordUseCaseRequest {
