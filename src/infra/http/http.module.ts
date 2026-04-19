@@ -75,6 +75,9 @@ import { FetchLessonsUseCase } from 'src/domain/youcourse/application/use-cases/
 import { FetchLessonsController } from './controllers/lesson/fetch-lessons.controller';
 import { FetchCreatorCoursesController } from './controllers/course/fetch-creator-courses.controller';
 import { FetchCreatorCoursesUseCase } from 'src/domain/youcourse/application/use-cases/course/fetch-creator-courses';
+import { GetManagedCourseController } from './controllers/course/get-managed-course.controller';
+import { GetPublicCourseController } from './controllers/course/get-public-course.controller';
+import { GetCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases/course/get-course-by-id';
 
 @Module({
   imports: [DatabaseModule, ServicesModule, CryptographyModule],
@@ -85,6 +88,9 @@ import { FetchCreatorCoursesUseCase } from 'src/domain/youcourse/application/use
     CreateCourseController,
     FetchCoursesController,
     FetchCreatorCoursesController,
+    GetPublicCourseController,
+    GetManagedCourseController,
+
     RateCourseController,
     GetAccountByIdController,
     EditAccountDetailsController,
@@ -121,6 +127,7 @@ import { FetchCreatorCoursesUseCase } from 'src/domain/youcourse/application/use
     CreateCourseUseCase,
     FetchCoursesUseCase,
     FetchCreatorCoursesUseCase,
+    GetCourseByIdUseCase,
 
     RateCourseUseCase,
     GetAccountByIdUseCase,
