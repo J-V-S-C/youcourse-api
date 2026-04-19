@@ -1,11 +1,7 @@
 import { Controller, Get, HttpCode, Param } from '@nestjs/common';
 import { FetchUnitsUseCase } from 'src/domain/youcourse/application/use-cases/unit/fetch-units';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { Public } from 'src/infra/auth/public';
 
 @ApiTags('Units')
 @Controller('/courses/:courseId/units')
@@ -18,6 +14,7 @@ export class FetchUnitsController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiParam({ name: 'courseId', description: 'Course ID' })
   @HttpCode(200)
+  @Public()
   async handle(@Param('courseId') courseId: string) {
     const result = await this.fetchUnits.execute({ courseId });
 

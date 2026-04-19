@@ -4,6 +4,7 @@ export class CoursePresenter {
   static toHTTP(course: Course) {
     return {
       id: course.id.toString(),
+      creatorId: course.creatorId.toString(),
       name: course.name,
       description: course.description,
       price: course.price,
