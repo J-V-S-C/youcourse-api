@@ -3,6 +3,7 @@ import { Course } from 'src/domain/youcourse/enterprise/entities/course';
 import { Price } from 'src/domain/youcourse/enterprise/entities/value-objects/price';
 import { CoursesRepository } from '../../repositories/courses-repository';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
+import { DomainError } from '../errors/domain-error';
 import { NotAllowedError } from '../errors/not-allowed-error';
 import { Injectable } from '@nestjs/common';
 
@@ -13,7 +14,7 @@ interface UpdateCoursePriceUseCaseRequest {
 }
 
 type UpdateCoursePriceUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
+  ResourceNotFoundError | NotAllowedError | DomainError,
   { course: Course }
 >;
 
@@ -37,8 +38,11 @@ export class UpdateCoursePriceUseCase {
 
     try {
       course.updatePrice(price);
-    } catch {
-      return left(new NotAllowedError());
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unexpected error';
+
+      return left(new DomainError(errorMessage));
     }
 
     await this.coursesRepository.save(course);

@@ -73,14 +73,24 @@ import { RequestPasswordResetUseCase } from 'src/domain/youcourse/application/us
 import { EditRatingUseCase } from 'src/domain/youcourse/application/use-cases/ratings/edit-rating';
 import { FetchLessonsUseCase } from 'src/domain/youcourse/application/use-cases/lesson/fetch-lessons';
 import { FetchLessonsController } from './controllers/lesson/fetch-lessons.controller';
+import { FetchCreatorCoursesController } from './controllers/course/fetch-creator-courses.controller';
+import { FetchCreatorCoursesUseCase } from 'src/domain/youcourse/application/use-cases/course/fetch-creator-courses';
+import { GetManagedCourseController } from './controllers/course/get-managed-course.controller';
+import { GetPublicCourseController } from './controllers/course/get-public-course.controller';
+import { GetCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases/course/get-course-by-id';
 
 @Module({
   imports: [DatabaseModule, ServicesModule, CryptographyModule],
   controllers: [
     CreateAccountController,
     AuthenticateAccountController,
+
     CreateCourseController,
     FetchCoursesController,
+    FetchCreatorCoursesController,
+    GetPublicCourseController,
+    GetManagedCourseController,
+
     RateCourseController,
     GetAccountByIdController,
     EditAccountDetailsController,
@@ -94,6 +104,7 @@ import { FetchLessonsController } from './controllers/lesson/fetch-lessons.contr
     UnpublishCourseController,
     UpdateCoursePriceController,
     EditRatingController,
+
     // Lesson Controllers
     CreateLessonController,
     EditLessonDetailsController,
@@ -112,8 +123,12 @@ import { FetchLessonsController } from './controllers/lesson/fetch-lessons.contr
   providers: [
     RegisterAccountUseCase,
     AuthenticateAccountUseCase,
+
     CreateCourseUseCase,
     FetchCoursesUseCase,
+    FetchCreatorCoursesUseCase,
+    GetCourseByIdUseCase,
+
     RateCourseUseCase,
     GetAccountByIdUseCase,
     EditAccountDetailsUseCase,
