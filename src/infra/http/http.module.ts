@@ -71,6 +71,8 @@ import { EditAccountDetailsUseCase } from 'src/domain/youcourse/application/use-
 import { EditPasswordUseCase } from 'src/domain/youcourse/application/use-cases/account/edit-password';
 import { RequestPasswordResetUseCase } from 'src/domain/youcourse/application/use-cases/account/request-password-reset';
 import { EditRatingUseCase } from 'src/domain/youcourse/application/use-cases/ratings/edit-rating';
+import { FetchLessonsUseCase } from 'src/domain/youcourse/application/use-cases/lesson/fetch-lessons';
+import { FetchLessonsController } from './controllers/lesson/fetch-lessons.controller';
 
 @Module({
   imports: [DatabaseModule, ServicesModule, CryptographyModule],
@@ -99,6 +101,7 @@ import { EditRatingUseCase } from 'src/domain/youcourse/application/use-cases/ra
     AttachVideoToLessonController,
     RemoveVideoFromLessonController,
     ReorderLessonController,
+    FetchLessonsController,
     // Unit Controllers
     CreateUnitController,
     EditUnitDetailsController,
@@ -131,6 +134,7 @@ import { EditRatingUseCase } from 'src/domain/youcourse/application/use-cases/ra
     AttachVideoToLessonUseCase,
     RemoveVideoFromLessonUseCase,
     ReorderLessonUseCase,
+    FetchLessonsUseCase,
     // Unit Use Cases
     CreateUnitUseCase,
     EditUnitDetailsUseCase,
