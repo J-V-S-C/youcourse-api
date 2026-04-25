@@ -70,7 +70,7 @@ export class AttachVideoToLessonUseCase {
 
     const video = Video.createUploading({
       externalId: uploadResult.externalId,
-      playbackUrl: uploadResult.uploadUrl,
+      playbackUrl: uploadResult.playbackUrl,
     });
 
     lesson.attachVideo(video);
@@ -82,6 +82,7 @@ export class AttachVideoToLessonUseCase {
       video: {
         externalId: uploadResult.externalId,
         uploadUrl: uploadResult.uploadUrl,
+        playbackUrl: uploadResult.playbackUrl,
       },
     });
   }

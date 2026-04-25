@@ -46,7 +46,7 @@ model Rating {
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime? @map("updated_at")
   creator    Account   @relation(fields: [creatorId], references: [id])
-  course     Course    @relation(fields: [courseId], references: [id])
+  course     Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model CourseMetrics {
