@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -18,6 +18,7 @@ services:
       - postgres_data:/var/lib/postgresql
     networks:
       - youcourse-net
+
   api:
     container_name: youcourse-api
     ports:
@@ -36,8 +37,27 @@ services:
     networks:
       - youcourse-net
 
+  caddy:
+    image: caddy:latest
+    container_name: youcourse-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - youcourse-net
+    depends_on:
+      - api
+
 networks:
   youcourse-net:
     driver: bridge
+
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:
