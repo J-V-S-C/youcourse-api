@@ -1,10 +1,9 @@
-import {
-  Video,
-} from '../../enterprise/entities/value-objects/video.vo';
+import { Video } from '../../enterprise/entities/value-objects/video.vo';
 
 export interface UploadVideoResult {
   externalId: string;
   uploadUrl: string;
+  playbackUrl: string;
   status: 'uploading' | 'processing';
 }
 

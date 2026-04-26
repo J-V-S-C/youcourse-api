@@ -10,13 +10,16 @@ export class InMemoryVideoService implements VideoService {
   ): Promise<{
     externalId: string;
     uploadUrl: string;
+    playbackUrl: string;
     status: 'uploading' | 'processing';
   }> {
     const externalId = `video-${Date.now()}`;
     const uploadUrl = `https://upload.example.com/${externalId}`;
+    const playbackUrl = ``;
     return {
       externalId,
       uploadUrl,
+      playbackUrl,
       status: 'uploading',
     };
   }

@@ -50,6 +50,7 @@ export class AWSVideoService implements VideoService {
     return {
       externalId,
       uploadUrl,
+      playbackUrl: `https://${this.cloudfrontUrl}/${externalId}`,
       status: 'uploading',
     };
   }
@@ -57,7 +58,7 @@ export class AWSVideoService implements VideoService {
   async getVideoStatus(externalId: string): Promise<Video> {
     return Video.createUploading({
       externalId,
-      playbackUrl: `${this.cloudfrontUrl}/${externalId}`,
+      playbackUrl: `https://${this.cloudfrontUrl}/${externalId}`,
     });
   }
 
