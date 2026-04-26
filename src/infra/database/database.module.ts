@@ -1,35 +1,64 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
-import { AccountsRepository } from 'src/domain/ecommerce/application/repositories/accounts-repository';
+import { AccountsRepository } from 'src/domain/youcourse/application/repositories/accounts-repository';
 import { PrismaAccountsRepository } from './prisma/repositories/prisma-accounts-repository';
-import { ProductsRepository } from 'src/domain/ecommerce/application/repositories/products-repository';
-import { PrismaProductsRepository } from './prisma/repositories/prisma-products-repository';
-import { EnvService } from '../env/env.service';
-import { RatingsRepository } from 'src/domain/ecommerce/application/repositories/ratings-repository';
+import { CoursesRepository } from 'src/domain/youcourse/application/repositories/courses-repository';
+import { PrismaCoursesRepository } from './prisma/repositories/prisma-courses-repository';
+import { EnvModule } from '../env/env.module';
+import { RatingsRepository } from 'src/domain/youcourse/application/repositories/ratings-repository';
 import { PrismaRatingsRepository } from './prisma/repositories/prisma-ratings-repository';
+import { PasswordResetTokensRepository } from 'src/domain/youcourse/application/repositories/password-reset-tokens-repository';
+import { PrismaPasswordResetTokensRepository } from './prisma/repositories/prisma-password-reset-tokens-repository';
+import { RefreshTokensRepository } from 'src/domain/youcourse/application/repositories/refresh-tokens-repository';
+import { PrismaRefreshTokensRepository } from './prisma/repositories/prisma-refresh-tokens-repository';
+import { UnitsRepository } from 'src/domain/youcourse/application/repositories/units-repository';
+import { PrismaUnitsRepository } from './prisma/repositories/prisma-units-repository';
+import { LessonsRepository } from 'src/domain/youcourse/application/repositories/lessons-repository';
+import { PrismaLessonsRepository } from './prisma/repositories/prisma-lessons-repository';
 
 @Module({
+  imports: [EnvModule],
   providers: [
-    EnvService,
+    PrismaService,
     PrismaService,
     {
       provide: AccountsRepository,
       useClass: PrismaAccountsRepository,
     },
     {
-      provide: ProductsRepository,
-      useClass: PrismaProductsRepository,
+      provide: CoursesRepository,
+      useClass: PrismaCoursesRepository,
     },
     {
       provide: RatingsRepository,
       useClass: PrismaRatingsRepository,
     },
+    {
+      provide: PasswordResetTokensRepository,
+      useClass: PrismaPasswordResetTokensRepository,
+    },
+    {
+      provide: RefreshTokensRepository,
+      useClass: PrismaRefreshTokensRepository,
+    },
+    {
+      provide: UnitsRepository,
+      useClass: PrismaUnitsRepository,
+    },
+    {
+      provide: LessonsRepository,
+      useClass: PrismaLessonsRepository,
+    },
   ],
   exports: [
     PrismaService,
     AccountsRepository,
-    ProductsRepository,
+    CoursesRepository,
     RatingsRepository,
+    PasswordResetTokensRepository,
+    RefreshTokensRepository,
+    UnitsRepository,
+    LessonsRepository,
   ],
 })
 export class DatabaseModule {}

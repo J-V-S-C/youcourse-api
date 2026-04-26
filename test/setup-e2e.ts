@@ -3,6 +3,8 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { AppModule } from 'src/infra/app.module';
+import { EmailService } from 'src/domain/youcourse/application/services/email-service';
+import { vi } from 'vitest';
 
 config({ path: '.env', override: true });
 config({ path: '.env.test', override: true });
@@ -11,18 +13,22 @@ let app: INestApplication;
 let prisma: PrismaService;
 
 beforeAll(async () => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [AppModule],
-  }).compile();
+  try {
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
 
-  app = moduleRef.createNestApplication();
-  await app.init();
+    app = moduleRef.createNestApplication();
+    await app.init();
 
-  prisma = app.get(PrismaService);
+    prisma = app.get(PrismaService);
+  } catch (err) {
+    console.error('FATAL SETUP ERROR:', err);
+    throw err;
+  }
 });
 
 beforeEach(async () => {
-  // pega todas as tabelas do schema público
   const tables = await prisma.$queryRaw<
     { tablename: string }[]
   >`SELECT tablename FROM pg_tables WHERE schemaname = 'public';`;

@@ -1,70 +1,107 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl", "debian-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-enum AccountStatus {
-  ACTIVE
-  SUSPENDED
-  DISABLED
-}
-
 model Account {
-  id        String        @id @default(uuid())
-  name      String
-  email     String        @unique
-  password  String
-  status    AccountStatus @default(ACTIVE)
-  createdAt DateTime      @default(now()) @map("created_at")
-  lastLogin DateTime?     @map("last_login")
-  products  Product[]
-  rating    Rating[]
+  id                  String               @id @default(uuid())
+  name                String
+  email               String               @unique
+  password            String
+  status              AccountStatus        @default(ACTIVE)
+  createdAt           DateTime             @default(now()) @map("created_at")
+  lastLogin           DateTime?            @map("last_login")
+  courses             Course[]
+  passwordResetTokens PasswordResetToken[]
+  rating              Rating[]
+  refreshTokens       RefreshToken[]
 }
 
-model Product {
-  id          String    @id @default(uuid())
-  creatorId   String    @map("account_id")
+model Course {
+  id          String         @id @default(uuid())
+  creatorId   String         @map("account_id")
   name        String
   description String
   price       Json?
   visible     Boolean
   sellable    Boolean
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime? @map("updated_at")
-
-  creator Account         @relation(fields: [creatorId], references: [id])
-  ratings Rating[]
-  metrics ProductMetrics?
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime?      @map("updated_at")
+  creator     Account        @relation(fields: [creatorId], references: [id])
+  metrics     CourseMetrics?
+  ratings     Rating[]
+  units       Unit[]
 }
 
 model Rating {
   id         String    @id @default(uuid())
   creatorId  String    @map("account_id")
-  productId  String    @map("product_id")
+  courseId   String    @map("course_id")
   commentary String
   stars      Float
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime? @map("updated_at")
-
-  creator Account @relation(fields: [creatorId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  creator    Account   @relation(fields: [creatorId], references: [id])
+  course     Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
-model ProductMetrics {
-  productId String @id
-  views     Int
-  clicks    Int
-  sales     Int
-  score     Float
+model CourseMetrics {
+  courseId String @id
+  views    Int
+  clicks   Int
+  sales    Int
+  score    Float
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
 
-  product Product @relation(fields: [productId], references: [id])
+model Unit {
+  id          String    @id @default(uuid())
+  courseId    String    @map("course_id")
+  name        String
+  description String?
+  position    Int
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id          String    @id @default(uuid())
+  unitId      String    @map("unit_id")
+  name        String
+  description String?
+  video       Json?
+  position    Int
+  isPreview   Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  unit        Unit      @relation(fields: [unitId], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  accountId String    @map("account_id")
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  account   Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  accountId String   @map("account_id")
+  expiresAt DateTime @map("expires_at")
+  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  DISABLED
 }

@@ -1,0 +1,17 @@
+import { Course } from 'src/domain/youcourse/enterprise/entities/course';
+
+export class CoursePresenter {
+  static toHTTP(course: Course) {
+    return {
+      id: course.id.toString(),
+      creatorId: course.creatorId.toString(),
+      name: course.name,
+      description: course.description,
+      price: course.price,
+      visible: course.visible,
+      sellable: course.sellable,
+      createdAt: course.createdAt,
+      updatedAt: course.updatedAt,
+    };
+  }
+}

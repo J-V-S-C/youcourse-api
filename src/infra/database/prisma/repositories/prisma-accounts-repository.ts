@@ -1,5 +1,5 @@
-import { AccountsRepository } from 'src/domain/ecommerce/application/repositories/accounts-repository';
-import { Account } from 'src/domain/ecommerce/enterprise/entities/account';
+import { AccountsRepository } from 'src/domain/youcourse/application/repositories/accounts-repository';
+import { Account } from 'src/domain/youcourse/enterprise/entities/account';
 import { PrismaService } from '../prisma.service';
 import { PrismaAccountMapper } from '../mappers/prisma-account-mapper';
 import { Injectable } from '@nestjs/common';
@@ -17,6 +17,7 @@ export class PrismaAccountsRepository implements AccountsRepository {
 
   async save(account: Account): Promise<void> {
     const data = PrismaAccountMapper.toPrisma(account);
+
     await this.prisma.account.update({
       where: {
         id: data.id,

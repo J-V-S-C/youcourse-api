@@ -2,7 +2,7 @@ import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import {
   Account,
   AccountProps,
-} from 'src/domain/ecommerce/enterprise/entities/account';
+} from 'src/domain/youcourse/enterprise/entities/account';
 import { faker } from '@faker-js/faker';
 
 export function makeAccount(

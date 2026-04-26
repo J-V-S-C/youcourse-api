@@ -1,15 +1,63 @@
-version: '3.8'
-
 services:
   postgres:
-    container_name: nest-ecommerce-pg
+    container_name: nest-youcourse-pg
     image: postgres
     ports:
-      - 5432:5432
+      - ${DB_PORT}:5432
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: nest-clean
-      PGDATA: /data/postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     volumes:
-      - ./data/pg:/data/postgres
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - youcourse-net
+
+  api:
+    container_name: youcourse-api
+    ports:
+      - ${PORT}:${PORT}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    env_file:
+      - .env.prod
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    networks:
+      - youcourse-net
+
+  caddy:
+    image: caddy:latest
+    container_name: youcourse-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - youcourse-net
+    depends_on:
+      - api
+
+networks:
+  youcourse-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:

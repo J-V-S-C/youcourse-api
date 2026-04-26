@@ -2,7 +2,7 @@
 import {
   Account,
   AccountProps,
-} from 'src/domain/ecommerce/enterprise/entities/account';
+} from 'src/domain/youcourse/enterprise/entities/account';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { PrismaAccountMapper } from 'src/infra/database/prisma/mappers/prisma-account-mapper';
 import { Injectable } from '@nestjs/common';

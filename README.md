@@ -39,7 +39,7 @@ $ pnpm run test:e2e
 
 ## TODO
 
-- [ ] Swagger
+- [x] Swagger
 - [ ] HTTPS
 - [ ] Internacionalização
 - [ ] Deploy
@@ -54,24 +54,24 @@ $ pnpm run test:e2e
 - [x] Register-Account
 - [x] Authenticate
 - [x] Edit-Account
-- [ ] Recover-Password
+- [x] Change-Password
 
-!!!PRODUCTS
+!!!COURSES
 
-- [x] Create-Product
-- [x] Edit-Product-Details
-- [x] Update-Product-Price
-- [x] Publish-Product
-- [x] Unpublish-Product
-- [x] Hide-Product
-- [x] Delete-Product
+- [x] Create-Course
+- [x] Edit-Course-Details
+- [x] Update-Course-Price
+- [x] Publish-Course
+- [x] Unpublish-Course
+- [x] Hide-Course
+- [x] Delete-Course
 
 !!CATALOG
 
-- [x] Fetch-Products
-- [ ] Search-Products
-- [ ] View-Product
-- [ ] Click-Product
+- [x] Fetch-Courses
+- [ ] Search-Courses
+- [ ] View-Course
+- [ ] Click-Course
 
 !CART
 
@@ -81,7 +81,7 @@ $ pnpm run test:e2e
 
 !!CHECKOUT / SALES
 
-- [ ] Sell-Product
+- [ ] Sell-Course
 - [ ] Checkout
 - [ ] Process-Payment
 
@@ -99,7 +99,7 @@ $ pnpm run test:e2e
 
 RATINGS / REVIEWS
 
-- [x] Rate-Product
+- [x] Rate-Course
 - [x] Edit-Rating
 - [ ] Delete-Rating
 
@@ -121,15 +121,14 @@ SUBSCRIPTIONS
 !ADMIN
 
 - [ ] Manage-Users
-- [ ] Manage-Products
+- [ ] Manage-Courses
 - [ ] View-Reports
 
 !!AUTH
 
-- [ ] Change-Password
-- [ ] Refresh-Token
-- [ ] Revoke-Session
-- [ ] Verify-Email(guarantee that its not a robot)
+- [x] Change-Password
+- [x] Refresh-Token
+- [x] send token to email
 
 ====================================
 

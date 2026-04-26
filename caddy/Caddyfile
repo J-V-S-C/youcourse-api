@@ -1,0 +1,8 @@
+youcourse-api.duckdns.org {
+    # Removemos o handle /api* e deixamos o proxy direto
+    reverse_proxy youcourse-api:3333
+
+    log {
+        output file /data/access.log
+    }
+}
