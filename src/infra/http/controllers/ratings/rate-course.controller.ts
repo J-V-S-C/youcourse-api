@@ -16,24 +16,23 @@ import {
   ApiTags,
   ApiOperation,
   ApiResponse,
-  ApiBearerAuth,
   ApiBody,
   ApiProperty,
+  ApiExcludeEndpoint,
 } from '@nestjs/swagger';
 
-export class RateCourseDto {
+/*export class RateCourseDto {
   @ApiProperty({ minimum: 0.5, maximum: 5, multipleOf: 0.5, default: 5 })
   stars!: number;
 
   @ApiProperty({ required: false, default: 'Ótimo curso!' })
   commentary?: string;
 }
-
+*/
 const rateCourseBodySchema = z.object({
   commentary: z.string().max(255).optional().default(''),
   stars: z
-    .string()
-    .transform(Number)
+    .number()
     .pipe(z.number().min(0.5).max(5).multipleOf(0.5)),
 });
 
@@ -41,16 +40,18 @@ type RateCourseBodySchema = z.infer<typeof rateCourseBodySchema>;
 
 const bodyValidationPipe = new ZodValidationPipe(rateCourseBodySchema);
 
-@ApiTags('Courses')
+//@ApiTags('Courses')
 @Controller('/courses/:courseId/rating')
 export class RateCourseController {
-  constructor(private rateCourse: RateCourseUseCase) {}
+  constructor(private rateCourse: RateCourseUseCase) { }
 
   @Post()
-  @ApiOperation({ summary: 'Endpoint operation' })
+  /*@ApiOperation({ summary: 'Endpoint operation' })
   @ApiResponse({ status: 200, description: 'Success' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiBody({ type: RateCourseDto })
+  */
+  @ApiExcludeEndpoint()
   @HttpCode(201)
   async handle(
     @Body(bodyValidationPipe) body: RateCourseBodySchema,

@@ -19,8 +19,11 @@ import {
   ApiResponse,
   ApiBody,
   ApiProperty,
+  ApiExcludeController,
+  ApiExcludeEndpoint,
 } from '@nestjs/swagger';
 
+/*
 export class EditRatingDto {
   @ApiProperty({ required: false })
   commentary?: string;
@@ -28,6 +31,7 @@ export class EditRatingDto {
   @ApiProperty({ required: false })
   stars?: number;
 }
+*/
 
 const editRatingBodySchema = z.object({
   commentary: z.string().optional(),
@@ -36,17 +40,20 @@ const editRatingBodySchema = z.object({
 
 type EditRatingBodySchema = z.infer<typeof editRatingBodySchema>;
 
-@ApiTags('Ratings')
+//@ApiTags('Ratings')
 @Controller('/ratings/:ratingId')
 export class EditRatingController {
-  constructor(private editRating: EditRatingUseCase) {}
+  constructor(private editRating: EditRatingUseCase) { }
 
   @Put()
+  /*
   @ApiOperation({ summary: 'Endpoint operation' })
   @ApiResponse({ status: 200, description: 'Success' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiBody({ type: EditRatingDto })*/
+
+  @ApiExcludeEndpoint()
   @HttpCode(204)
-  @ApiBody({ type: EditRatingDto })
   async handle(
     @CurrentUser() user: UserPayload,
     @Param('ratingId') ratingId: string,

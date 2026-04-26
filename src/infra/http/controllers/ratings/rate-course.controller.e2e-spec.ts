@@ -43,7 +43,7 @@ describe('Rate Course (E2E)', () => {
       .post(`/courses/${courseId}/rating`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        stars: '1.5',
+        stars: 1.5,
         commentary: 'Good course!',
       });
 

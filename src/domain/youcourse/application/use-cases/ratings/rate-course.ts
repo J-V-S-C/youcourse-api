@@ -16,7 +16,7 @@ type RateCourseUseCaseResponse = Either<null, { rating: Rating }>;
 
 @Injectable()
 export class RateCourseUseCase {
-  constructor(private readonly ratingsRepository: RatingsRepository) {}
+  constructor(private readonly ratingsRepository: RatingsRepository) { }
 
   async execute({
     courseId,
@@ -24,6 +24,7 @@ export class RateCourseUseCase {
     commentary,
     stars,
   }: RateCourseUseCaseRequest): Promise<RateCourseUseCaseResponse> {
+    // #ToDo: se alguma rating existir com o id do criador e do curso passados, deve imprimir erro
     const rating = Rating.create({
       courseId: new UniqueEntityID(courseId),
       creatorId: new UniqueEntityID(creatorId),
