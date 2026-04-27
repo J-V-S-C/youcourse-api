@@ -25,11 +25,11 @@ O **YouCourse API** é o core backend para um portal de cursos online, construí
 
 📌 **Funcionalidades e Demonstração da Aplicação:**
 # :hammer: Funcionalidades do projeto
-- `Autenticação`: Sessões via JWT, Refresh Token e recuperação de senha.
-- `Gestão de Cursos`: CRUD de cursos, unidades e lições com reordenação dinâmica.
-- `Métricas e Ratings`: Sistema de avaliações e métricas de desempenho.
-- `Segurança de Conteúdo`: Geração de Signed URLs (CloudFront) para vídeos no S3.
-- `Infraestrutura`: Proxy reverso com Caddy e containerização total via Docker.
+- `Autenticação`: Gestão de sessões com JWT, Refresh Token e recuperação de senha.
+- `Gestão de Cursos`: CRUD completo de cursos, unidades e lições com controle de posição (`position`) para reordenação.
+- `Métricas e Ratings`: Monitoramento de engajamento (views, clicks, sales) e sistema de avaliações (score).
+- `Segurança de Conteúdo`: Proteção de vídeos via Signed URLs e integração com AWS S3/CloudFront.
+- `Infraestrutura`: Deploy automatizado com Docker e Proxy reverso Caddy com SSL automático.
 
 📌 **Acesso ao projeto:**
 ## 📁 Acesso ao projeto
@@ -53,6 +53,7 @@ $ pnpm db:deploy
 
 **3. Execução e Testes:**
 ```bash
+$ pnpm run dev       # Iniciar API em modo dev
 $ pnpm run test      # Unitários
 $ pnpm run test:e2e  # End-to-End
 ```
