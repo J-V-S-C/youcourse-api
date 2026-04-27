@@ -75,7 +75,7 @@ O projeto foi construído utilizando o estado da arte para garantir escalabilida
 
 <div align="center">
 
-| [<img src="https://github.com/J-V-S-C" width="100px;" style="border-radius:50%;" alt="João Victor"/><br><sub><b>João Victor Sant'Ana Cortabitart</b></sub>](https://github.com/J-V-S-C) |
+| [<img src="https://github.com/J-V-S-C.png" width="100px;" style="border-radius:50%;" alt="João Victor"/><br><sub><b>João Victor Sant'Ana Cortabitart</b></sub>](https://github.com/J-V-S-C) |
 | :---: |
 
 </div>
