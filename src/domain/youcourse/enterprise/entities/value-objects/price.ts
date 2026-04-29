@@ -15,7 +15,22 @@ export class Price extends ValueObject<PriceProps> {
   }
 
   static create(props: PriceProps) {
-    return new Price(props);
+    if (props.amount < 0) {
+      throw new Error('Price amount cannot be negative');
+    }
+
+    if (props.amount > 0 && props.amount < 150) {
+      throw new Error('Price must be 0 (free) or at least 150 (R$ 1,50)');
+    }
+
+    if (!Number.isInteger(props.amount)) {
+      throw new Error('Price amount must be ain integer (cents)');
+    }
+
+    return new Price({
+      amount: props.amount,
+      currency: props.currency.toUpperCase(),
+    });
   }
 
   toJSON() {

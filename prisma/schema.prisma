@@ -19,6 +19,7 @@ model Account {
   passwordResetTokens PasswordResetToken[]
   rating              Rating[]
   refreshTokens       RefreshToken[]
+  payments            Payment[]
 }
 
 model Course {
@@ -35,6 +36,7 @@ model Course {
   metrics     CourseMetrics?
   ratings     Rating[]
   units       Unit[]
+  payments    Payment[]
 }
 
 model Rating {
@@ -100,8 +102,29 @@ model RefreshToken {
   account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }
 
+model Payment {
+  id             String        @id @default(uuid())
+  courseId       String        @map("course_id")
+  accountId      String        @map("account_id")
+  amount         Int // Em centavos
+  status         PaymentStatus @default(PENDING)
+  paymentUrl     String?       @map("payment_url")
+  transactionNsu String?       @unique @map("transaction_nsu")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime?     @map("updated_at")
+
+  course  Course  @relation(fields: [courseId], references: [id])
+  account Account @relation(fields: [accountId], references: [id])
+}
+
 enum AccountStatus {
   ACTIVE
   SUSPENDED
   DISABLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
 }

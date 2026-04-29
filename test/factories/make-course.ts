@@ -15,7 +15,7 @@ export function makeCourse(
       name: faker.person.firstName(),
       description: faker.commerce.productDescription(),
       price: Price.create({
-        amount: faker.number.float({ min: 0.01, fractionDigits: 2 }),
+        amount: faker.number.int({ min: 1000, max: 100000000 }),
         currency: faker.finance.currencyCode(),
       }),
       creatorId: new UniqueEntityID(),

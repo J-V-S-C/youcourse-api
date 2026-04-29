@@ -6,49 +6,61 @@ import { DatabaseModule } from 'src/infra/database/database.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import request from 'supertest';
 import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
+import { CourseFactory } from 'test/factories/prisma/prisma-course-factory';
+import { Price } from 'src/domain/youcourse/enterprise/entities/value-objects/price';
 
-describe('Create Course (E2E)', () => {
+describe('Purchase Course (E2E)', () => {
   let app: INestApplication;
-  let prisma: PrismaService;
   let accountFactory: AccountFactory;
+  let courseFactory: CourseFactory;
   let jwt: JwtService;
+  let prisma: PrismaService;
+
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [AccountFactory],
+      providers: [AccountFactory, CourseFactory],
     }).compile();
 
     accountFactory = moduleRef.get(AccountFactory);
-
+    courseFactory = moduleRef.get(CourseFactory);
     jwt = moduleRef.get(JwtService);
     prisma = moduleRef.get(PrismaService);
+
     app = moduleRef.createNestApplication();
     await app.init();
   });
 
-  test('[POST] /courses', async () => {
+  test('[POST] /courses/:courseId/purchase', async () => {
     const user = await accountFactory.makePrismaAccount();
     const accessToken = jwt.sign({ sub: user.id.toString() });
 
+    const course = await courseFactory.makePrismaCourse({
+      creatorId: user.id,
+      price: Price.create({ amount: 5000, currency: 'BRL' }),
+      sellable: true,
+      visible: true,
+    });
+
     const response = await request(app.getHttpServer())
-      .post('/courses')
+      .post(`/courses/${course.id.toString()}/purchase`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        name: 'Computer',
-        description: 'In good state',
-        price: {
-          amount: 1099, //10.99
-          currency: 'USD',
-        },
-      });
+      .send();
 
     expect(response.statusCode).toBe(201);
+    expect(response.body).toHaveProperty('paymentUrl');
 
-    const courseOnDatabase = await prisma.course.findFirst({
+    // Validação de persistência no banco de dados via Prisma
+    const paymentOnDb = await prisma.payment.findFirst({
       where: {
-        name: 'Computer',
+        accountId: user.id.toString(),
+        courseId: course.id.toString(),
       },
     });
-    expect(courseOnDatabase).toBeTruthy();
+
+    expect(paymentOnDb).toBeTruthy();
+    expect(paymentOnDb?.status).toBe('PENDING');
+    expect(paymentOnDb?.amount).toBe(5000);
+    expect(paymentOnDb?.paymentUrl).toBe(response.body.paymentUrl);
   });
 });
