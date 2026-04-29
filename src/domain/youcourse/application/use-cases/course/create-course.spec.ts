@@ -17,7 +17,7 @@ describe('Create Course', () => {
       name: 'jerjelim',
       description: '',
       price: Price.create({
-        amount: 3,
+        amount: 300,
         currency: 'USD',
       }),
     });

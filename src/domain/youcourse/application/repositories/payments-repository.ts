@@ -1,0 +1,7 @@
+import { Payment } from '../../enterprise/entities/payment';
+
+export abstract class PaymentsRepository {
+  abstract create(payment: Payment): Promise<void>;
+  abstract save(payment: Payment): Promise<void>;
+  abstract findById(id: string): Promise<Payment | null>;
+}

@@ -14,6 +14,7 @@ export const envSchema = z.object({
   AWS_SECRET_ACCESS_KEY: z.string(),
   AWS_CLOUDFRONT_URL: z.string(),
   AWS_S3_BUCKET_NAME: z.string(),
+  INFINITEPAY_HANDLE: z.string(),
 });
 
 export type Env = z.infer<typeof envSchema>;

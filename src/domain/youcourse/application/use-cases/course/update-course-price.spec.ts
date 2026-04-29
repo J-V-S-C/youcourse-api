@@ -22,7 +22,7 @@ describe('Update Course Price', () => {
       courseId: course.id.toString(),
       creatorId: course.creatorId.toString(),
       price: Price.create({
-        amount: 10,
+        amount: 1000,
         currency: 'USD',
       }),
     });
@@ -32,7 +32,7 @@ describe('Update Course Price', () => {
     const updatedCourse = inMemoryCoursesRepository.items[0];
     expect(updatedCourse.price).toMatchObject(
       expect.objectContaining({
-        amount: 10,
+        amount: 1000,
         currency: 'USD',
       }),
     );
@@ -42,7 +42,7 @@ describe('Update Course Price', () => {
       courseId: 'fake-id',
       creatorId: 'fake-creator',
       price: Price.create({
-        amount: 10,
+        amount: 1000,
         currency: 'USD',
       }),
     });
@@ -59,7 +59,7 @@ describe('Update Course Price', () => {
       courseId: course.id.toString(),
       creatorId: 'fake-creator',
       price: Price.create({
-        amount: 10,
+        amount: 1000,
         currency: 'USD',
       }),
     });
@@ -77,7 +77,7 @@ describe('Update Course Price', () => {
       courseId: course.id.toString(),
       creatorId: 'fake-creator',
       price: Price.create({
-        amount: 10,
+        amount: 1000,
         currency: 'USD',
       }),
     });

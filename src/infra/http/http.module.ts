@@ -78,6 +78,10 @@ import { FetchCreatorCoursesUseCase } from 'src/domain/youcourse/application/use
 import { GetManagedCourseController } from './controllers/course/get-managed-course.controller';
 import { GetPublicCourseController } from './controllers/course/get-public-course.controller';
 import { GetCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases/course/get-course-by-id';
+import { PurchaseCourseController } from './controllers/course/purchase-course.controller';
+import { PaymentWebhookController } from './controllers/course/payment-webhook.controller';
+import { PurchaseCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/purchase-course';
+import { ProcessPaymentWebhookUseCase } from 'src/domain/youcourse/application/use-cases/course/process-payment-webhook';
 
 @Module({
   imports: [DatabaseModule, ServicesModule, CryptographyModule],
@@ -103,6 +107,8 @@ import { GetCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases
     PublishCourseController,
     UnpublishCourseController,
     UpdateCoursePriceController,
+    PurchaseCourseController,
+    PaymentWebhookController,
     EditRatingController,
 
     // Lesson Controllers
@@ -141,6 +147,8 @@ import { GetCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases
     PublishCourseUseCase,
     UnpublishCourseUseCase,
     UpdateCoursePriceUseCase,
+    PurchaseCourseUseCase,
+    ProcessPaymentWebhookUseCase,
     EditRatingUseCase,
     // Lesson Use Cases
     CreateLessonUseCase,
