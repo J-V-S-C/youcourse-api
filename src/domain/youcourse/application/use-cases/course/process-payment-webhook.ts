@@ -17,7 +17,7 @@ type ProcessPaymentWebhookUseCaseResponse = Either<
 
 @Injectable()
 export class ProcessPaymentWebhookUseCase {
-  constructor(private paymentsRepository: PaymentsRepository) {}
+  constructor(private paymentsRepository: PaymentsRepository) { }
 
   async execute({
     orderNsu,

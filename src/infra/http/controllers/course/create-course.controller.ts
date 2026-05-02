@@ -41,10 +41,10 @@ export class CreateCourseDto {
 }
 
 const priceSchema = z.object({
-  // Math.floor remove casas decimais restantes
-  amount: z.number().refine((n) => Math.floor(n * 100) / 100 === n, {
-    message: 'O valor deve ter no máximo 2 casas decimais',
-  }),
+  amount: z.number()
+    .int('O valor deve ser um número inteiro')
+    .min(150, 'O valor mínimo é 150 centavos')
+    .transform((n) => Math.floor(n)),
   currency: z.string(),
 });
 
@@ -52,9 +52,17 @@ const createCourseBodySchema = z.object({
   name: z.string().max(50),
   description: z.string().max(200),
   price: priceSchema.optional(),
-  sellable: z.boolean().optional(),
-  visible: z.boolean().optional(),
-});
+  sellable: z.boolean().optional().default(false),
+  visible: z.boolean().optional().default(false),
+}).refine((data) => {
+  if (data.sellable && !data.price) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Cursos marcados para venda devem obrigatoriamente ter um preço.",
+  path: ["price"],
+});;
 
 type CreateCourseBodySchema = z.infer<typeof createCourseBodySchema>;
 
@@ -63,7 +71,7 @@ const bodyValidationPipe = new ZodValidationPipe(createCourseBodySchema);
 @ApiTags('Courses')
 @Controller('/courses')
 export class CreateCourseController {
-  constructor(private createCourse: CreateCourseUseCase) {}
+  constructor(private createCourse: CreateCourseUseCase) { }
 
   @Post()
   @ApiOperation({ summary: 'Endpoint operation' })

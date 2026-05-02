@@ -51,4 +51,29 @@ describe('Create Course (E2E)', () => {
     });
     expect(courseOnDatabase).toBeTruthy();
   });
+
+  test('[POST] /courses (Free Course)', async () => {
+    const user = await accountFactory.makePrismaAccount();
+    const accessToken = jwt.sign({ sub: user.id.toString() });
+
+    const response = await request(app.getHttpServer())
+      .post('/courses')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send({
+        name: 'Free Course',
+        description: 'Zero cost content',
+        sellable: false,
+        visible: true,
+      });
+
+    expect(response.statusCode).toBe(201);
+
+    const courseOnDatabase = await prisma.course.findFirst({
+      where: { name: 'Free Course' },
+    });
+
+    expect(courseOnDatabase).toBeTruthy();
+    expect(courseOnDatabase?.price).toBeNull(); // No Prisma, price deve ser null
+    expect(courseOnDatabase?.sellable).toBe(false);
+  });
 });

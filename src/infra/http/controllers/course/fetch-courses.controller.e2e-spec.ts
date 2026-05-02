@@ -46,8 +46,8 @@ describe('Fetch Courses (E2E)', () => {
     ]);
 
     const response = await request(app.getHttpServer()).get(
-      '/courses?orderBy=recent',
-    );
+      '/courses',
+    ).query({ page: 1, orderBy: 'recent' });
 
     expect(response.statusCode).toBe(200);
     expect(response.body.courses).toHaveLength(2);
