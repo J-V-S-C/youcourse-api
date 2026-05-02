@@ -83,7 +83,7 @@ export class Course extends Entity<CourseProps> {
 
   updatePrice(price: Price) {
     if (this.sellable) {
-      throw new Error('Cannot edit details of a sellable course');
+      throw new Error('Cannot edit price of a sellable course');
     }
 
     this.props.price = price;
