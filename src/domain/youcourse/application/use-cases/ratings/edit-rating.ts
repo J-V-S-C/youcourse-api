@@ -20,7 +20,7 @@ type EditRatingUseCaseResponse = Either<
 
 @Injectable()
 export class EditRatingUseCase {
-  constructor(private readonly ratingsRepository: RatingsRepository) {}
+  constructor(private readonly ratingsRepository: RatingsRepository) { }
 
   async execute({
     ratingId,

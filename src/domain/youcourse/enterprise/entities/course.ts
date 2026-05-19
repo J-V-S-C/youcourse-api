@@ -2,7 +2,6 @@ import { Entity } from 'src/core/entities/entity';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { Price } from './value-objects/price';
 import { Optional } from 'src/core/types/optional';
-import { Rating } from './rating';
 import type { Unit } from './unit';
 
 export interface CourseProps {
@@ -83,7 +82,7 @@ export class Course extends Entity<CourseProps> {
 
   updatePrice(price: Price) {
     if (this.sellable) {
-      throw new Error('Cannot edit price of a sellable course');
+      throw new Error('Cannot edit details of a sellable course');
     }
 
     this.props.price = price;
