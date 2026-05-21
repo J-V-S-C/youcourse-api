@@ -9,19 +9,22 @@ export class InMemoryEnrollmentsRepository implements EnrollmentsRepository {
   async create(enrollment: Enrollment): Promise<void> {
     this.items.push(enrollment);
   }
-  async findManyByCourseId(courseId: UniqueEntityID, { orderBy, page, perPage }: PaginationParams): Promise<Enrollment[]> {
-    return this.items
-      .filter((enroll) => enroll.courseId.equals(courseId))
-      .slice()
-      .sort((a, b) => {
-        switch (orderBy) {
-          case 'recent':
-            return b.enrolledAt.getTime() - a.enrolledAt.getTime();
-          default:
-            return 0
-        }
-      })
-      .slice((page - 1) * perPage, page * perPage);
+
+  async findByStudentIdAndCourseId(
+    studentId: string,
+    courseId: string,
+  ): Promise<Enrollment | null> {
+    const enrollment = this.items.find(
+      (item) =>
+        item.studentId.toString() === studentId &&
+        item.courseId.toString() === courseId,
+    );
+
+    if (!enrollment) {
+      return null;
+    }
+
+    return enrollment;
   }
 
   async delete(enrollment: Enrollment): Promise<void> {

@@ -5,31 +5,57 @@ import { DatabaseModule } from 'src/infra/database/database.module';
 import request from 'supertest';
 import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
 import { CourseFactory } from 'test/factories/prisma/prisma-course-factory';
+import { EnrollmentFactory } from 'test/factories/prisma/prisma-enrollment-factory';
 import { JwtService } from '@nestjs/jwt';
 
-describe('Get Managed Course (E2E)', () => {
+describe('Get Enrolled Course (E2E)', () => {
   let app: INestApplication;
   let accountFactory: AccountFactory;
   let courseFactory: CourseFactory;
+  let enrollmentFactory: EnrollmentFactory;
   let jwt: JwtService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [AccountFactory, CourseFactory],
+      providers: [AccountFactory, CourseFactory, EnrollmentFactory],
     }).compile();
 
     app = moduleRef.createNestApplication();
     accountFactory = moduleRef.get(AccountFactory);
     courseFactory = moduleRef.get(CourseFactory);
+    enrollmentFactory = moduleRef.get(EnrollmentFactory);
     jwt = moduleRef.get(JwtService);
     await app.init();
   });
 
-  test('[GET] /courses/managed/:id (Hidden course - 404 for non-owners)', async () => {
+  test('[GET] /courses/enrolled/:id', async () => {
     const owner = await accountFactory.makePrismaAccount();
-    const attacker = await accountFactory.makePrismaAccount();
-    const accessToken = jwt.sign({ sub: attacker.id.toString() });
+    const student = await accountFactory.makePrismaAccount();
+    const accessToken = jwt.sign({ sub: student.id.toString() });
+
+    const course = await courseFactory.makePrismaCourse({
+      creatorId: owner.id,
+      visible: false,
+    });
+
+    await enrollmentFactory.makePrismaEnrollment({
+      studentId: student.id,
+      courseId: course.id,
+    });
+
+    const response = await request(app.getHttpServer())
+      .get(`/courses/enrolled/${course.id.toString()}`)
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.course.id).toBe(course.id.toString());
+  });
+
+  test('[GET] /courses/enrolled/:id (404 for students without active enrollment on private course)', async () => {
+    const owner = await accountFactory.makePrismaAccount();
+    const student = await accountFactory.makePrismaAccount();
+    const accessToken = jwt.sign({ sub: student.id.toString() });
 
     const course = await courseFactory.makePrismaCourse({
       creatorId: owner.id,
@@ -37,38 +63,20 @@ describe('Get Managed Course (E2E)', () => {
     });
 
     const response = await request(app.getHttpServer())
-      .get(`/courses/managed/${course.id.toString()}`)
+      .get(`/courses/enrolled/${course.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
     expect(response.statusCode).toBe(404);
   });
 
-  test('[GET] /courses/managed/:id (Visible course - 403 for non-owners)', async () => {
+  test('[GET] /courses/enrolled/:id (Unauthorized if no token is provided)', async () => {
     const owner = await accountFactory.makePrismaAccount();
-    const attacker = await accountFactory.makePrismaAccount();
-    const accessToken = jwt.sign({ sub: attacker.id.toString() });
-
     const course = await courseFactory.makePrismaCourse({
       creatorId: owner.id,
-      visible: true, // Força explicitamente a visibilidade como verdadeira
-    });
-
-    const response = await request(app.getHttpServer())
-      .get(`/courses/managed/${course.id.toString()}`)
-      .set('Authorization', `Bearer ${accessToken}`);
-
-    expect(response.statusCode).toBe(403);
-  });
-
-  test('[GET] /courses/managed/:id (Unauthorized)', async () => {
-    const user = await accountFactory.makePrismaAccount();
-    const course = await courseFactory.makePrismaCourse({
-      creatorId: user.id,
-      visible: true,
     });
 
     const response = await request(app.getHttpServer()).get(
-      `/courses/managed/${course.id.toString()}`,
+      `/courses/enrolled/${course.id.toString()}`,
     );
 
     expect(response.statusCode).toBe(401);

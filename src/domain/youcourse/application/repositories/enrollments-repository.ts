@@ -4,9 +4,9 @@ import { PaginationParams } from 'src/core/repositories/pagination-params';
 
 export abstract class EnrollmentsRepository {
   abstract create(enrollment: Enrollment): Promise<void>;
-  abstract findManyByCourseId(
-    courseId: UniqueEntityID,
-    params: PaginationParams,
-  ): Promise<Enrollment[]>;
+  abstract findByStudentIdAndCourseId(
+    studentId: string,
+    courseId: string,
+  ): Promise<Enrollment | null>;
   abstract delete(enrollment: Enrollment): Promise<void>;
 }

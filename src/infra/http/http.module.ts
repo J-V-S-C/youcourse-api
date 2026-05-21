@@ -33,6 +33,11 @@ import { DeleteUnitController } from './controllers/unit/delete-unit.controller'
 import { FetchUnitsController } from './controllers/unit/fetch-units.controller';
 import { ReorderUnitController } from './controllers/unit/reorder-unit.controller';
 
+// Enrollment Controllers
+import { CreateEnrollmentController } from './controllers/enrollment/create-enrollment.controller';
+import { DeleteEnrollmentController } from './controllers/enrollment/delete-enrollment.controller';
+import { VerifyCourseAccessController } from './controllers/enrollment/verify-course-access.controller';
+
 // Use Cases
 import { RegisterAccountUseCase } from 'src/domain/youcourse/application/use-cases/auth/register-account';
 import { AuthenticateAccountUseCase } from 'src/domain/youcourse/application/use-cases/auth/authenticate-account';
@@ -61,6 +66,11 @@ import { DeleteUnitUseCase } from 'src/domain/youcourse/application/use-cases/un
 import { FetchUnitsUseCase } from 'src/domain/youcourse/application/use-cases/unit/fetch-units';
 import { ReorderUnitUseCase } from 'src/domain/youcourse/application/use-cases/unit/reorder-unit';
 
+// Enrollment Use Cases
+import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-cases/enrollment/create-enrollment';
+import { DeleteEnrollmentUseCase } from 'src/domain/youcourse/application/use-cases/enrollment/delete-enrollment';
+import { VerifyCourseAccessUseCase } from 'src/domain/youcourse/application/use-cases/enrollment/verify-course-access';
+
 import { RateCourseController } from './controllers/ratings/rate-course.controller';
 import { EditPasswordController } from './controllers/account/edit-password.controller';
 import { RequestPasswordResetController } from './controllers/account/request-password-reset.controller';
@@ -77,13 +87,12 @@ import { FetchCreatorCoursesController } from './controllers/course/fetch-creato
 import { FetchCreatorCoursesUseCase } from 'src/domain/youcourse/application/use-cases/course/fetch-creator-courses';
 import { GetManagedCourseController } from './controllers/course/get-managed-course.controller';
 import { GetPublicCourseController } from './controllers/course/get-public-course.controller';
+import { GetEnrolledCourseController } from './controllers/course/get-enrolled-course.controller';
 import { GetCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases/course/get-course-by-id';
 import { PurchaseCourseController } from './controllers/course/purchase-course.controller';
 import { PaymentWebhookController } from './controllers/course/payment-webhook.controller';
 import { PurchaseCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/purchase-course';
 import { ProcessPaymentWebhookUseCase } from 'src/domain/youcourse/application/use-cases/course/process-payment-webhook';
-import { CreateEnrollmentController } from './controllers/enrollment/create-enrollment.controller';
-import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-cases/enrollment/create-enrollment';
 
 @Module({
   imports: [DatabaseModule, ServicesModule, CryptographyModule],
@@ -96,6 +105,7 @@ import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-ca
     FetchCreatorCoursesController,
     GetPublicCourseController,
     GetManagedCourseController,
+    GetEnrolledCourseController,
 
     RateCourseController,
     GetAccountByIdController,
@@ -121,6 +131,7 @@ import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-ca
     RemoveVideoFromLessonController,
     ReorderLessonController,
     FetchLessonsController,
+
     // Unit Controllers
     CreateUnitController,
     EditUnitDetailsController,
@@ -128,7 +139,10 @@ import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-ca
     FetchUnitsController,
     ReorderUnitController,
 
+    // Enrollment Controllers
     CreateEnrollmentController,
+    DeleteEnrollmentController,
+    VerifyCourseAccessController,
   ],
   providers: [
     RegisterAccountUseCase,
@@ -154,6 +168,7 @@ import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-ca
     PurchaseCourseUseCase,
     ProcessPaymentWebhookUseCase,
     EditRatingUseCase,
+
     // Lesson Use Cases
     CreateLessonUseCase,
     EditLessonDetailsUseCase,
@@ -162,6 +177,7 @@ import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-ca
     RemoveVideoFromLessonUseCase,
     ReorderLessonUseCase,
     FetchLessonsUseCase,
+
     // Unit Use Cases
     CreateUnitUseCase,
     EditUnitDetailsUseCase,
@@ -169,7 +185,10 @@ import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-ca
     FetchUnitsUseCase,
     ReorderUnitUseCase,
 
+    // Enrollment Use Cases
     CreateEnrollmentUseCase,
+    DeleteEnrollmentUseCase,
+    VerifyCourseAccessUseCase,
   ],
 })
-export class HttpModule { }
+export class HttpModule {}

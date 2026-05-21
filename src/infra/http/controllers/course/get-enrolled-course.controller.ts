@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Param,
-  ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
 import { GetCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases/course/get-course-by-id';
@@ -19,15 +18,20 @@ import type { UserPayload } from 'src/infra/auth/jwt.strategy';
 
 @ApiTags('Courses')
 @ApiBearerAuth()
-@Controller('/courses/managed')
-export class GetManagedCourseController {
+@Controller('/courses/enrolled')
+export class GetEnrolledCourseController {
   constructor(private getCourseById: GetCourseByIdUseCase) {}
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Obter detalhes para edição (apenas dono)' })
+  @ApiOperation({
+    summary:
+      'Obter detalhes do curso matriculado (apenas alunos inscritos ou dono)',
+  })
   @ApiResponse({ status: 200, description: 'Sucesso' })
-  @ApiResponse({ status: 403, description: 'Não autorizado' })
-  @ApiResponse({ status: 404, description: 'Curso não encontrado' })
+  @ApiResponse({
+    status: 404,
+    description: 'Curso não encontrado ou acesso negado',
+  })
   async handle(
     @Param('id') courseId: string,
     @CurrentUser() user: UserPayload,
@@ -38,18 +42,7 @@ export class GetManagedCourseController {
     });
 
     if (result.isLeft()) {
-      const error = result.value;
-      const errorName = error.constructor.name;
-
-      if (errorName === 'NotAllowedError') {
-        throw new ForbiddenException(error.message);
-      }
-
-      if (errorName === 'ResourceNotFoundError') {
-        throw new NotFoundException(error.message);
-      }
-
-      throw new BadRequestException(error.message);
+      throw new NotFoundException();
     }
 
     return { course: CoursePresenter.toHTTP(result.value.course) };

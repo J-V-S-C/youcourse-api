@@ -1,6 +1,7 @@
 import { Either, left, right } from 'src/core/either';
 import { Course } from 'src/domain/youcourse/enterprise/entities/course';
 import { CoursesRepository } from '../../repositories/courses-repository';
+import { EnrollmentsRepository } from '../../repositories/enrollments-repository';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { Injectable } from '@nestjs/common';
 import { NotAllowedError } from '../errors/not-allowed-error';
@@ -17,7 +18,10 @@ type GetCourseByIdUseCaseResponse = Either<
 
 @Injectable()
 export class GetCourseByIdUseCase {
-  constructor(private readonly coursesRepository: CoursesRepository) {}
+  constructor(
+    private readonly coursesRepository: CoursesRepository,
+    private readonly enrollmentsRepository: EnrollmentsRepository,
+  ) {}
 
   async execute({
     courseId,
@@ -25,15 +29,29 @@ export class GetCourseByIdUseCase {
   }: GetCourseByIdUseCaseRequest): Promise<GetCourseByIdUseCaseResponse> {
     const course = await this.coursesRepository.findById(courseId);
 
-    if (!course) return left(new ResourceNotFoundError());
-
-    // Se um usuário foi passado, ele está tentando gerenciar (precisa ser o dono)
-    if (userId && course.creatorId.toString() !== userId) {
-      return left(new NotAllowedError());
+    if (!course) {
+      return left(new ResourceNotFoundError());
     }
 
-    // Se nenhum usuário foi passado, é uma busca pública (precisa estar visível)
-    if (!userId && !course.visible) {
+    if (userId) {
+      const isCourseOwner = course.creatorId.toString() === userId;
+
+      const isStudentEnrolled =
+        await this.enrollmentsRepository.findByStudentIdAndCourseId(
+          userId,
+          courseId,
+        );
+
+      const hasPrivateAccess = isCourseOwner || !!isStudentEnrolled;
+
+      if (!hasPrivateAccess && !course.visible) {
+        return left(new ResourceNotFoundError());
+      }
+
+      return right({ course });
+    }
+
+    if (!course.visible) {
       return left(new ResourceNotFoundError());
     }
 

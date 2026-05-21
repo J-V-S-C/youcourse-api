@@ -1,7 +1,7 @@
-import { Either, left, right } from 'src/core/either';
 import { Course } from 'src/domain/youcourse/enterprise/entities/course';
 import { CoursesRepository } from '../../repositories/courses-repository';
 import { Injectable } from '@nestjs/common';
+import { right, type Either } from 'src/core/either';
 
 interface FetchCoursesUseCaseRequest {
   page: number;
