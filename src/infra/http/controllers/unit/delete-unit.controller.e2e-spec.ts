@@ -8,7 +8,6 @@ import request from 'supertest';
 import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
 import { CourseFactory } from 'test/factories/prisma/prisma-course-factory';
 import { UnitFactory } from 'test/factories/prisma/prisma-unit-factory';
-import { vi } from 'vitest';
 
 describe('Delete Unit (E2E)', () => {
   let app: INestApplication;

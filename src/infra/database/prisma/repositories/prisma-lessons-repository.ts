@@ -6,7 +6,7 @@ import { PrismaLessonMapper } from '../mappers/prisma-lesson-mapper';
 
 @Injectable()
 export class PrismaLessonsRepository implements LessonsRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(lesson: Lesson): Promise<void> {
     const data = PrismaLessonMapper.toPrisma(lesson);
@@ -36,7 +36,7 @@ export class PrismaLessonsRepository implements LessonsRepository {
       where: { unitId },
     });
 
-    return lessons.map(PrismaLessonMapper.toDomain);
+    return lessons.map((lesson) => PrismaLessonMapper.toDomain(lesson));
   }
 
   async countByUnitId(unitId: string): Promise<number> {

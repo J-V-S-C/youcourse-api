@@ -82,6 +82,8 @@ import { PurchaseCourseController } from './controllers/course/purchase-course.c
 import { PaymentWebhookController } from './controllers/course/payment-webhook.controller';
 import { PurchaseCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/purchase-course';
 import { ProcessPaymentWebhookUseCase } from 'src/domain/youcourse/application/use-cases/course/process-payment-webhook';
+import { CreateEnrollmentController } from './controllers/enrollment/create-enrollment.controller';
+import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-cases/enrollment/create-enrollment';
 
 @Module({
   imports: [DatabaseModule, ServicesModule, CryptographyModule],
@@ -125,6 +127,8 @@ import { ProcessPaymentWebhookUseCase } from 'src/domain/youcourse/application/u
     DeleteUnitController,
     FetchUnitsController,
     ReorderUnitController,
+
+    CreateEnrollmentController,
   ],
   providers: [
     RegisterAccountUseCase,
@@ -164,6 +168,8 @@ import { ProcessPaymentWebhookUseCase } from 'src/domain/youcourse/application/u
     DeleteUnitUseCase,
     FetchUnitsUseCase,
     ReorderUnitUseCase,
+
+    CreateEnrollmentUseCase,
   ],
 })
-export class HttpModule {}
+export class HttpModule { }

@@ -1,6 +1,4 @@
 import { Either, left, right } from 'src/core/either';
-import { Course } from 'src/domain/youcourse/enterprise/entities/course';
-import { Price } from 'src/domain/youcourse/enterprise/entities/value-objects/price';
 import { CoursesRepository } from '../../repositories/courses-repository';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { NotAllowedError } from '../errors/not-allowed-error';
@@ -18,7 +16,7 @@ type DeleteCourseUseCaseResponse = Either<
 
 @Injectable()
 export class DeleteCourseUseCase {
-  constructor(private readonly coursesRepository: CoursesRepository) {}
+  constructor(private readonly coursesRepository: CoursesRepository) { }
 
   async execute({
     courseId,

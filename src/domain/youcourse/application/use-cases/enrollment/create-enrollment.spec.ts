@@ -1,14 +1,14 @@
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { InMemoryEnrollmentsRepository } from 'test/repositories/in-memory-enrollments-repository';
-import { CreateEnrollmentmentUseCase } from './create-enrollment';
+import { CreateEnrollmentUseCase } from './create-enrollment';
 
 let inMemoryEnrollmentsRepository: InMemoryEnrollmentsRepository;
-let sut: CreateEnrollmentmentUseCase;
+let sut: CreateEnrollmentUseCase;
 
 describe('Create Enrollment', () => {
   beforeEach(() => {
     inMemoryEnrollmentsRepository = new InMemoryEnrollmentsRepository();
-    sut = new CreateEnrollmentmentUseCase(inMemoryEnrollmentsRepository);
+    sut = new CreateEnrollmentUseCase(inMemoryEnrollmentsRepository);
   });
 
   it('should be able to create a new enrollment', async () => {

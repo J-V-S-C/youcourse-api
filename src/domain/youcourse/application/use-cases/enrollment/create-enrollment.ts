@@ -4,7 +4,7 @@ import { Enrollment } from 'src/domain/youcourse/enterprise/entities/enrollment'
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { EnrollmentsRepository } from '../../repositories/enrollments-repository';
 
-interface CreateEnrollmentmentsUseCaseRequest {
+interface CreateEnrollmentUseCaseRequest {
   studentId: string;
   courseId: string;
 }
@@ -12,13 +12,13 @@ interface CreateEnrollmentmentsUseCaseRequest {
 type CreateEnrollmentUseCaseResponse = Either<null, { enrollment: Enrollment }>;
 
 @Injectable()
-export class CreateEnrollmentmentUseCase {
+export class CreateEnrollmentUseCase {
   constructor(private readonly enrollsRepository: EnrollmentsRepository) { }
 
   async execute({
     studentId,
     courseId,
-  }: CreateEnrollmentmentsUseCaseRequest): Promise<CreateEnrollmentUseCaseResponse> {
+  }: CreateEnrollmentUseCaseRequest): Promise<CreateEnrollmentUseCaseResponse> {
     const enrollment = Enrollment.create({
       studentId: new UniqueEntityID(studentId),
       courseId: new UniqueEntityID(courseId),

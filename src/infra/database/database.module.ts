@@ -17,6 +17,8 @@ import { LessonsRepository } from 'src/domain/youcourse/application/repositories
 import { PrismaLessonsRepository } from './prisma/repositories/prisma-lessons-repository';
 import { PaymentsRepository } from 'src/domain/youcourse/application/repositories/payments-repository';
 import { PrismaPaymentsRepository } from './prisma/repositories/prisma-payment-repository';
+import { EnrollmentsRepository } from 'src/domain/youcourse/application/repositories/enrollments-repository';
+import { PrismaEnrollmentsRepository } from './prisma/repositories/prisma-enrollments-repository';
 
 @Module({
   imports: [EnvModule],
@@ -55,6 +57,10 @@ import { PrismaPaymentsRepository } from './prisma/repositories/prisma-payment-r
       provide: PaymentsRepository,
       useClass: PrismaPaymentsRepository,
     },
+    {
+      provide: EnrollmentsRepository,
+      useClass: PrismaEnrollmentsRepository,
+    }
   ],
   exports: [
     PrismaService,
@@ -66,6 +72,7 @@ import { PrismaPaymentsRepository } from './prisma/repositories/prisma-payment-r
     UnitsRepository,
     LessonsRepository,
     PaymentsRepository,
+    EnrollmentsRepository,
   ],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }
