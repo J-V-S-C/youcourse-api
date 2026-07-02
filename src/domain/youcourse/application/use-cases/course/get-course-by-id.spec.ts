@@ -1,9 +1,9 @@
-import { describe, beforeEach, it, expect } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { GetCourseByIdUseCase } from './get-course-by-id';
 import { InMemoryCoursesRepository } from 'test/repositories/in-memory-courses-repository';
 import { InMemoryEnrollmentsRepository } from 'test/repositories/in-memory-enrollments-repository';
-import { GetCourseByIdUseCase } from './get-course-by-id';
 import { makeCourse } from 'test/factories/make-course';
-import { Enrollment } from 'src/domain/youcourse/enterprise/entities/enrollment';
+import { makeEnrollment } from 'test/factories/make-enrollment';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 
@@ -26,7 +26,6 @@ describe('Get Course By Id Use Case', () => {
       { visible: true },
       new UniqueEntityID('course-01'),
     );
-
     await inMemoryCoursesRepository.create(newCourse);
 
     const result = await sut.execute({
@@ -34,41 +33,23 @@ describe('Get Course By Id Use Case', () => {
     });
 
     expect(result.isRight()).toBe(true);
-    if (result.isRight()) {
-      expect(result.value.course.id.toString()).toBe('course-01');
-    }
-  });
-
-  it('should be able to get a private course if the requester is the owner', async () => {
-    const creatorId = new UniqueEntityID('creator-01');
-    const newCourse = makeCourse(
-      { creatorId, visible: false },
-      new UniqueEntityID('course-01'),
-    );
-
-    await inMemoryCoursesRepository.create(newCourse);
-
-    const result = await sut.execute({
-      courseId: 'course-01',
-      userId: 'creator-01',
+    expect(result.value).toEqual({
+      course: expect.objectContaining({ name: newCourse.name }),
     });
-
-    expect(result.isRight()).toBe(true);
   });
 
   it('should be able to get a private course if the requester is an enrolled student', async () => {
+    const studentId = new UniqueEntityID('student-01');
     const newCourse = makeCourse(
       { visible: false },
       new UniqueEntityID('course-01'),
     );
-
     await inMemoryCoursesRepository.create(newCourse);
 
-    const enrollment = Enrollment.create({
-      studentId: new UniqueEntityID('student-01'),
+    const enrollment = makeEnrollment({
+      studentId,
       courseId: newCourse.id,
     });
-
     await inMemoryEnrollmentsRepository.create(enrollment);
 
     const result = await sut.execute({
@@ -84,7 +65,6 @@ describe('Get Course By Id Use Case', () => {
       { visible: false },
       new UniqueEntityID('course-01'),
     );
-
     await inMemoryCoursesRepository.create(newCourse);
 
     const result = await sut.execute({
@@ -101,12 +81,11 @@ describe('Get Course By Id Use Case', () => {
       { visible: true },
       new UniqueEntityID('course-01'),
     );
-
     await inMemoryCoursesRepository.create(newCourse);
 
     const result = await sut.execute({
       courseId: 'course-01',
-      userId: 'random-student',
+      userId: 'not-enrolled-student',
     });
 
     expect(result.isRight()).toBe(true);

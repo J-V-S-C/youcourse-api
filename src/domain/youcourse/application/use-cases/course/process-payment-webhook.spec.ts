@@ -4,14 +4,17 @@ import { Payment } from 'src/domain/youcourse/enterprise/entities/payment';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { PaymentAmountMismatchError } from '../errors/payment-amount-mismatch-error';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
+import { InMemoryEnrollmentsRepository } from 'test/repositories/in-memory-enrollments-repository';
 
 let inMemoryPaymentsRepository: InMemoryPaymentsRepository;
+let inMemoryEnrollmentsRepository: InMemoryEnrollmentsRepository;
 let sut: ProcessPaymentWebhookUseCase;
 
 describe('Process Payment Webhook Use Case', () => {
   beforeEach(() => {
     inMemoryPaymentsRepository = new InMemoryPaymentsRepository();
-    sut = new ProcessPaymentWebhookUseCase(inMemoryPaymentsRepository);
+    inMemoryEnrollmentsRepository = new InMemoryEnrollmentsRepository();
+    sut = new ProcessPaymentWebhookUseCase(inMemoryPaymentsRepository, inMemoryEnrollmentsRepository);
   });
 
   it('should be able to process a successful payment webhook', async () => {
@@ -31,6 +34,11 @@ describe('Process Payment Webhook Use Case', () => {
     expect(result.isRight()).toBe(true);
     expect(inMemoryPaymentsRepository.items[0].status).toBe('PAID');
     expect(inMemoryPaymentsRepository.items[0].transactionNsu).toBe('txn-123');
+    
+    // Validate enrollment was created
+    expect(inMemoryEnrollmentsRepository.items).toHaveLength(1);
+    expect(inMemoryEnrollmentsRepository.items[0].courseId.toString()).toBe(payment.courseId.toString());
+    expect(inMemoryEnrollmentsRepository.items[0].studentId.toString()).toBe(payment.accountId.toString());
   });
 
   it('should return error if payment amount does not match', async () => {

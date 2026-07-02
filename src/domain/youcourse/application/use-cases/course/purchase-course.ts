@@ -59,11 +59,14 @@ export class PurchaseCourseUseCase {
     });
 
     await this.paymentsRepository.create(payment);
+    const creator = await this.accountsRepository.findById(course.creatorId.toString());
 
     const { paymentUrl } = await this.paymentGateway.createCheckoutLink({
       orderId: payment.id.toString(),
       amount: amountInCents,
       courseName: course.name,
+      targetHandle: creator?.paymentHandle || undefined,
+      redirectUrl: `${process.env.FRONTEND_URL}/my-courses/${course.id.toString()}`,
       customer: {
         name: account.name,
         email: account.email,

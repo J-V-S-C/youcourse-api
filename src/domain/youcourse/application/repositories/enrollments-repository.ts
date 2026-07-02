@@ -8,5 +8,9 @@ export abstract class EnrollmentsRepository {
     studentId: string,
     courseId: string,
   ): Promise<Enrollment | null>;
+  abstract findManyByStudentId(
+    studentId: string,
+    params: PaginationParams,
+  ): Promise<Enrollment[]>;
   abstract delete(enrollment: Enrollment): Promise<void>;
 }

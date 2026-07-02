@@ -37,6 +37,7 @@ import { ReorderUnitController } from './controllers/unit/reorder-unit.controlle
 import { CreateEnrollmentController } from './controllers/enrollment/create-enrollment.controller';
 import { DeleteEnrollmentController } from './controllers/enrollment/delete-enrollment.controller';
 import { VerifyCourseAccessController } from './controllers/enrollment/verify-course-access.controller';
+import { FetchEnrolledCoursesController } from './controllers/enrollment/fetch-enrolled-courses.controller';
 
 // Use Cases
 import { RegisterAccountUseCase } from 'src/domain/youcourse/application/use-cases/auth/register-account';
@@ -70,6 +71,7 @@ import { ReorderUnitUseCase } from 'src/domain/youcourse/application/use-cases/u
 import { CreateEnrollmentUseCase } from 'src/domain/youcourse/application/use-cases/enrollment/create-enrollment';
 import { DeleteEnrollmentUseCase } from 'src/domain/youcourse/application/use-cases/enrollment/delete-enrollment';
 import { VerifyCourseAccessUseCase } from 'src/domain/youcourse/application/use-cases/enrollment/verify-course-access';
+import { FetchEnrolledCoursesUseCase } from 'src/domain/youcourse/application/use-cases/enrollment/fetch-enrolled-courses';
 
 import { RateCourseController } from './controllers/ratings/rate-course.controller';
 import { EditPasswordController } from './controllers/account/edit-password.controller';
@@ -93,6 +95,7 @@ import { PurchaseCourseController } from './controllers/course/purchase-course.c
 import { PaymentWebhookController } from './controllers/course/payment-webhook.controller';
 import { PurchaseCourseUseCase } from 'src/domain/youcourse/application/use-cases/course/purchase-course';
 import { ProcessPaymentWebhookUseCase } from 'src/domain/youcourse/application/use-cases/course/process-payment-webhook';
+import { GetManagedCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases/course/get-managed-course-by-id';
 
 @Module({
   imports: [DatabaseModule, ServicesModule, CryptographyModule],
@@ -143,6 +146,7 @@ import { ProcessPaymentWebhookUseCase } from 'src/domain/youcourse/application/u
     CreateEnrollmentController,
     DeleteEnrollmentController,
     VerifyCourseAccessController,
+    FetchEnrolledCoursesController,
   ],
   providers: [
     RegisterAccountUseCase,
@@ -151,6 +155,7 @@ import { ProcessPaymentWebhookUseCase } from 'src/domain/youcourse/application/u
     CreateCourseUseCase,
     FetchCoursesUseCase,
     FetchCreatorCoursesUseCase,
+    GetManagedCourseByIdUseCase,
     GetCourseByIdUseCase,
 
     RateCourseUseCase,
@@ -189,6 +194,7 @@ import { ProcessPaymentWebhookUseCase } from 'src/domain/youcourse/application/u
     CreateEnrollmentUseCase,
     DeleteEnrollmentUseCase,
     VerifyCourseAccessUseCase,
+    FetchEnrolledCoursesUseCase,
   ],
 })
 export class HttpModule {}

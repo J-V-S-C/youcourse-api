@@ -15,6 +15,7 @@ export class PrismaAccountMapper {
         status: raw.status as AccountStatus,
         lastLogin: raw.lastLogin,
         createdAt: raw.createdAt,
+        paymentHandle: raw.paymentHandle,
       },
       new UniqueEntityID(raw.id),
     );
@@ -25,10 +26,11 @@ export class PrismaAccountMapper {
       id: account.id.toString(),
       name: account.name,
       email: account.email,
-      password: account.password,
+      password: account.password ?? '',
       status: account.status,
       lastLogin: account.lastLogin,
       createdAt: account.createdAt,
+      paymentHandle: account.paymentHandle,
     };
   }
 }

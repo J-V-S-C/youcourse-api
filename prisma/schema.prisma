@@ -15,6 +15,7 @@ model Account {
   status              AccountStatus        @default(ACTIVE)
   createdAt           DateTime             @default(now()) @map("created_at")
   lastLogin           DateTime?            @map("last_login")
+  paymentHandle       String?              @map("payment_handle")
 
   courses             Course[]             @relation("CourseCreator")
   passwordResetTokens PasswordResetToken[]

@@ -12,14 +12,19 @@ export interface AccountProps {
   name: string;
   email: string;
   password: string;
-  status: AccountStatus;
-  createdAt: Date;
+  status?: 'ACTIVE' | 'SUSPENDED' | 'DISABLED';
+  createdAt?: Date;
   lastLogin?: Date | null;
+  paymentHandle?: string | null;
 }
 
 export class Account extends Entity<AccountProps> {
   get name() {
     return this.props.name;
+  }
+
+  set name(value: string) {
+    this.props.name = value;
   }
 
   get email() {
@@ -28,6 +33,14 @@ export class Account extends Entity<AccountProps> {
 
   get password() {
     return this.props.password;
+  }
+
+  get paymentHandle() {
+    return this.props.paymentHandle;
+  }
+
+  set paymentHandle(value: string | null | undefined) {
+    this.props.paymentHandle = value;
   }
 
   get status() {
@@ -46,9 +59,12 @@ export class Account extends Entity<AccountProps> {
     this.props.lastLogin = new Date();
   }
 
-  updateDetails(name: string, email: string) {
+  updateDetails(name: string, email: string, paymentHandle?: string | null) {
     this.props.name = name;
     this.props.email = email;
+    if (paymentHandle !== undefined) {
+      this.props.paymentHandle = paymentHandle;
+    }
   }
 
   updatePassword(password: string) {

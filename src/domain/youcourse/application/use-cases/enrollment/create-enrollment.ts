@@ -19,6 +19,7 @@ export class CreateEnrollmentUseCase {
     studentId,
     courseId,
   }: CreateEnrollmentUseCaseRequest): Promise<CreateEnrollmentUseCaseResponse> {
+
     const enrollment = Enrollment.create({
       studentId: new UniqueEntityID(studentId),
       courseId: new UniqueEntityID(courseId),

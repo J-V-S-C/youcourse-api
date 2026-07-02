@@ -6,7 +6,7 @@ import {
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
-import { GetCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases/course/get-course-by-id';
+import { GetManagedCourseByIdUseCase } from 'src/domain/youcourse/application/use-cases/course/get-managed-course-by-id';
 import { CoursePresenter } from '../../presenters/course-presenter';
 import { CurrentUser } from 'src/infra/auth/current-user.decorator';
 import {
@@ -21,7 +21,7 @@ import type { UserPayload } from 'src/infra/auth/jwt.strategy';
 @ApiBearerAuth()
 @Controller('/courses/managed')
 export class GetManagedCourseController {
-  constructor(private getCourseById: GetCourseByIdUseCase) {}
+  constructor(private getManagedCourseById: GetManagedCourseByIdUseCase) {}
 
   @Get('/:id')
   @ApiOperation({ summary: 'Obter detalhes para edição (apenas dono)' })
@@ -32,7 +32,7 @@ export class GetManagedCourseController {
     @Param('id') courseId: string,
     @CurrentUser() user: UserPayload,
   ) {
-    const result = await this.getCourseById.execute({
+    const result = await this.getManagedCourseById.execute({
       courseId,
       userId: user.sub,
     });

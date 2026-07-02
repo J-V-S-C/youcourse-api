@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { PaymentsRepository } from '../../repositories/payments-repository';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { PaymentAmountMismatchError } from '../errors/payment-amount-mismatch-error';
+import { EnrollmentsRepository } from '../../repositories/enrollments-repository';
+import { Enrollment } from 'src/domain/youcourse/enterprise/entities/enrollment';
 
 interface ProcessPaymentWebhookUseCaseRequest {
   orderNsu: string;
@@ -17,7 +19,10 @@ type ProcessPaymentWebhookUseCaseResponse = Either<
 
 @Injectable()
 export class ProcessPaymentWebhookUseCase {
-  constructor(private paymentsRepository: PaymentsRepository) { }
+  constructor(
+    private paymentsRepository: PaymentsRepository,
+    private enrollmentsRepository: EnrollmentsRepository,
+  ) { }
 
   async execute({
     orderNsu,
@@ -41,6 +46,20 @@ export class ProcessPaymentWebhookUseCase {
     payment.markAsPaid(transactionNsu);
 
     await this.paymentsRepository.save(payment);
+
+    const existingEnrollment = await this.enrollmentsRepository.findByStudentIdAndCourseId(
+      payment.accountId.toString(),
+      payment.courseId.toString(),
+    );
+
+    if (!existingEnrollment) {
+      const enrollment = Enrollment.create({
+        studentId: payment.accountId,
+        courseId: payment.courseId,
+      });
+
+      await this.enrollmentsRepository.create(enrollment);
+    }
 
     return right({ success: true });
   }

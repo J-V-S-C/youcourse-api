@@ -23,16 +23,20 @@ import { EditAccountDetailsUseCase } from 'src/domain/youcourse/application/use-
 import { ResourceNotFoundError } from 'src/domain/youcourse/application/use-cases/errors/resource-not-found-error';
 
 export class EditAccountDto {
-  @ApiProperty({ default: 'user@example.com' })
-  name!: string;
+  @ApiProperty({ default: 'John Doe', required: false })
+  name?: string;
 
-  @ApiProperty({ default: 'user@example.com' })
-  email!: string;
+  @ApiProperty({ default: 'user@example.com', required: false })
+  email?: string;
+
+  @ApiProperty({ default: '@johndoe', required: false })
+  paymentHandle?: string;
 }
 
 const editAccountBodySchema = z.object({
   name: z.string().max(50).optional(),
   email: z.email().max(255).optional(),
+  paymentHandle: z.string().max(50).optional().nullable(),
 });
 
 type EditAccountBodySchema = z.infer<typeof editAccountBodySchema>;
@@ -45,7 +49,7 @@ export class EditAccountDetailsController {
   constructor(private editAccountDetails: EditAccountDetailsUseCase) {}
 
   @Patch()
-  @ApiOperation({ summary: 'Endpoint operation' })
+  @ApiOperation({ summary: 'Edit account details' })
   @ApiResponse({ status: 200, description: 'Success' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiBody({ type: EditAccountDto })
@@ -54,12 +58,13 @@ export class EditAccountDetailsController {
     @Param('id') accountId: string,
     @Body(bodyValidationPipe) body: EditAccountBodySchema,
   ) {
-    const { name, email } = body;
+    const { name, email, paymentHandle } = body;
 
     const result = await this.editAccountDetails.execute({
       accountId,
       name,
       email,
+      paymentHandle,
     });
 
     if (result.isLeft()) {

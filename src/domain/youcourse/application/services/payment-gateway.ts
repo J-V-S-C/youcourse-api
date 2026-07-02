@@ -6,6 +6,8 @@ export interface CreatePaymentLinkParams {
     email: string;
   };
   courseName: string;
+  targetHandle?: string;
+  redirectUrl?: string;
 }
 
 export interface PaymentLinkResponse {

@@ -13,7 +13,7 @@ export class InfinitePayPaymentGateway implements PaymentGateway {
   async createCheckoutLink(
     params: CreatePaymentLinkParams,
   ): Promise<PaymentLinkResponse> {
-    const handle = this.envService.get('INFINITEPAY_HANDLE');
+    const handle = params.targetHandle || this.envService.get('INFINITEPAY_HANDLE');
     const apiUrl = 'https://api.checkout.infinitepay.io/links';
 
     // Usando fetch nativo (Node 18+)
@@ -25,6 +25,7 @@ export class InfinitePayPaymentGateway implements PaymentGateway {
       body: JSON.stringify({
         handle,
         order_nsu: params.orderId,
+        payment_success_url: params.redirectUrl,
         items: [
           {
             description: params.courseName,

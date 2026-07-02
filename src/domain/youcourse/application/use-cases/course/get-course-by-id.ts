@@ -4,7 +4,6 @@ import { CoursesRepository } from '../../repositories/courses-repository';
 import { EnrollmentsRepository } from '../../repositories/enrollments-repository';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { Injectable } from '@nestjs/common';
-import { NotAllowedError } from '../errors/not-allowed-error';
 
 interface GetCourseByIdUseCaseRequest {
   courseId: string;
@@ -12,7 +11,7 @@ interface GetCourseByIdUseCaseRequest {
 }
 
 type GetCourseByIdUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
+  ResourceNotFoundError,
   { course: Course }
 >;
 
@@ -33,24 +32,23 @@ export class GetCourseByIdUseCase {
       return left(new ResourceNotFoundError());
     }
 
+    // Se houver um usuário autenticado (Jornada do Aluno)
     if (userId) {
-      const isCourseOwner = course.creatorId.toString() === userId;
-
       const isStudentEnrolled =
         await this.enrollmentsRepository.findByStudentIdAndCourseId(
           userId,
           courseId,
         );
 
-      const hasPrivateAccess = isCourseOwner || !!isStudentEnrolled;
-
-      if (!hasPrivateAccess && !course.visible) {
+      // Se não for matriculado e o curso estiver oculto, retorna 404 por ofuscação
+      if (!isStudentEnrolled && !course.visible) {
         return left(new ResourceNotFoundError());
       }
 
       return right({ course });
     }
 
+    // Se não houver usuário (Jornada Pública) e o curso estiver oculto -> 404
     if (!course.visible) {
       return left(new ResourceNotFoundError());
     }
