@@ -3,7 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/infra/app.module';
 import { DatabaseModule } from 'src/infra/database/database.module';
-import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import request from 'supertest';
 import { AccountFactory } from 'test/factories/prisma/prisma-account-factory';
 import { CourseFactory } from 'test/factories/prisma/prisma-course-factory';
@@ -14,7 +13,6 @@ import { InMemoryVideoService } from 'test/services/in-memory-video-service';
 
 describe('Attach Video to Lesson (E2E)', () => {
   let app: INestApplication;
-  let prisma: PrismaService;
   let accountFactory: AccountFactory;
   let courseFactory: CourseFactory;
   let unitFactory: UnitFactory;
@@ -35,7 +33,6 @@ describe('Attach Video to Lesson (E2E)', () => {
     unitFactory = moduleRef.get(UnitFactory);
     lessonFactory = moduleRef.get(LessonFactory);
     jwt = moduleRef.get(JwtService);
-    prisma = moduleRef.get(PrismaService);
 
     app = moduleRef.createNestApplication();
     await app.init();

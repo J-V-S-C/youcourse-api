@@ -9,6 +9,7 @@ interface EditAccountDetailsUseCaseRequest {
   accountId: string;
   name?: string;
   email?: string;
+  paymentHandle?: string | null;
 }
 
 type EditAccountDetailsUseCaseResponse = Either<
@@ -24,6 +25,7 @@ export class EditAccountDetailsUseCase {
     accountId,
     name,
     email,
+    paymentHandle,
   }: EditAccountDetailsUseCaseRequest): Promise<EditAccountDetailsUseCaseResponse> {
     const account = await this.accountsRepository.findById(accountId);
     if (!account) {
@@ -33,12 +35,16 @@ export class EditAccountDetailsUseCase {
     if (email) {
       const existingEmail = await this.accountsRepository.findByEmail(email);
 
-      if (existingEmail) {
+      if (existingEmail && existingEmail.id.toString() !== accountId) {
         return left(new AccountAlreadyExistsError(email));
       }
     }
 
-    account.updateDetails(name ?? account.name, email ?? account.email);
+    account.updateDetails(
+      name ?? account.name,
+      email ?? account.email,
+      paymentHandle
+    );
 
     await this.accountsRepository.save(account);
 

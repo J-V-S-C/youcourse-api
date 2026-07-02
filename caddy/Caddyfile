@@ -1,5 +1,9 @@
-youcourse-api.duckdns.org {
-    # Removemos o handle /api* e deixamos o proxy direto
+:80 {
+    # Redirecionamento manual correto para a sua porta externa HTTPS (8443)
+    redir https://youcourse-api.duckdns.org:8443{uri}
+}
+
+:443 {
     reverse_proxy youcourse-api:3333
 
     log {

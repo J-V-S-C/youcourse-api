@@ -2,7 +2,6 @@ import { Entity } from 'src/core/entities/entity';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { Price } from './value-objects/price';
 import { Optional } from 'src/core/types/optional';
-import { Rating } from './rating';
 import type { Unit } from './unit';
 
 export interface CourseProps {

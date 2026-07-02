@@ -1,9 +1,9 @@
 import { Either, left, right } from 'src/core/either';
 import { Course } from 'src/domain/youcourse/enterprise/entities/course';
 import { CoursesRepository } from '../../repositories/courses-repository';
+import { EnrollmentsRepository } from '../../repositories/enrollments-repository';
 import { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import { Injectable } from '@nestjs/common';
-import { NotAllowedError } from '../errors/not-allowed-error';
 
 interface GetCourseByIdUseCaseRequest {
   courseId: string;
@@ -11,13 +11,16 @@ interface GetCourseByIdUseCaseRequest {
 }
 
 type GetCourseByIdUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
+  ResourceNotFoundError,
   { course: Course }
 >;
 
 @Injectable()
 export class GetCourseByIdUseCase {
-  constructor(private readonly coursesRepository: CoursesRepository) {}
+  constructor(
+    private readonly coursesRepository: CoursesRepository,
+    private readonly enrollmentsRepository: EnrollmentsRepository,
+  ) {}
 
   async execute({
     courseId,
@@ -25,15 +28,28 @@ export class GetCourseByIdUseCase {
   }: GetCourseByIdUseCaseRequest): Promise<GetCourseByIdUseCaseResponse> {
     const course = await this.coursesRepository.findById(courseId);
 
-    if (!course) return left(new ResourceNotFoundError());
-
-    // Se um usuário foi passado, ele está tentando gerenciar (precisa ser o dono)
-    if (userId && course.creatorId.toString() !== userId) {
-      return left(new NotAllowedError());
+    if (!course) {
+      return left(new ResourceNotFoundError());
     }
 
-    // Se nenhum usuário foi passado, é uma busca pública (precisa estar visível)
-    if (!userId && !course.visible) {
+    // Se houver um usuário autenticado (Jornada do Aluno)
+    if (userId) {
+      const isStudentEnrolled =
+        await this.enrollmentsRepository.findByStudentIdAndCourseId(
+          userId,
+          courseId,
+        );
+
+      // Se não for matriculado e o curso estiver oculto, retorna 404 por ofuscação
+      if (!isStudentEnrolled && !course.visible) {
+        return left(new ResourceNotFoundError());
+      }
+
+      return right({ course });
+    }
+
+    // Se não houver usuário (Jornada Pública) e o curso estiver oculto -> 404
+    if (!course.visible) {
       return left(new ResourceNotFoundError());
     }
 

@@ -8,7 +8,7 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PrismaCoursesRepository implements CoursesRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(course: Course): Promise<void> {
     const data = PrismaCourseMapper.toPrisma(course);

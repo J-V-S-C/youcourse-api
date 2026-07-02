@@ -1,9 +1,8 @@
 // @ts-check
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import globals, { vitest } from 'globals';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-
 export default tseslint.config(
   {
     ignores: ['eslint.config.mjs', 'vitest.config.ts'],
@@ -15,9 +14,9 @@ export default tseslint.config(
     languageOptions: {
       globals: {
         ...globals.node,
-        ...vitest,
+        ...globals.vitest,
       },
-      sourceType: 'commonjs',
+      sourceType: 'module',
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
@@ -30,7 +29,9 @@ export default tseslint.config(
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
       '@typescript-eslint/require-await': 'off',
-      'prettier/prettier': ['error', { endOfLine: 'auto' }],
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      'typescript-eslint/no-unsafe-call': 'warn',
+      'prettier/prettier': 'off',
     },
   },
   {

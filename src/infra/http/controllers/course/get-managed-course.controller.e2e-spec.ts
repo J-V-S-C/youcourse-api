@@ -26,28 +26,31 @@ describe('Get Managed Course (E2E)', () => {
     await app.init();
   });
 
-  test('[GET] /courses/managed/:id', async () => {
-    const user = await accountFactory.makePrismaAccount();
-    const accessToken = jwt.sign({ sub: user.id.toString() });
+  test('[GET] /courses/managed/:id (Hidden course - 404 for non-owners)', async () => {
+    const owner = await accountFactory.makePrismaAccount();
+    const attacker = await accountFactory.makePrismaAccount();
+    const accessToken = jwt.sign({ sub: attacker.id.toString() });
+
     const course = await courseFactory.makePrismaCourse({
-      creatorId: user.id,
-      visible: false, // Dono deve conseguir ver mesmo oculto
+      creatorId: owner.id,
+      visible: false,
     });
 
     const response = await request(app.getHttpServer())
       .get(`/courses/managed/${course.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
-    expect(response.statusCode).toBe(200);
-    expect(response.body.course.id).toBe(course.id.toString());
+    expect(response.statusCode).toBe(404);
   });
 
-  test('[GET] /courses/managed/:id (Forbidden for non-owners)', async () => {
+  test('[GET] /courses/managed/:id (Visible course - 403 for non-owners)', async () => {
     const owner = await accountFactory.makePrismaAccount();
     const attacker = await accountFactory.makePrismaAccount();
     const accessToken = jwt.sign({ sub: attacker.id.toString() });
+
     const course = await courseFactory.makePrismaCourse({
       creatorId: owner.id,
+      visible: true, // Força explicitamente a visibilidade como verdadeira
     });
 
     const response = await request(app.getHttpServer())
@@ -59,7 +62,10 @@ describe('Get Managed Course (E2E)', () => {
 
   test('[GET] /courses/managed/:id (Unauthorized)', async () => {
     const user = await accountFactory.makePrismaAccount();
-    const course = await courseFactory.makePrismaCourse({ creatorId: user.id });
+    const course = await courseFactory.makePrismaCourse({
+      creatorId: user.id,
+      visible: true,
+    });
 
     const response = await request(app.getHttpServer()).get(
       `/courses/managed/${course.id.toString()}`,

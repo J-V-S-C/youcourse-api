@@ -15,10 +15,16 @@ model Account {
   status              AccountStatus        @default(ACTIVE)
   createdAt           DateTime             @default(now()) @map("created_at")
   lastLogin           DateTime?            @map("last_login")
-  courses             Course[]
+  paymentHandle       String?              @map("payment_handle")
+
+  courses             Course[]             @relation("CourseCreator")
   passwordResetTokens PasswordResetToken[]
   rating              Rating[]
   refreshTokens       RefreshToken[]
+  payments            Payment[]
+  enrollments         Enrollment[]
+
+  @@map("accounts")
 }
 
 model Course {
@@ -31,10 +37,15 @@ model Course {
   sellable    Boolean
   createdAt   DateTime       @default(now()) @map("created_at")
   updatedAt   DateTime?      @map("updated_at")
-  creator     Account        @relation(fields: [creatorId], references: [id])
+
+  creator     Account        @relation("CourseCreator", fields: [creatorId], references: [id])
   metrics     CourseMetrics?
   ratings     Rating[]
   units       Unit[]
+  payments    Payment[]
+  enrollments Enrollment[]
+
+  @@map("courses")
 }
 
 model Rating {
@@ -45,17 +56,23 @@ model Rating {
   stars      Float
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime? @map("updated_at")
+
   creator    Account   @relation(fields: [creatorId], references: [id])
   course     Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("ratings")
 }
 
 model CourseMetrics {
-  courseId String @id
+  courseId String @id @map("course_id")
   views    Int
   clicks   Int
   sales    Int
   score    Float
+
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("course_metrics")
 }
 
 model Unit {
@@ -66,8 +83,11 @@ model Unit {
   position    Int
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
+
   course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
   lessons     Lesson[]
+
+  @@map("units")
 }
 
 model Lesson {
@@ -80,7 +100,10 @@ model Lesson {
   isPreview   Boolean   @default(false)
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
+
   unit        Unit      @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@map("lessons")
 }
 
 model PasswordResetToken {
@@ -89,7 +112,10 @@ model PasswordResetToken {
   accountId String    @map("account_id")
   expiresAt DateTime  @map("expires_at")
   usedAt    DateTime? @map("used_at")
+
   account   Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
 }
 
 model RefreshToken {
@@ -97,11 +123,50 @@ model RefreshToken {
   token     String   @unique
   accountId String   @map("account_id")
   expiresAt DateTime @map("expires_at")
+
   account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model Payment {
+  id             String        @id @default(uuid())
+  courseId       String        @map("course_id")
+  accountId      String        @map("account_id")
+  amount         Int
+  status         PaymentStatus @default(PENDING)
+  paymentUrl     String?       @map("payment_url")
+  transactionNsu String?       @unique @map("transaction_nsu")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime?     @map("updated_at")
+
+  course         Course        @relation(fields: [courseId], references: [id])
+  account        Account       @relation(fields: [accountId], references: [id])
+
+  @@map("payments")
+}
+
+model Enrollment {
+  id         String   @id @default(uuid())
+  studentId  String   @map("student_id")
+  courseId   String   @map("course_id")
+  enrolledAt DateTime @default(now()) @map("enrolled_at")
+
+  student    Account  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, courseId])
+  @@map("enrollments")
 }
 
 enum AccountStatus {
   ACTIVE
   SUSPENDED
   DISABLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
 }

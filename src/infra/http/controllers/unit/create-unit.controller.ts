@@ -19,6 +19,7 @@ import {
   ApiProperty,
   ApiParam,
 } from '@nestjs/swagger';
+import { UnitPresenter } from '../../presenters/unit-presenter';
 
 export class CreateUnitDto {
   @ApiProperty({ default: 'Introduction Unit' })
@@ -44,7 +45,7 @@ const bodyValidationPipe = new ZodValidationPipe(createUnitBodySchema);
 @ApiTags('Units')
 @Controller('/courses/:courseId/units')
 export class CreateUnitController {
-  constructor(private createUnit: CreateUnitUseCase) {}
+  constructor(private createUnit: CreateUnitUseCase) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a new unit in a course' })
@@ -80,15 +81,7 @@ export class CreateUnitController {
     const unit = result.value.unit;
 
     return {
-      unit: {
-        id: unit.id.toString(),
-        name: unit.name,
-        description: unit.description,
-        position: unit.position,
-        courseId: unit.courseId.toString(),
-        createdAt: unit.createdAt,
-        updatedAt: unit.updatedAt,
-      },
+      unit: UnitPresenter.toHTTP(unit)
     };
   }
 }
